@@ -35,8 +35,6 @@ angular.module('app.graph', ['ngRoute'])
     return places
   }
 
-  console.log(connections)
-
   var nodes = _.map(places, function(place) {
     return {
       data: {
@@ -68,7 +66,7 @@ angular.module('app.graph', ['ngRoute'])
     textureOnViewport: true,
     boxSelectionEnabled: false,
     layout: {
-      name: 'breadthfirst'
+      name: 'dagre'
     },
     elements: {
       nodes: nodes,
@@ -78,15 +76,23 @@ angular.module('app.graph', ['ngRoute'])
       {
         selector: 'node',
         style: {
-          'height': 40,
-          'width': 40,
-          'background-color': '#ccc',
+          // 'height': 40,
+          // 'width': 40,
+          'background-color': '#ad1a66',
           'label': 'data(label)'
+        }
+      },
+
+      {
+        selector: 'edge',
+        style: {
+          'width': 3,
+          'line-color': '#ad1a66'
         }
       }
     ],
   })
 
-  cy.style('node {height:40;width:80;shape:rectangle;background-color:#ccc;label:data(label);text-valign:center;text-halign:center;color:#fff;}edge{width:3;}.bg-navy{background-color:#001F3F;}.bg-blue{background-color:#0074D9;}.bg-aqua{background-color:#7FDBFF;}.bg-teal{background-color:#39CCCC;}.bg-olive{background-color:#3D9970;}.bg-green{background-color:#2ECC40;}.bg-lime{background-color:#01FF70;}.bg-yellow{background-color:#FFDC00;}.bg-orange{background-color:#FF851B;}.bg-red{background-color:#FF4136;}.bg-fuchsia{background-color:#F012BE;}.bg-purple{background-color:#B10DC9;}.bg-maroon{background-color:#85144B;}.bg-white{background-color:#fff;}.bg-gray{background-color:#aaa;}.bg-silver{background-color:#ddd;}.bg-black{background-color:#111;}')
+  // cy.style('node {height:40;width:80;shape:rectangle;background-color:#ccc;label:data(label);text-valign:center;text-halign:center;color:#fff;}edge{width:3;}.bg-navy{background-color:#001F3F;}.bg-blue{background-color:#0074D9;}.bg-aqua{background-color:#7FDBFF;}.bg-teal{background-color:#39CCCC;}.bg-olive{background-color:#3D9970;}.bg-green{background-color:#2ECC40;}.bg-lime{background-color:#01FF70;}.bg-yellow{background-color:#FFDC00;}.bg-orange{background-color:#FF851B;}.bg-red{background-color:#FF4136;}.bg-fuchsia{background-color:#F012BE;}.bg-purple{background-color:#B10DC9;}.bg-maroon{background-color:#85144B;}.bg-white{background-color:#fff;}.bg-gray{background-color:#aaa;}.bg-silver{background-color:#ddd;}.bg-black{background-color:#111;}')
 
 })

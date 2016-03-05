@@ -122,6 +122,7 @@ gulp.task('vendor-js', function() {
     'src/bower_components/lodash/lodash.min.js',
     'src/bower_components/async/dist/async.min.js',
     'src/bower_components/cytoscape/dist/cytoscape.min.js',
+    'src/bower_components/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js',
     'src/bower_components/angular/angular.min.js',
     'src/bower_components/angular-route/angular-route.min.js',
     'src/bower_components/angular-resource/angular-resource.min.js',

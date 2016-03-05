@@ -41,11 +41,8 @@
   </div> <!-- .container-fluid -->
 </nav>
 
-<div class="main">
-  <div class="container">
-    <div ng-view></div>
-  </div> <!-- .container -->
-</div> <!-- .main -->
+<div class="frame" ng-view>
+</div> <!-- .frame -->
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClYM73nng_qK5MdY2mvVYcafxNESu4RIQ&libraries=places"></script>
@@ -56,6 +53,12 @@
 <script src="bower_components/lodash/lodash.min.js"></script>
 <script src="bower_components/async/dist/async.min.js"></script>
 <script src="bower_components/cytoscape/dist/cytoscape.min.js"></script>
+<!-- <script src="bower_components/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"></script> -->
+<script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-cose-bilkent/1.0.5/cytoscape-cose-bilkent.js"></script>
+<!-- <script src="bower_components/dagre/dist/dagre.core.js"></script> -->
+<!-- <script src="bower_components/cytoscape-dagre/cytoscape-dagre.js"></script> -->
+<script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
+<script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.1.2/cytoscape-dagre.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
 <script src="bower_components/angular-resource/angular-resource.min.js"></script>
