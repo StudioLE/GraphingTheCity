@@ -11,7 +11,8 @@ angular.module('nav', [])
     {
       url: '#/criteria',
       title: 'Criteria',
-      icon: 'fa-edit'
+      icon: 'fa-edit',
+      if: true
     },
     {
       url: '#/schedule',
@@ -35,11 +36,15 @@ angular.module('nav', [])
   }
 
   $scope.clearData = function() {
-    window.location.href = '/#/criteria'
+    $location.path('/criteria')
     return Place.unset()
   }
 
-  $scope.dataIsSet = function() {
+  $scope.placeIsSet = function() {
+    return Place.isset()
+  }
+
+  $scope.criteriaIsSet = function() {
     return Criteria.isset()
   }
 
