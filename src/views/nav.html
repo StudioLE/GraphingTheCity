@@ -1,0 +1,24 @@
+<ul class="nav navbar-nav">
+  <li ng-repeat="link in nav" ng-class="navClass(link.url)"><a href="{{link.url}}"><span><i class="fa" ng-class="link.icon"></i></span> {{link.title}}</a></li>
+  <!-- <li ng-class="navClass('#/import')"><a href="#/import">
+    <span><i class="fa fa-upload"></i></span> Import</a>
+  </li>
+  <li ng-class="navClass('#/timeline')"><a ng-if="dataIsSet()" href="#/timeline">
+    <span><i class="fa fa-calendar-check-o"></i></span> Timeline</a>
+  </li> -->
+</ul>
+
+<ul class="nav navbar-nav navbar-right">
+  <li ng-class="navClass('#/raw')"><a ng-if="dataIsSet()" href="#/raw">
+    <span><i class="fa fa-database"></i></span> Raw Data</a>
+  </li>
+  <li><a ng-if="dataIsSet()" ng-click="clearData()">
+    <span><i class="fa fa-trash"></i></span> Clear Data</a>
+  </li>
+  <!-- <li><a ng-if=" ! isAuthenticated()" ng-click="signIn()">
+    <span><i class="fa fa-user"></i></span> Sign In</a>
+  </li>
+  <li><a ng-if="isAuthenticated()" ng-click="signOut()">
+    <span><i class="fa fa-user"></i></span> Sign Out</a>
+  </li> -->
+</ul>
