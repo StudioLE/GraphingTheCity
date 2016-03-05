@@ -19,23 +19,31 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, Data) {
+.controller('GraphCtrl', function($scope, Criteria, Place, Connection, Calc) {
 
   /**
    * Get data from local storage
    */
-  var data = Data.get()
-  $scope.data = function() {
-    return data
+  var criteria = Criteria.get()
+  var places = Place.get()
+  var connections = Connection.get()
+
+  $scope.criteria = function() {
+    return criteria
+  }
+  $scope.places = function() {
+    return places
   }
 
-  var nodes = _.map(data.schedule, function(s, key) {
+  console.log(connections)
+
+  var nodes = _.map(places, function(place) {
     return {
       data: {
-        id: key,
-        label: key
+        id: place.id,
+        label: place.name
       },
-      classes: 'bg-' + s.colour,
+      // classes: 'bg-blue',
       // selected: true,
       // selectable: true,
       // locked: true,
@@ -43,20 +51,20 @@ angular.module('app.graph', ['ngRoute'])
     }
   })
 
-  var edges = _.map(data.adjacencies, function(a, key) {
-    return {
-      data: {
-        id: 'adjacency' + key,
-        source: a.source,
-        target: a.target
-      }
-    }
-  })
+  // var edges = _.map(data.adjacencies, function(a, key) {
+  //   return {
+  //     data: {
+  //       id: 'adjacency' + key,
+  //       source: a.source,
+  //       target: a.target
+  //     }
+  //   }
+  // })
 
   var cy = cytoscape({
     container: document.getElementById('cy'),
-    userZoomingEnabled: false,
-    userPanningEnabled: false,
+    // userZoomingEnabled: false,
+    // userPanningEnabled: false,
     textureOnViewport: true,
     boxSelectionEnabled: false,
     layout: {
@@ -64,7 +72,7 @@ angular.module('app.graph', ['ngRoute'])
     },
     elements: {
       nodes: nodes,
-      edges: edges
+      edges: connections
     },
     style: [
       {

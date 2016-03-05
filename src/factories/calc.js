@@ -21,11 +21,28 @@ return {
    * http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
    */
   latLngRadius: function(bounds) {
-    var lat1 = bounds.north
-    var lon1 = bounds.west
-    var lat2 = bounds.south
-    var lon2 = bounds.east
+    return this.haversine(bounds.north, bounds.west, bounds.south, bounds.east)
+  },
 
+  /**
+   * Haversine formula between Google Places
+   *
+   * http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+   */
+  haversinePlaces: function(place1, place2) {
+    var lat1 = place1.geometry.location.lat()
+    var lon1 = place1.geometry.location.lng()
+    var lat2 = place2.geometry.location.lat()
+    var lon2 = place2.geometry.location.lng()
+    return this.haversine(lat1, lon1, lat2, lon2)
+  },
+
+  /**
+   * Haversine formula:
+   *
+   * http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+   */
+  haversine: function(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
     var dLat = this.deg2rad(lat2-lat1)  // deg2rad below
     var dLon = this.deg2rad(lon2-lon1)

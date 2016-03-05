@@ -19,7 +19,7 @@ angular.module('app.compute', ['ngRoute'])
 * ComputeCtrl controller
 *
 ******************************************************************/
-.controller('ComputeCtrl', function($scope, $location, Criteria, Place, Calc) {
+.controller('ComputeCtrl', function($scope, $location, Criteria, Place, Connection, Calc) {
 
   /**
    * Get data from local storage
@@ -45,7 +45,7 @@ angular.module('app.compute', ['ngRoute'])
 
   async.eachSeries(types, function(type, callback) {
 
-    console.log(type)
+    // console.log(type)
 
     $scope.status = 'Locating ' + type
     if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
@@ -56,7 +56,7 @@ angular.module('app.compute', ['ngRoute'])
       bounds: criteria.city.geometry.viewport,
       type: [type]
     }, function (results, status) {
-      console.log(results)
+      // console.log(results)
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         places = places.concat(results)
         Place.set(places)
@@ -70,11 +70,65 @@ angular.module('app.compute', ['ngRoute'])
   }, function(err) {
     if(err) console.error(err)
 
-    console.log('Complete')
-
-    $scope.status = 'Computation complete'
-    $scope.$apply()
-    window.location.href = '/#/schedule'
+    calculateConnections(places)
   })
+
+  var calculateConnections = function(places) {
+    var destinations = places
+    // console.log('Analysing connections')
+    $scope.status = 'Analysing connections'
+    $scope.$apply()
+
+    var connections = []
+    var analysed = []
+
+    async.eachSeries(places, function(place, callback) {
+
+      $scope.status = 'Analysing ' + place.name
+      $scope.$apply()
+
+      // destinations.shift()
+      // console.log(place.name)
+      // console.log(destinations)
+
+      async.eachSeries(destinations, function(destination, callback2) {
+        // Skip if place = destination
+        if(place.id == destination.id) return callback2()
+        // Skip if this destination has already been analysed
+        if(_.includes(analysed, destination.id)) return callback2()
+
+        var distance = Calc.haversinePlaces(place, destination)
+        console.log(distance)
+        if(distance <= criteria.connection.distance) {
+          var c = {
+            data: {
+              id: place.id + '-' + destination.id,
+              source: place.id,
+              target: destination.id
+            }
+          }
+          connections.push(c)
+        }
+        callback2()
+      }, function(err) {
+        if(err) console.error(err)
+        analysed.push(place.id)
+        callback()
+      })
+
+    }, function(err) {
+      if(err) console.error(err)
+
+      console.log(connections)
+
+      Connection.set(connections)
+
+      $scope.status = 'Computation complete'
+      $scope.$apply()
+      window.location.href = '/#/schedule'
+
+    })
+
+  }
 
 })
