@@ -24,6 +24,9 @@
     "async": "^1.5.2",
     "cytoscape-cose-bilkent": "^1.2.0",
     "cytoscape-dagre": "^1.2.0",
-    "dagre": "^0.7.4"
+    "dagre": "^0.7.4",
+    "overpass": "*",
+    "cytoscape-spread": "^1.0.9",
+    "dagre-full": "^0.7.5"
   }
 }

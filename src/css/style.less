@@ -1,20 +1,23 @@
 @import "../bower_components/bootstrap/less/mixins.less";
 @import "../bower_components/bootstrap/less/variables.less";
 
-@blue: rgb(70,115,244);
+@bg: transparent;
 
-@bg: #eee;
-@body: #111;
+@body: #fff;
 
-@nav_bg: @blue;
-@nav_bg_hover: darken(@nav_bg, 3%);
-@nav_bg_active: darken(@nav_bg, 6%);
-@nav: lighten(@nav_bg, 15%);
-@nav_hover: darken(@nav_bg, 30%);
-@nav_active: @nav;
-@nav_fade: darken(@nav_bg, 17%);
+@navy: fade(#263248, 90%);
+@light_navy: fade(#7E8AA2, 90%);
+@orange: #FF9800;
+
+@nav_bg: fade(@navy, 0%);
+@nav_bg_hover: fade(@navy, 60%);
+@nav_bg_active: @navy;
+@nav: fade(@light_navy, 70%);
+@nav_hover: @light_navy;
+@nav_active: @light_navy;
+@nav_fade: fade(@light_navy, 30%);
 @nav_brand: #fff;
-@nav_tag: lighten(@nav_bg, 10%);
+@nav_tag: @light_navy;
 
 @link: @nav;
 @link_hover: @nav_hover;
@@ -25,9 +28,20 @@
 *
 ******************************************************************/
 
+html, body {
+  height: 100%;
+}
+
 body {
-  background: @nav_bg;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: url(../img/norwich-b&w-fade.jpg);
+  background-position: center center;
+  background-size: auto;
+  color: @body;
+  font-family: "Overpass", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+
+#bg {
 }
 
 ::selection {
@@ -68,8 +82,9 @@ h1 a.btn {
 }
 
 .navbar-default {
-  background: @nav_bg;
+  background: transparent;
   border: none;
+  box-shadow: inset 0 -100px 100px -100px #000;
 }
 
 .navbar-default .navbar-nav>li>a {
@@ -229,7 +244,7 @@ tr.removed {
 }
 
 .main {
-  padding: 20px 0 50px;
+  padding: 100px 0;
   background: @bg;
 }
 
@@ -262,7 +277,40 @@ input[type="file"] {
 #map {
   width: 100%;
   height: 700px;
+  color: #000;
   display: block;
+}
+
+
+/*****************************************************************
+*
+* Forms
+*
+******************************************************************/
+
+.form-control {
+  color: #fff;
+  background-color: transparent;
+  border-color: @light_navy;
+}
+
+.form-group {
+    margin-bottom: 50px;
+}
+
+
+/*****************************************************************
+*
+* Table
+*
+******************************************************************/
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: @nav_bg_hover;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  border: none;
 }
 
 

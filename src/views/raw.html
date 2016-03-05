@@ -1,19 +1,21 @@
-<div class="main">
-  <div class="row">
-    <div class="col-sm-4">
-      <h1>Criteria</h1>
-      <pre>{{criteria() | json}}</pre>
-      <json-formatter json="criteria()"></json-formatter>
+<div class="container-fluid">
+  <div class="main">
+    <div class="row">
+      <div class="col-sm-4">
+        <h1>Criteria</h1>
+        <pre>{{criteria() | json}}</pre>
+        <json-formatter json="criteria()"></json-formatter>
+      </div>
+      <div class="col-sm-4">
+        <h1>Places</h1>
+        <pre>{{places() | json}}</pre>
+        <json-formatter json="places()"></json-formatter>
+      </div>
+      <div class="col-sm-4">
+        <h1>Connections</h1>
+        <pre>{{connections() | json}}</pre>
+        <json-formatter json="connections()"></json-formatter>
+      </div>
     </div>
-    <div class="col-sm-4">
-      <h1>Places</h1>
-      <pre>{{places() | json}}</pre>
-      <json-formatter json="places()"></json-formatter>
-    </div>
-    <div class="col-sm-4">
-      <h1>Connections</h1>
-      <pre>{{connections() | json}}</pre>
-      <json-formatter json="connections()"></json-formatter>
-    </div>
-  </div>
-</div> <!-- .main -->
+  </div> <!-- .main -->
+</div> <!-- .main --> 

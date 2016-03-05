@@ -6,14 +6,13 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>City Graph</title>
+<title>Graphing the City - Urban DNA</title>
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- build:vendor-css -->
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="bower_components/moe-font-opensans/fonts.min.css">
+<link rel="stylesheet" href="bower_components/overpass/Webfonts/recommended.css">
 <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css">
 <link rel="stylesheet" href="bower_components/json-formatter/dist/json-formatter.min.css">
 <link rel="stylesheet" href="bower_components/angular-google-places-autocomplete/src/autocomplete.css">
 <link rel="stylesheet" href="css/colors.css">
@@ -24,7 +23,7 @@
 </head>
 <!-- endbuild -->
 <body>
-
+<div id="bg">
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
@@ -34,7 +33,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#/"><span>City Graph</span> Graphing the City</a>
+      <a class="navbar-brand" href="#/"><span>Graphing the City</span> Urban DNA</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-app="nav" ng-controller="NavCtrl" ng-include="navView()">
     </div> <!-- .navbar-collapse -->
@@ -43,6 +42,7 @@
 
 <div class="frame" ng-view>
 </div> <!-- .frame -->
+</div>
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClYM73nng_qK5MdY2mvVYcafxNESu4RIQ&libraries=places"></script>
@@ -53,12 +53,11 @@
 <script src="bower_components/lodash/lodash.min.js"></script>
 <script src="bower_components/async/dist/async.min.js"></script>
 <script src="bower_components/cytoscape/dist/cytoscape.min.js"></script>
-<!-- <script src="bower_components/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"></script> -->
-<script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-cose-bilkent/1.0.5/cytoscape-cose-bilkent.js"></script>
-<!-- <script src="bower_components/dagre/dist/dagre.core.js"></script> -->
-<!-- <script src="bower_components/cytoscape-dagre/cytoscape-dagre.js"></script> -->
-<script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
-<script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.1.2/cytoscape-dagre.js"></script>
+<script src="bower_components/cytoscape-spread/cytoscape-spread.js"></script>
+<!-- <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-spread/1.0.9/cytoscape-spread.js"></script> -->
+<script src="bower_components/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"></script>
+<script src="bower_components/dagre-full/dist/dagre.js"></script>
+<script src="bower_components/cytoscape-dagre/cytoscape-dagre.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
 <script src="bower_components/angular-resource/angular-resource.min.js"></script>

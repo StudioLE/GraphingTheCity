@@ -92,9 +92,8 @@ gulp.task('css', function() {
 gulp.task('vendor-css', function() {
   gulp.src([
     'src/bower_components/bootstrap/dist/css/bootstrap.min.css',
-    'src/bower_components/moe-font-opensans/fonts.min.css',
+    'src/bower_components/overpass/Webfonts/recommended.css',
     'src/bower_components/font-awesome/css/font-awesome.min.css',
-    'src/bower_components/angular-xeditable/dist/css/xeditable.css',
     'src/bower_components/json-formatter/dist/json-formatter.min.css',
     'src/bower_components/angular-google-places-autocomplete/src/autocomplete.css',
     'src/css/colors.css'
