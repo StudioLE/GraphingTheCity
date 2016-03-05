@@ -19,26 +19,29 @@ angular.module('app.map', ['ngRoute'])
 * MapCtrl controlller
 *
 ******************************************************************/
-.controller('MapCtrl', function($scope, Data, Calc) {
+.controller('MapCtrl', function($scope, Criteria, Place, Calc) {
 
   /**
    * Get data from local storage
    */
-  var data = Data.get()
-  $scope.data = function() {
-    return data
+  var criteria = Criteria.get()
+  var places = Place.get()
+
+  $scope.criteria = function() {
+    return criteria
+  }
+  $scope.places = function() {
+    return places
   }
 
-  var city = data.criteria.city
-
   var map = new google.maps.Map(document.getElementById('map'), {
-    center: city.geometry.location,
+    center: criteria.city.geometry.location,
     zoom: 13
   })
 
   var infowindow = new google.maps.InfoWindow()
 
-  _.each(data.places, function(place){
+  _.each(places, function(place){
     var placeLoc = place.geometry.location
     var marker = new google.maps.Marker({
       map: map,

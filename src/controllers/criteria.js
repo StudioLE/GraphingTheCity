@@ -19,22 +19,18 @@ angular.module('app.criteria', ['ngRoute'])
 * CriteriaCtrl controlller
 *
 ******************************************************************/
-.controller('CriteriaCtrl', function($scope, $location, Data) {
+.controller('CriteriaCtrl', function($scope, $location, Criteria) {
 
   /**
    * Get data from local storage
    */
-  if( ! Data.isset()) Data.set({}) // Sample.set()
-  var data = Data.get()
-  $scope.data = function() {
-    return data
-  }
-  
-  // $scope.criteria = function() {
-  //   return data.criteria
-  // }
+  if( ! Criteria.isset()) Criteria.set({})
+  var criteria = Criteria.get()
+  // var places = Place.get()
 
-  // $scope.criteria = {}
+  $scope.criteria = function() {
+    return criteria
+  }
 
   $scope.autocompleteOptions = {
     // componentRestrictions: { country: 'au' },
@@ -48,9 +44,9 @@ angular.module('app.criteria', ['ngRoute'])
    * Called when form is saved
    */
   $scope.saveCriteria = function() {
-    console.log($scope.data().criteria)
-    data.criteria = $scope.data().criteria
-    Data.set(data)
+    console.log($scope.criteria())
+    criteria = $scope.criteria()
+    Criteria.set(criteria)
     // console.log(data)
 
     $location.path('/compute')

@@ -21,6 +21,8 @@ angular.module('app', [
   'app.map',
   'app.raw',
   'app.dataFactory',
+  'app.criteriaFactory',
+  'app.placeFactory',
   'app.calcFactory'
 ])
 

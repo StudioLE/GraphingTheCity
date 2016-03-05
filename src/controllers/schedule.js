@@ -19,15 +19,19 @@ angular.module('app.schedule', ['ngRoute'])
 * ScheduleCtrl controlller
 *
 ******************************************************************/
-.controller('ScheduleCtrl', function($scope, Data, Calc) {
+.controller('ScheduleCtrl', function($scope, Criteria, Place, Calc) {
 
   /**
    * Get data from local storage
    */
-  // if( ! Data.isset()) Sample.set()
-  var data = Data.get()
-  $scope.data = function() {
-    return data
+  var criteria = Criteria.get()
+  var places = Place.get()
+
+  $scope.criteria = function() {
+    return criteria
+  }
+  $scope.places = function() {
+    return places
   }
 
   /**
@@ -35,40 +39,40 @@ angular.module('app.schedule', ['ngRoute'])
    *
    * Return spaces adjacent to key
    */
-  $scope.adjacent = function(key) {
-    var adjacent = []
+  // $scope.adjacent = function(key) {
+  //   var adjacent = []
 
-    _.each(data.adjacencies, function(edge) {
-      if(edge.source == key) {
-        adjacent.push(edge.target)
-      }
-      else if(edge.target == key) {
-        adjacent.push(edge.source)
-      }
-    })
-    return adjacent
-  }
+  //   _.each(data.adjacencies, function(edge) {
+  //     if(edge.source == key) {
+  //       adjacent.push(edge.target)
+  //     }
+  //     else if(edge.target == key) {
+  //       adjacent.push(edge.source)
+  //     }
+  //   })
+  //   return adjacent
+  // }
 
   /**
    * Update data model
    *
    * Called when a x-editable is saved
    */
-  $scope.save = function() {
-    data.schedule = $scope.schedule()
-    Data.set(data)
-  }
+  // $scope.save = function() {
+  //   data.schedule = $scope.schedule()
+  //   Data.set(data)
+  // }
 
   /**
    * Remove row
    *
    * Called when a x-editable is saved
    */
-  $scope.removeRow = function(row) {
-    // Toggle remove
-    // row.removed = ! row.removed
-    // Data.set($scope.data())
-  }
+  // $scope.removeRow = function(row) {
+  //   // Toggle remove
+  //   // row.removed = ! row.removed
+  //   // Data.set($scope.data())
+  // }
 
   $scope.colours = [
     'navy',

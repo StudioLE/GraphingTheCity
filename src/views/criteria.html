@@ -7,7 +7,7 @@
         required
         g-places-autocomplete
         options="autocompleteOptions"
-        ng-model="data().criteria.city">
+        ng-model="criteria().city">
     </div>
   </div>
 
@@ -19,7 +19,7 @@
         <div ng-repeat="type in types" class="col-sm-4">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="data().criteria.types[type]"> {{type}}
+              <input type="checkbox" ng-model="criteria().types[type]"> {{type}}
             </label>
           </div>
         </div>
@@ -34,7 +34,7 @@
     <div class="col-sm-offset-2 col-sm-8">
       <button type="submit" class="btn btn-primary"
         ng-disabled="form.$invalid"
-        ng-click="saveCriteria(criteria)">Compute</button>
+        ng-click="saveCriteria()">Compute</button>
     </div>
   </div>
 </form>

@@ -19,15 +19,19 @@ angular.module('app.raw', ['ngRoute'])
 * RawCtrl controlller
 *
 ******************************************************************/
-.controller('RawCtrl', function($scope, Data) {
+.controller('RawCtrl', function($scope, Criteria, Place) {
 
   /**
    * Get data from local storage
    */
-  var data = Data.get()
-  $scope.data = function() {
-    return data
+  var criteria = Criteria.get()
+  var places = Place.get()
+
+  $scope.criteria = function() {
+    return criteria
   }
-  console.log(data)
+  $scope.places = function() {
+    return places
+  }
 
 })

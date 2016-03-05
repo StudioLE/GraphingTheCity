@@ -19,19 +19,20 @@ angular.module('app.compute', ['ngRoute'])
 * ComputeCtrl controller
 *
 ******************************************************************/
-.controller('ComputeCtrl', function($scope, Data, Calc) {
+.controller('ComputeCtrl', function($scope, $location, Criteria, Place, Calc) {
 
   /**
    * Get data from local storage
    */
-  var data = Data.get()
+  var criteria = Criteria.get()
+  var places = []
+
+
 
   $scope.status = 'Computing'
 
-  var city = data.criteria.city
-
   var map = new google.maps.Map(document.getElementById('map'), {
-    center: city.geometry.location,
+    center: criteria.city.geometry.location,
     zoom: 13
   })
 
@@ -39,7 +40,7 @@ angular.module('app.compute', ['ngRoute'])
 
   var service = new google.maps.places.PlacesService(map)
 
-  var types = _.reduce(data.criteria.types, function(memo, val, key) {
+  var types = _.reduce(criteria.types, function(memo, val, key) {
     if (val) memo.push(key)
     return memo
   }, [])
@@ -54,14 +55,13 @@ angular.module('app.compute', ['ngRoute'])
     }
 
     service.nearbySearch({
-      bounds: city.geometry.viewport,
+      bounds: criteria.city.geometry.viewport,
       type: [type]
     }, function (results, status) {
       console.log(results)
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-        if( ! data.places) data.places = []
-        data.places = data.places.concat(results)
-        Data.set(data)
+        places = places.concat(results)
+        Place.set(places)
         callback()
       }
       else {
@@ -76,6 +76,7 @@ angular.module('app.compute', ['ngRoute'])
 
     $scope.status = 'Computation complete'
     $scope.$apply()
+    window.location.href = '/#/schedule'
   })
 
 })

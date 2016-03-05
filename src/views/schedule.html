@@ -1,6 +1,6 @@
 <h1>{{ data().criteria.city.name }}</h1>
 
-<span ng-repeat="(key, value) in data().criteria.types" ng-if="value"
+<span ng-repeat="(key, value) in criteria().types" ng-if="value"
   class="label label-default"
   ng-class="'bg-blue'">{{ key }}</span>
 
@@ -8,20 +8,17 @@
   <thead>
   <tr>
     <th style="width: 10%;"></th>
-    <th style="width: 40%;">Colour</th>
+    <th style="width: 40%;">Name</th>
     <th style="width: 50%;">Types</th>
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="(key, place) in data().places">
+  <tr ng-repeat="(key, place) in places()">
     <td><img ng-src="{{ place.icon }}" style="height: 20px"></td>
     <td>{{ place.name }}</td>
-    <td>
-    <span ng-repeat="value in place.types"
-    class="label label-default"
-    ng-class="'bg-blue'">{{ value }}</span>
+    <td><span ng-repeat="value in place.types"
+      class="label label-default"
+      ng-class="'bg-blue'">{{ value }}</span></td>
   </tr>
   </tbody>
 </table>
-
-<pre>{{data().places | json}}</pre>

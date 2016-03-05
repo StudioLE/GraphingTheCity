@@ -1,7 +1,12 @@
 <div class="row">
-  <div class="col-sm-12">
-    <h1>Source</h1>
-    <pre>{{data() | json}}</pre>
-    <json-formatter json="data()"></json-formatter>
+  <div class="col-sm-6">
+    <h1>Criteria</h1>
+    <pre>{{criteria() | json}}</pre>
+    <json-formatter json="criteria()"></json-formatter>
+  </div>
+  <div class="col-sm-6">
+    <h1>Places</h1>
+    <pre>{{places() | json}}</pre>
+    <json-formatter json="places()"></json-formatter>
   </div>
 </div>

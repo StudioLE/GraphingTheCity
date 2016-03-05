@@ -1,6 +1,8 @@
+'use strict'
+
 angular.module('nav', [])
 
-.controller('NavCtrl', function($scope, $location, Data, Config) {
+.controller('NavCtrl', function($scope, $location, Criteria, Place, Config) {
   $scope.navClass = function(href) {
     return href === '#' + $location.path() ? 'active' : ''
   }
@@ -34,11 +36,11 @@ angular.module('nav', [])
 
   $scope.clearData = function() {
     window.location.href = '/#/criteria'
-    return Data.unset()
+    return Place.unset()
   }
 
   $scope.dataIsSet = function() {
-    return Data.isset()
+    return Criteria.isset()
   }
 
 })
