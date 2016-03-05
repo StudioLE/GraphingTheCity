@@ -27,8 +27,6 @@ angular.module('app.compute', ['ngRoute'])
   var criteria = Criteria.get()
   var places = []
 
-
-
   $scope.status = 'Computing'
 
   var map = new google.maps.Map(document.getElementById('map'), {
