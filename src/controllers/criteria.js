@@ -53,7 +53,7 @@ angular.module('app.criteria', ['ngRoute'])
     Data.set(data)
     // console.log(data)
 
-    $location.path('/schedule')
+    $location.path('/compute')
 
   }
 

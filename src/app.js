@@ -15,6 +15,7 @@ angular.module('app', [
   'app.config',
   'app.static',
   'app.criteria',
+  'app.compute',
   'app.schedule',
   'app.graph',
   'app.map',

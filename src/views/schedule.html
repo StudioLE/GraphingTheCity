@@ -7,40 +7,21 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th style="width: 10%;">Key</th>
-    <th style="width: 10%;">Colour</th>
-    <th style="width: 10%;">Width</th>
-    <th style="width: 10%;">Length</th>
-    <th style="width: 30%;">Adjacent</th>
-    <th style="width: 10%;">X</th>
-    <th style="width: 10%;">Y</th>
     <th style="width: 10%;"></th>
+    <th style="width: 40%;">Colour</th>
+    <th style="width: 50%;">Types</th>
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="(key, s) in schedule()">
-    <td>{{ key }}</td>
-    <td><span editable-select="s.colour"
-      e-ng-options="colour as colour for colour in colours"
-      onaftersave="save()"
-      class="label label-default"
-      ng-class="'bg-' + s.colour">{{ s.colour }}</span></td>
-    <td editable-text="s.width"
-      onaftersave="save()">{{ s.width }}</td>
-    <td editable-text="s.length"
-      onaftersave="save()">{{ s.length }}</td>
-    <!-- <td><span ng-repeat="tag in s.adjacent"
-      class="label label-default"
-      editable-text="tag"
-      onaftersave="save()">{{ tag }}</span></td> -->
-    <td><span ng-repeat="adj in adjacent(key)"
-      class="label label-default"
-      ng-class="'bg-' + schedule()[adj].colour">{{ adj }}</span></td>
-    <td editable-text="s.coords.x"
-      onaftersave="save()">{{ s.coords.x }}</td>
-    <td editable-text="s.coords.y"
-      onaftersave="save()">{{ s.coords.y }}</td>
-    <td><a ng-click="removeRow(s)"><i class="fa fa-trash"></i></a></td>
+  <tr ng-repeat="(key, place) in data().places">
+    <td><img ng-src="{{ place.icon }}" style="height: 20px"></td>
+    <td>{{ place.name }}</td>
+    <td>
+    <span ng-repeat="value in place.types"
+    class="label label-default"
+    ng-class="'bg-blue'">{{ value }}</span>
   </tr>
   </tbody>
 </table>
+
+<pre>{{data().places | json}}</pre>

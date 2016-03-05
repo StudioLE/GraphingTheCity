@@ -30,14 +30,6 @@ angular.module('app.schedule', ['ngRoute'])
     return data
   }
 
-  // Place.get({
-  //   location: Calc.latLng(data.criteria.city.geometry.location),
-  //   radius: Calc.latLngRadius(data.criteria.city.geometry.viewport),
-  //   type: 'train_station'
-  // }, function(results) {
-  //   console.log(results)
-  // })
-
   /**
    * Adjacent spaces
    *
