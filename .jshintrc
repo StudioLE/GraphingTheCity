@@ -13,6 +13,7 @@
     "console": false,
     "document": false,
     "_": false,
+    "async": false,
     "require": false,
     "process": false
   },
