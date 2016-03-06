@@ -69,7 +69,7 @@ gulp.task('assets', function() {
   gulp.src('src/views/*')
   .pipe(gulp.dest(build.path('views')))
   // Images
-  gulp.src('src/img/norwich-b&w-fade.jpg')
+  gulp.src('src/img/norwich-b&w.jpg')
   .pipe(gulp.dest(build.path('img')))
   // Overpass Font
   gulp.src('src/bower_components/overpass/Webfonts/*')

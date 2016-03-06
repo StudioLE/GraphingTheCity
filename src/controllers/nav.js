@@ -20,14 +20,14 @@ angular.module('nav', [])
       icon: 'fa-table'
     },
     {
-      url: '#/graph',
-      title: 'Graph',
-      icon: 'fa-link'
-    },
-    {
       url: '#/map',
       title: 'Map',
       icon: 'fa-map'
+    },
+    {
+      url: '#/graph',
+      title: 'Graph',
+      icon: 'fa-link'
     }
   ]
 

@@ -3,8 +3,7 @@
     <h1>{{ criteria().city.name }}</h1>
 
     <span ng-repeat-start="(key, value) in criteria().types" ng-if="value"
-      class="label label-default"
-      ng-class="'bg-blue'">{{ key }}</span> <span ng-repeat-end></span>
+      class="label label-default">{{ key }}</span> <span ng-repeat-end></span>
 
     <table class="table table-striped">
       <thead>
@@ -19,8 +18,7 @@
         <td><img ng-src="{{ place.icon }}" style="height: 20px"></td>
         <td>{{ place.name }}</td>
         <td><span ng-repeat-start="value in place.types"
-          class="label label-default"
-          ng-class="'bg-blue'">{{ value }}</span> <span ng-repeat-end></span></td>
+          class="label label-default">{{ value }}</span> <span ng-repeat-end></span></td>
       </tr>
       </tbody>
     </table>

@@ -98,7 +98,7 @@ angular.module('app.compute', ['ngRoute'])
         if(_.includes(analysed, destination.id)) return callback2()
 
         var distance = Calc.haversinePlaces(place, destination)
-        console.log(distance)
+        // console.log(distance)
         if(distance <= criteria.connection.distance) {
           var c = {
             data: {
@@ -119,13 +119,12 @@ angular.module('app.compute', ['ngRoute'])
     }, function(err) {
       if(err) console.error(err)
 
-      console.log(connections)
-
       Connection.set(connections)
 
       $scope.status = 'Computation complete'
+      $location.path('/schedule')
       $scope.$apply()
-      window.location.href = '/#/schedule'
+      // window.location.href = '/#/schedule'
 
     })
 

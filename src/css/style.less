@@ -5,9 +5,11 @@
 
 @body: #fff;
 
+
 @navy: fade(#263248, 90%);
-@light_navy: fade(#7E8AA2, 90%);
+@light_navy: fade(lighten(#7E8AA2, 10%), 90%);
 @orange: #FF9800;
+@ivory: lighten(@light_navy, 25%);
 
 @nav_bg: fade(@navy, 0%);
 @nav_bg_hover: fade(@navy, 60%);
@@ -17,7 +19,7 @@
 @nav_active: @light_navy;
 @nav_fade: fade(@light_navy, 30%);
 @nav_brand: #fff;
-@nav_tag: @light_navy;
+@nav_tag: @nav_active;
 
 @link: @nav;
 @link_hover: @nav_hover;
@@ -33,7 +35,7 @@ html, body {
 }
 
 body {
-  background: url(../img/norwich-b&w-fade.jpg);
+  background: url(../img/norwich-b&w.jpg);
   background-position: center center;
   background-size: auto;
   color: @body;
@@ -42,6 +44,13 @@ body {
 }
 
 #bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.75);
 }
 
 ::selection {
@@ -65,6 +74,10 @@ h1, h2, h3, h4, h5 {
 
 h2, h3, h4, h5 {
   margin-bottom: 10px;
+}
+
+h1 {
+  margin-top: 0;
 }
 
 h1 a.btn {
@@ -208,16 +221,6 @@ h1 a.btn {
 
 /*****************************************************************
 *
-* Table
-*
-******************************************************************/
-
-tr.removed {
-  text-decoration: line-through;
-}
-
-/*****************************************************************
-*
 * X-editable
 *
 ******************************************************************/
@@ -240,7 +243,7 @@ tr.removed {
 ******************************************************************/
 
 .frame {
-  background: @bg;
+
 }
 
 .main {
@@ -252,33 +255,22 @@ input[type="file"] {
   margin: 50px 0;
 }
 
-
-/*****************************************************************
-*
-* Cytoscape
-*
-******************************************************************/
-
-
-#cy {
-  width: 100%;
-  height: 700px;
-  display: block;
+.fixed {
+  margin-top: 156px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
-
-/*****************************************************************
-*
-* Map
-*
-******************************************************************/
-
+#cy, #map {
+  width: 100%;
+  height: 100%;
+}
 
 #map {
-  width: 100%;
-  height: 700px;
   color: #000;
-  display: block;
 }
 
 
@@ -295,9 +287,71 @@ input[type="file"] {
 }
 
 .form-group {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 
+.navbar-fixed-bottom .form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  color: @light_navy;
+  font-weight: 600;
+}
+
+.checkbox label {
+  color: #fff;
+}
+
+
+.btn-default {
+  color: @ivory;
+  background-color: @light_navy;
+  border-color: @nav_bg_active;
+  font-weight: 600;
+  
+  &:hover {
+    color: @ivory;
+    background-color: fade(@light_navy, 75%);
+    border-color: @nav_bg_active;
+  }
+
+  &:focus, &:active, &:focus:active {
+    color: @nav_bg_active;
+    background-color: fade(@light_navy, 100%);
+    border-color: @nav_bg_active;
+  }
+}
+
+.btn-primary {
+  color: @ivory;
+  background-color: @nav_bg_active;
+  border-color: fade(@light_navy, 50%);
+  font-weight: 600;
+  
+  &:hover {
+    color: @ivory;
+    background-color: fade(@nav_bg_active, 75%);
+    border-color: fade(@light_navy, 75%);
+  }
+
+  &:focus, &:active, &:focus:active {
+    color: #000;
+    background-color: fade(@nav_bg_active, 100%);
+    border-color: @light_navy;
+  }
+}
+
+.form-control option {
+  background-color: @nav_bg_active;
+  border-color: fade(@light_navy, 50%);
+  
+  &:hover, &:focus {
+    color: @ivory;
+    background-color: fade(@nav_bg_active, 75%);
+    border-color: fade(@light_navy, 75%);
+  }
+}
 
 /*****************************************************************
 *
@@ -311,6 +365,25 @@ input[type="file"] {
 
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
   border: none;
+}
+
+tr.removed {
+  text-decoration: line-through;
+}
+
+th {
+  color: @light_navy;
+  font-weight: 600;
+}
+
+.label {
+  font-weight: normal;
+  // opacity: 0.75;
+}
+
+.label-default {
+  color: @ivory;
+  background-color: fade(@light_navy, 75%);
 }
 
 

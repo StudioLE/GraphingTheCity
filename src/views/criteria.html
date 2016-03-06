@@ -2,8 +2,8 @@
   <div class="container">
     <form class="form-horizontal" name="form">
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">City</label>
-        <div class="col-sm-8">
+        <label for="" class="col-sm-3 control-label">City</label>
+        <div class="col-sm-7">
           <input type="text" class="form-control"
             placeholder="City name"
             required
@@ -14,8 +14,8 @@
       </div>
 
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Types</label>
-        <div class="col-sm-8">
+        <label for="" class="col-sm-3 control-label">Types</label>
+        <div class="col-sm-7">
           <div class="row">
             
             <div ng-repeat="type in types" class="col-sm-4">
@@ -31,8 +31,8 @@
       </div>
 
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Connection distance</label>
-        <div class="col-sm-8">
+        <label for="" class="col-sm-3 control-label">Connection distance</label>
+        <div class="col-sm-7">
           <input type="text" class="form-control"
             placeholder="Max distance for connection in metres"
             required
@@ -41,7 +41,7 @@
       </div>
 
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-8">
+        <div class="col-sm-offset-3 col-sm-7">
           <button type="submit" class="btn btn-primary"
             ng-disabled="form.$invalid"
             ng-click="saveCriteria()">Compute</button>

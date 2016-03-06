@@ -1,33 +1,33 @@
-<div id="cy"></div>
+<div class="fixed">
+  <div id="cy"></div>
+</div> <!-- .fixed -->
 
-<div class="container">
-  <form class="form-horizontal" name="form">
-    <div class="form-group">
-      <div class="col-sm-2">
-        <a class="btn btn-primary"
-          ng-click="export()"
-          href="filesystem:http://localhost:1337/temporary/citygraph.json"
-          target="_blank">Export</a>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+  <div class="container">
+    <form class="form-horizontal" name="form">
+      <div class="form-group">
+        <div class="col-sm-2">
+          <a class="btn btn-primary"
+            ng-click="export()"
+            href="filesystem:http://localhost:1337/temporary/citygraph.json"
+            download="citygraph.cyjs">Export to Cytoscape</a>
+        </div>
+        <label for="" class="col-sm-offset-4 col-sm-2 control-label">Layout</label>
+        <div class="col-sm-4">
+          <select class="form-control"
+            ng-model="criteria().layout"
+            ng-change="changeLayout()">
+            <option>breadthfirst</option>
+            <option>circle</option>
+            <option>concentric</option>
+            <option>cose</option>
+            <option>cose-bilkent</option>
+            <option>dagre</option>
+            <option>grid</option>
+            <option>spread</option>
+          </select>
+        </div>
       </div>
-      <label for="" class="col-sm-offset-4 col-sm-2 control-label">Layout</label>
-      <div class="col-sm-4">
-        <select class="form-control"
-          ng-model="layout"
-          ng-change="changeLayout()">
-          <option>breadthfirst</option>
-          <option>circle</option>
-          <option>concentric</option>
-          <option>cose</option>
-          <option>cose-bilkent</option>
-          <option>dagre</option>
-          <option>grid</option>
-          <option>spread</option>
-          <option>spread</option>
-        </select>
-      </div>
-    </div>
-  </form>
-</div> <!-- .container -->
-
-<textarea>{{ output }}</textarea>
-
+    </form>
+  </div> <!-- .container -->
+</nav>
