@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('app.raw', ['ngRoute'])
+angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
 
 /*****************************************************************
 *
