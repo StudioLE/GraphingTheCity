@@ -68,9 +68,12 @@ gulp.task('assets', function() {
   // Views
   gulp.src('src/views/*')
   .pipe(gulp.dest(build.path('views')))
-  // Open Sans
-  gulp.src('src/bower_components/moe-font-opensans/fonts/*')
-  .pipe(gulp.dest(build.path('css/fonts')))
+  // Images
+  gulp.src('src/img/norwich-b&w-fade.jpg')
+  .pipe(gulp.dest(build.path('img')))
+  // Overpass Font
+  gulp.src('src/bower_components/overpass/Webfonts/*')
+  .pipe(gulp.dest(build.path('css')))
   // Font Awesome
   gulp.src('src/bower_components/font-awesome/fonts/*')
   .pipe(gulp.dest(build.path('fonts')))
@@ -106,7 +109,12 @@ gulp.task('vendor-css', function() {
 
 // Build app JS
 gulp.task('js', function() {
-  gulp.src(['src/app.js', 'src/config.js', 'src/controllers/*.js', 'src/factories/*.js'])
+  gulp.src([
+      'src/app.js',
+      'src/config.js',
+      'src/controllers/*.js',
+      'src/factories/*.js'
+    ])
   .pipe(gp_concat('concat.js'))
   .pipe(gp_rename('app.js'))
   // .pipe(gp_uglify())
@@ -121,18 +129,20 @@ gulp.task('vendor-js', function() {
     'src/bower_components/lodash/lodash.min.js',
     'src/bower_components/async/dist/async.min.js',
     'src/bower_components/cytoscape/dist/cytoscape.min.js',
+    // 'src/bower_components/cytoscape-spread/cytoscape-spread.js',
     'src/bower_components/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js',
+    'src/bower_components/dagre-full/dist/dagre.js',
+    'src/bower_components/cytoscape-dagre/cytoscape-dagre.js',
     'src/bower_components/angular/angular.min.js',
     'src/bower_components/angular-route/angular-route.min.js',
     'src/bower_components/angular-resource/angular-resource.min.js',
     'src/bower_components/angular-local-storage/dist/angular-local-storage.min.js',
-    'src/bower_components/angular-xeditable/dist/js/xeditable.js',
     'src/bower_components/json-formatter/dist/json-formatter.min.js',
     'src/bower_components/angular-google-places-autocomplete/src/autocomplete.js'
   ])
   .pipe(gp_concat('concat.js'))
   .pipe(gp_rename('vendor.js'))
-  .pipe(gp_uglify())
+  // .pipe(gp_uglify())
   .pipe(gulp.dest(build.path('js')))
 })
 

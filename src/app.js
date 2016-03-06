@@ -9,7 +9,6 @@ angular.module('app', [
   'ngRoute',
   'ngResource',
   'LocalStorageModule',
-  'xeditable',
   'google.places',
   'nav',
   'app.config',
