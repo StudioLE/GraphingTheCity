@@ -38,4 +38,17 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
     return connections
   }
 
+  $scope.clearCriteria = function() {
+    return Criteria.unset()
+  }
+
+  $scope.clearPlace = function() {
+    return Place.unset()
+  }
+
+  $scope.clearConnection = function() {
+    return Connection.unset()
+  }
+
+
 })
