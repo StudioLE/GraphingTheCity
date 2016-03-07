@@ -77,6 +77,14 @@ gulp.task('assets', function() {
   // Font Awesome
   gulp.src('src/bower_components/font-awesome/fonts/*')
   .pipe(gulp.dest(build.path('fonts')))
+  // Humans.txt
+  gulp.src('src/humans.txt')
+  .pipe(gulp.dest(build.path()))
+  // Favicon
+  gulp.src('src/favicon.ico')
+  .pipe(gulp.dest(build.path()))
+  gulp.src('src/img/favicon.png')
+  .pipe(gulp.dest(build.path('img')))
 })
 
 // Build app CSS

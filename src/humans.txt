@@ -1,0 +1,77 @@
+   ____  _             _ _       _     _____ 
+  / ___|| |_ _   _  __| (_) ___ | |   | ____|
+  \___ \| __| | | |/ _` | |/ _ \| |   |  _|  
+   ___) | |_| |_| | (_| | | (_) | |___| |___ 
+  |____/ \__|\__,_|\__,_|_|\___/|_____|_____|
+  
+  - - - - - - - - - - - - - - - - - - - - - -
+  
+  # DESIGN AND DEVELOPMENT
+  
+  Laurence Elsdon
+  Newcastle upon Tyne, United Kingdom
+  https://studiole.uk
+  @iSpyCreativity
+  
+  - - - - - - - - - - - - - - - - - - - - - -
+
+  # CONCEPT
+
+  Concept developed at Northumbria University
+  https://www.northumbria.ac.uk/
+  
+  - - - - - - - - - - - - - - - - - - - - - -
+
+  # REPOSITORY
+  https://gitlab.com/StudioLE/CityGraph
+
+  - - - - - - - - - - - - - - - - - - - - - -
+
+  # COMPONENTS
+
+  Angular
+  https://angularjs.org
+
+  Gulp
+  http://gulpjs.com
+
+  Bower
+  http://bower.io
+
+  NPM
+  https://www.npmjs.com
+
+  LESS
+  http://lesscss.org
+
+  Cytoscape.js
+  http://js.cytoscape.org
+
+  Google Places API
+  https://developers.google.com/places
+
+  Bootstrap
+  http://getbootstrap.com
+
+  Font Awesome
+  http://fortawesome.github.com/Font-Awesome
+
+  Overpass Font
+  http://overpassfont.org
+  
+  - - - - - - - - - - - - - - - - - - - - - -
+
+  # PLATFORM
+
+  Amazon S3 & CloudFront
+  https://aws.amazon.com/cloudfront
+
+  DigitalOcean
+  https://www.digitalocean.com
+
+  - - - - - - - - - - - - - - - - - - - - - -
+
+  # SOFTWARE
+
+  Sublime Text 3
+  http://www.sublimetext.com/3
