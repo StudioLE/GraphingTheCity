@@ -56,7 +56,7 @@ angular.module('app.graph', ['ngRoute'])
     textureOnViewport: true,
     boxSelectionEnabled: false,
     layout: {
-      name: criteria.layout // 'circle' // 'cose-bilkent' 'dagre' 'grid' 'spread'
+      name: criteria.layout || 'circle' // 'circle' // 'cose-bilkent' 'dagre' 'grid' 'spread'
     },
     elements: {
       nodes: nodes,
