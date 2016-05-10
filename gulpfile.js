@@ -12,7 +12,7 @@ var gp_html = require('gulp-html-replace')
 var gp_concat = require('gulp-concat')
 var gp_rename = require('gulp-rename')
 var gp_uglify = require('gulp-uglify')
-var gp_minify = require('gulp-minify-css')
+var gp_clean_css = require('gulp-clean-css')
 var gp_less = require('gulp-less')
 var p = require('path')
 
@@ -95,7 +95,7 @@ gulp.task('css', function() {
     'src/bower_components/bootstrap/less/variables.less'
   ]}))
   .pipe(gp_rename('app.css'))
-  .pipe(gp_minify({keepSpecialComments: 0}))
+  .pipe(gp_clean_css({keepSpecialComments: 0}))
   .pipe(gulp.dest(build.path('css')))
 })
 
@@ -111,7 +111,7 @@ gulp.task('vendor-css', function() {
   ])
   .pipe(gp_concat('concat.js'))
   .pipe(gp_rename('vendor.css'))
-  .pipe(gp_minify({keepSpecialComments: 0}))
+  .pipe(gp_clean_css({keepSpecialComments: 0}))
   .pipe(gulp.dest(build.path('css')))
 })
 
@@ -134,7 +134,7 @@ gulp.task('vendor-js', function() {
   gulp.src([
     'src/bower_components/jquery/dist/jquery.min.js',
     'src/bower_components/bootstrap/dist/js/bootstrap.min.js',
-    'src/bower_components/lodash/lodash.min.js',
+    'src/bower_components/lodash/dist/lodash.min.js',
     'src/bower_components/async/dist/async.min.js',
     'src/bower_components/cytoscape/dist/cytoscape.min.js',
     'src/bower_components/cytoscape-spread/cytoscape-spread.js',
