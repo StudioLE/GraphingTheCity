@@ -19,7 +19,7 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, Criteria, Place, Connection, Calc) {
+.controller('GraphCtrl', function($scope, $location, Criteria, Place, Connection, Calc) {
 
   /**
    * Get data from local storage
@@ -111,5 +111,29 @@ angular.module('app.graph', ['ngRoute'])
     }
 
   }
+
+  $scope.savePNG = function() {
+    var content = cy.png({
+      full: true
+    })
+
+    // $scope.pngSrc = content
+
+    // $location.path(content)
+
+    window.webkitRequestFileSystem(window.TEMPORARY, 1024*1024, savePNGFile);
+
+    function savePNGFile(localstorage) {
+      localstorage.root.getFile('citygraph.png', {create: true}, function(DatFile) {
+        DatFile.createWriter(function(DatContent) {
+          var blob = new Blob([content], {type: "image/png"})
+          DatContent.write(blob)
+        })
+      })
+    }
+
+  }
+
+  $scope.pngSrc = ''
 
 })
