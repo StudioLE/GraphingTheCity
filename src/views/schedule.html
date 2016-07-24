@@ -10,15 +10,19 @@
       <tr>
         <th style="width: 10%;"></th>
         <th style="width: 40%;">Name</th>
+        <th style="width: 50%;">Location</th>
         <th style="width: 50%;">Types</th>
+        <th style="width: 50%;">Score</th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="(key, place) in places()">
-        <td><img ng-src="{{ place.icon }}" style="height: 20px"></td>
+        <td><img ng-src="{{ place.image.contentUrl }}" style="height: 20px"></td>
         <td>{{ place.name }}</td>
-        <td><span ng-repeat-start="value in place.types"
+        <td>{{ place.geo.latitude }}, {{ place.geo.longitude }}</td>
+        <td><span ng-repeat-start="value in place['@type']"
           class="label label-default">{{ value }}</span> <span ng-repeat-end></span></td>
+        <td>{{ place.resultScore }}</td>
       </tr>
       </tbody>
     </table>

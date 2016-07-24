@@ -1,13 +1,13 @@
 'use strict'
 
-angular.module('app.calcFactory', [])
+angular.module('app.helperFactory', [])
 
 /*****************************************************************
 *
-* Calc factory
+* Helper factory
 *
 ******************************************************************/
-.factory('Calc', function() {
+.factory('Helper', function() {
 return {
 
   latLng: function(location) {
@@ -38,13 +38,38 @@ return {
   },
 
   /**
+   * Convert Google Place JSON format to Schema.org Place geo format
+   */
+
+  formatGooglePlaceToSchema: function(place) {
+    return {
+      '@type': 'GeoCoordinates',
+      latitude: place.lat,
+      longitude: place.lng
+    }
+  },
+
+  /**
+   * Haversine formula between Schema.org Places
+   *
+   * http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+   */
+  haversineSchema: function(place1, place2) {
+    var lat1 = place1.latitude
+    var lon1 = place1.longitude
+    var lat2 = place2.latitude
+    var lon2 = place2.longitude
+    return this.haversine(lat1, lon1, lat2, lon2)
+  },
+
+  /**
    * Haversine formula:
    *
    * http://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
    */
   haversine: function(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
-    var dLat = this.deg2rad(lat2-lat1)  // deg2rad below
+    var dLat = this.deg2rad(lat2-lat1) // deg2rad below
     var dLon = this.deg2rad(lon2-lon1)
     var a = 
       Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -58,6 +83,11 @@ return {
 
   deg2rad: function(deg) {
     return deg * (Math.PI/180)
+  },
+
+  formatTitle: function(str) {
+    // Convert html entities to url encoded entities
+    return str.replace(/&amp;/g, '%26')
   }
     
 }

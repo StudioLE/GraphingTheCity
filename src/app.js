@@ -23,7 +23,7 @@ angular.module('app', [
   'app.criteriaFactory',
   'app.placeFactory',
   'app.connectionFactory',
-  'app.calcFactory'
+  'app.helperFactory'
 ])
 
 /*****************************************************************

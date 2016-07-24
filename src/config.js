@@ -11,6 +11,7 @@ angular.module('app.config', [])
   app_url: 'http://localhost:1337',
   place_api_endpoint: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
   place_api_key: 'AIzaSyClYM73nng_qK5MdY2mvVYcafxNESu4RIQ',
+  google_client_id: 'city-graph.apps.googleusercontent.com',
   graph: {
     width: 500,
     height: 500,

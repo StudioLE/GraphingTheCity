@@ -19,7 +19,7 @@ angular.module('app.map', ['ngRoute'])
 * MapCtrl controlller
 *
 ******************************************************************/
-.controller('MapCtrl', function($scope, Criteria, Place, Calc) {
+.controller('MapCtrl', function($scope, Criteria, Place) {
 
   /**
    * Get data from local storage
@@ -42,16 +42,20 @@ angular.module('app.map', ['ngRoute'])
   var infowindow = new google.maps.InfoWindow()
 
   _.each(places, function(place){
-    var placeLoc = place.geometry.location
-    var marker = new google.maps.Marker({
-      map: map,
-      position: place.geometry.location
-    })
+    if(place.geo) {
+      var marker = new google.maps.Marker({
+        map: map,
+        position: {
+          lat: place.geo.latitude,
+          lng: place.geo.longitude
+        }
+      })
 
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(place.name)
-      infowindow.open(map, this)
-    })
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name)
+        infowindow.open(map, this)
+      })
+    }
   })
 
 })

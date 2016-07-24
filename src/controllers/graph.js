@@ -19,7 +19,7 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, $location, Criteria, Place, Connection, Calc) {
+.controller('GraphCtrl', function($scope, $location, Criteria, Place, Connection) {
 
   /**
    * Get data from local storage
@@ -38,7 +38,7 @@ angular.module('app.graph', ['ngRoute'])
   var nodes = _.map(places, function(place) {
     return {
       data: {
-        id: place.id,
+        id: place['@id'],
         label: place.name
       },
       // classes: 'bg-blue',

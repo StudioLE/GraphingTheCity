@@ -44,7 +44,6 @@ angular.module('app.criteria', ['ngRoute'])
    * Called when form is saved
    */
   $scope.saveCriteria = function() {
-    console.log($scope.criteria())
     criteria = $scope.criteria()
     Criteria.set(criteria)
     // console.log(data)
