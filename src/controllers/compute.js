@@ -78,14 +78,14 @@ angular.module('app.compute', ['ngRoute'])
       })
     },
     /**
-     * Associate knowledgeGraph with wikiData
+     * Associate knowledgeGraph with wikidata
      */
-    function(knowledgeGraph, wikiData, callback) { 
+    function(knowledgeGraph, wikidata, callback) { 
       
       var places = {}
 
-      // Convert wikiData array to object
-      wikiData = _.keyBy(wikiData, 'title')
+      // Convert wikidata array to object
+      wikidata = _.keyBy(wikidata, 'title')
 
       // Create a places object entry for each Knowledge Graph Place
       _.each(knowledgeGraph, function(element) {
@@ -98,8 +98,8 @@ angular.module('app.compute', ['ngRoute'])
         }
       })
 
-      // Go through the wikiData and add .geo and .wikiData to places entry
-      _.each(wikiData, function(element) {
+      // Go through the wikidata and add .geo and .wikidata to places entry
+      _.each(wikidata, function(element) {
         if( ! element.claims || ! element.claims.P625) {
           console.log('No coords for:', element.title, element)
         }
@@ -113,7 +113,7 @@ angular.module('app.compute', ['ngRoute'])
             latitude: element.claims.P625[0].mainsnak.datavalue.value.latitude,
             longitude: element.claims.P625[0].mainsnak.datavalue.value.longitude
           }
-          places[Helper.formatTitle(element.sitelinks.enwiki.title)].wikiData = element
+          places[Helper.formatTitle(element.sitelinks.enwiki.title)].wikidata = element
         }
       })
 
