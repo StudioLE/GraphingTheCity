@@ -33,17 +33,14 @@ angular.module('app.compute', ['ngRoute'])
     /**
      * Get Places from Knowledge Search API
      */
-    function(callback) { // 
+    function(callback) {
       $http({
         method: 'GET',
         url: 'https://kgsearch.googleapis.com/v1/entities:search?indent=true&prefix=true&types=LandmarksOrHistoricalBuildings&types=TouristAttraction&types=CivicStructure&limit=200&key=' + Config.place_api_key + '&query=' + criteria.city.name
       }).then(function successCallback(response) {
-        // this callback will be called asynchronously
-        // when the response is available
+        console.log('Knowledge Graph returned %s results', response.data.itemListElement.length)
         callback(null, response.data.itemListElement)
-      }, function errorCallback(response) { 
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
+      }, function errorCallback(response) {
         callback(true, response)
       })
     },
@@ -63,12 +60,9 @@ angular.module('app.compute', ['ngRoute'])
         // url: 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&origin=*&titles=' + titles
         url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
       }).then(function successCallback(response) {
-        // this callback will be called asynchronously
-        // when the response is available
+        console.log('Wikidata returned %s results', _.keys(response.data.entities).length)
         callback(null, knowledgeGraph, response.data.entities)
-      }, function errorCallback(response) { 
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
+      }, function errorCallback(response) {
         callback(true, response)
       })
     },
@@ -97,7 +91,7 @@ angular.module('app.compute', ['ngRoute'])
 
       _.each(wikiData, function(element) {
         if( ! element.claims || ! element.claims.P625) {
-          console.log('No coords for: ', element.title)
+          console.log('No coords for:', element.title, element)
         }
         else {
           // places[element.sitelinks.enwiki.title].geometry = {
@@ -123,8 +117,16 @@ angular.module('app.compute', ['ngRoute'])
       var centrePoint = Helper.formatGooglePlaceToSchema(criteria.city.geometry.location)
 
       callback(null, _.filter(places, function(place) {
-        if( ! place.geo) return false
-        return Helper.haversineSchema(place.geo, centrePoint) <= 5000
+        if( ! place.geo) {
+          console.log('No .geo for:', place.name, place)
+          return false
+        }
+        else if(Helper.haversineSchema(place.geo, centrePoint) > 5000) {
+          console.log('Place out of bounds:', place)
+        }
+        else {
+          return true
+        }
       }))
 
     },
