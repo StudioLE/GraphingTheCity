@@ -49,21 +49,32 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(knowledgeGraph, callback) { 
 
+      // Create an array of all place names from Knowledge Graph data
       var titles = _.map(knowledgeGraph, function(element) {
         return element.result.name
       })
 
-      titles = Helper.formatTitle(titles.join('|'))
+      // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
+      async.concat(_.chunk(titles, 50), function(titles, concatCallback) {
 
-      $http({
-        method: 'GET',
-        // url: 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&origin=*&titles=' + titles
-        url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
-      }).then(function successCallback(response) {
-        console.log('Wikidata returned %s results', _.keys(response.data.entities).length)
-        callback(null, knowledgeGraph, response.data.entities)
-      }, function errorCallback(response) {
-        callback(true, response)
+        // Create a string from the titles
+        titles = Helper.formatTitle(titles.join('|'))
+
+        $http({
+          method: 'GET',
+          // url: 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&origin=*&titles=' + titles
+          url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
+        }).then(function successCallback(response) {
+          console.log('Wikidata returned %s results', _.keys(response.data.entities).length)
+          // async.concat only works with arrays so convert data to array
+          concatCallback(null, _.values(response.data.entities))
+        }, function errorCallback(response) {
+          concatCallback(true, response)
+        })
+
+      }, function(err, results) {
+        if(err) return callback(err, results)
+        callback(null, knowledgeGraph, results)
       })
     },
     /**
@@ -73,30 +84,29 @@ angular.module('app.compute', ['ngRoute'])
       
       var places = {}
 
+      // Convert wikiData array to object
+      wikiData = _.keyBy(wikiData, 'title')
+
+      // Create a places object entry for each Knowledge Graph Place
       _.each(knowledgeGraph, function(element) {
-        if(element.result.name) {
-          places[Helper.formatTitle(element.result.name)] = element.result
-          places[Helper.formatTitle(element.result.name)].resultScore = element.resultScore
-          // places[element.result.name] = {
-          //   id: element.result['@id'],
-          //   name: element.result.name,
-          //   result: element.result,
-          //   resultScore: element.resultScore
-          // }
+        if( ! element.result.name) {
+          console.log('Element has no name: ' + element.result['@id'])
         }
         else {
-          console.log('Element has no name: ' + element.result['@id'])
+          places[Helper.formatTitle(element.result.name)] = element.result
+          places[Helper.formatTitle(element.result.name)].resultScore = element.resultScore
         }
       })
 
+      // Go through the wikiData and add .geo and .wikiData to places entry
       _.each(wikiData, function(element) {
         if( ! element.claims || ! element.claims.P625) {
           console.log('No coords for:', element.title, element)
         }
+        else if( ! places[Helper.formatTitle(element.sitelinks.enwiki.title)]) {
+          console.log('No place in object:', Helper.formatTitle(element.sitelinks.enwiki.title))
+        }
         else {
-          // places[element.sitelinks.enwiki.title].geometry = {
-          //   location: element.claims.P625[0].mainsnak.datavalue.value
-          // }
           // Formated per http://schema.org/geo
           places[Helper.formatTitle(element.sitelinks.enwiki.title)].geo = {
             '@type': 'GeoCoordinates',
@@ -121,8 +131,10 @@ angular.module('app.compute', ['ngRoute'])
           console.log('No .geo for:', place.name, place)
           return false
         }
+        // @todo use criteria.city.geometry.viewport as bounds instead
         else if(Helper.haversineSchema(place.geo, centrePoint) > 5000) {
           console.log('Place out of bounds:', place)
+          return false
         }
         else {
           return true
