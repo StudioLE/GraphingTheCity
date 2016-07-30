@@ -80,14 +80,19 @@ angular.module('app.compute', ['ngRoute'])
       var places = {}
 
       _.each(knowledgeGraph, function(element) {
-        places[Helper.formatTitle(element.result.name)] = element.result
-        places[Helper.formatTitle(element.result.name)].resultScore = element.resultScore
-        // places[element.result.name] = {
-        //   id: element.result['@id'],
-        //   name: element.result.name,
-        //   result: element.result,
-        //   resultScore: element.resultScore
-        // }
+        if(element.result.name) {
+          places[Helper.formatTitle(element.result.name)] = element.result
+          places[Helper.formatTitle(element.result.name)].resultScore = element.resultScore
+          // places[element.result.name] = {
+          //   id: element.result['@id'],
+          //   name: element.result.name,
+          //   result: element.result,
+          //   resultScore: element.resultScore
+          // }
+        }
+        else {
+          console.log('Element has no name: ' + element.result['@id'])
+        }
       })
 
       _.each(wikiData, function(element) {
@@ -127,6 +132,8 @@ angular.module('app.compute', ['ngRoute'])
      * Add to local storage
      */
     function(places, callback) {
+
+      console.log(places)
 
       Place.set(_.values(places))
       callback(null, places)
