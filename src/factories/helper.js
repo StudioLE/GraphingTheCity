@@ -75,8 +75,8 @@ return {
       Math.sin(dLat/2) * Math.sin(dLat/2) +
       Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
       Math.sin(dLon/2) * Math.sin(dLon/2)
-      
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+         
+var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
     var d = R * c // Distance in km
     return d * 1000 // Distance in m
   },
@@ -85,10 +85,15 @@ return {
     return deg * (Math.PI/180)
   },
 
-  formatTitle: function(str) {
+  urlencodeTitle: function(str) {
     // Convert html entities to url encoded entities
-    return str.replace(/&amp;/g, '%26')
+    return str.replace(/&amp;/g, '%26').replace(/ & /g, ' %26 ')
+  },
+
+  formatName: function(str) {
+    // Un-convert html entities to url encoded entities
+    return str.replace(/&amp;/g, '&')
   }
-    
+
 }
 })

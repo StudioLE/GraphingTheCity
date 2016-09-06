@@ -1,9 +1,27 @@
 <div class="main">
   <div class="container">
-    <h1>{{ criteria().city.name }}</h1>
+    <h1>{{ data().count.places }} places of interest were found in {{ criteria().city.name }}</h1>
+    
+    <p>From an initial data set of {{ data().count.knowledgegraph }} places, {{ data().count.wikidata }} were matched with structured data, {{ data().count.no_match }} could not be matched, {{ data().count.no_geo }} had no geolocation data and {{ data().count.out_of_bounds }} were out of bounds of our search area.</p>
 
     <span ng-repeat-start="(key, value) in criteria().types" ng-if="value"
       class="label label-default">{{ key }}</span> <span ng-repeat-end></span>
+
+
+    <div class="row">
+      <div ng-repeat-start="(key, place) in places()"
+           class="col-xs-6 col-md-3">
+        
+        <ng-include src="'views/card.html'"></ng-view>
+
+      <br><br><br>
+
+      </div>
+
+      <div ng-repeat-end ng-if="($index + 1) % 4 == 0" style="clear: both;"></div>
+    </div>
+
+
 
     <table class="table table-striped">
       <thead>
@@ -28,5 +46,3 @@
     </table>
   </div> <!-- .container -->
 </div> <!-- .main -->
-
-

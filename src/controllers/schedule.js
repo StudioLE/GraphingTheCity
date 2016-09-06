@@ -19,19 +19,23 @@ angular.module('app.schedule', ['ngRoute'])
 * ScheduleCtrl controlller
 *
 ******************************************************************/
-.controller('ScheduleCtrl', function($scope, Criteria, Place) {
+.controller('ScheduleCtrl', function($scope, Criteria, Place, Data) {
 
   /**
    * Get data from local storage
    */
   var criteria = Criteria.get()
   var places = Place.get()
+  var data = Data.get()
 
   $scope.criteria = function() {
     return criteria
   }
   $scope.places = function() {
     return places
+  }
+  $scope.data = function() {
+    return data
   }
 
   /**

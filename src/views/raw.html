@@ -1,17 +1,21 @@
 <div class="container-fluid">
   <div class="main">
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <h1>Criteria</h1>
         <json-formatter class="json-formatter-dark" json="criteria()" open="1"></json-formatter>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <h1>Places</h1>
         <json-formatter class="json-formatter-dark" json="places()" open="1"></json-formatter>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <h1>Connections</h1>
         <json-formatter class="json-formatter-dark" json="connections()" open="1"></json-formatter>
+      </div>
+      <div class="col-sm-3">
+        <h1>Data</h1>
+        <json-formatter class="json-formatter-dark" json="data()" open="1"></json-formatter>
       </div>
     </div>
   </div> <!-- .main -->
@@ -21,17 +25,21 @@
   <div class="container-fluid">
     <form class="form-horizontal" name="form">
       <div class="form-group">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
           <a class="btn btn-primary"
             ng-click="clearCriteria()">Clear Criteria</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
           <a class="btn btn-primary"
             ng-click="clearPlace()">Clear Places</a>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
           <a class="btn btn-primary"
             ng-click="clearConnection()">Clear Connections</a>
+        </div>
+        <div class="col-sm-3">
+          <a class="btn btn-primary"
+            ng-click="clearData()">Clear Data</a>
         </div>
       </div>
     </form>

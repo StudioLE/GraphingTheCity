@@ -19,7 +19,7 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
 * RawCtrl controlller
 *
 ******************************************************************/
-.controller('RawCtrl', function($scope, Criteria, Place, Connection) {
+.controller('RawCtrl', function($scope, Criteria, Place, Connection, Data) {
 
   /**
    * Get data from local storage
@@ -27,6 +27,7 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
   var criteria = Criteria.get()
   var places = Place.get()
   var connections = Connection.get()
+  var data = Data.get()
 
   $scope.criteria = function() {
     return criteria
@@ -36,6 +37,9 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
   }
   $scope.connections = function() {
     return connections
+  }
+  $scope.data = function() {
+    return data
   }
 
   $scope.clearCriteria = function() {
@@ -48,6 +52,10 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
 
   $scope.clearConnection = function() {
     return Connection.unset()
+  }
+
+  $scope.clearData = function() {
+    return Data.unset()
   }
 
 

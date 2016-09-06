@@ -2,7 +2,7 @@
 
 angular.module('nav', [])
 
-.controller('NavCtrl', function($scope, $location, Criteria, Place, Connection, Config) {
+.controller('NavCtrl', function($scope, $location, Criteria, Place, Connection, Data, Config) {
   $scope.navClass = function(href) {
     return href === '#' + $location.path() ? 'active' : ''
   }
@@ -38,6 +38,7 @@ angular.module('nav', [])
   $scope.clearData = function() {
     $location.path('/criteria')
     Connection.unset()
+    Data.unset()
     return Place.unset()
   }
 
