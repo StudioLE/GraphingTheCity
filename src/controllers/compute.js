@@ -178,7 +178,7 @@ angular.module('app.compute', ['ngRoute'])
       metadata.count.places = places.length
 
       Place.set(_.values(places))
-      Data.set(metadata)
+      // Data.set(metadata)
       callback(null, places)
 
     },
@@ -193,17 +193,27 @@ angular.module('app.compute', ['ngRoute'])
 
       var connections = []
       var analysed = []
+      var claims = {}
 
-      async.eachSeries(places, function(place, callback3) {
+      async.eachSeries(places, function(place, callback_places_series) {
 
         $scope.status = 'Analysing ' + place.name
         // $scope.$apply()
 
-        async.eachSeries(destinations, function(destination, callback2) {
+        // Add each of this place's claims to the claims object
+        _.each(place.wikidata.claims, function(claim, claim_id) {
+          // If this is the first of claim type then add to object
+          if( ! claims[claim_id]) claims[claim_id] = {}
+          // Add claim to claims
+          claims[claim_id][place.name] = claim
+        })
+
+        // Go through each destination and compare it with this place
+        async.eachSeries(destinations, function(destination, callback_destinations_series) {
           // Skip if place = destination
-          if(place['@id'] == destination['@id']) return callback2()
+          if(place['@id'] == destination['@id']) return callback_destinations_series()
           // Skip if this destination has already been analysed
-          if(_.includes(analysed, destination['@id'])) return callback2()
+          if(_.includes(analysed, destination['@id'])) return callback_destinations_series()
 
           var distance = Helper.haversineSchema(place.geo, destination.geo)
           if(distance <= criteria.connection.distance) {
@@ -216,20 +226,67 @@ angular.module('app.compute', ['ngRoute'])
             }
             connections.push(c)
           }
-          callback2()
+          callback_destinations_series()
         }, function(err) {
           if(err) console.error(err)
           analysed.push(place['@id'])
-          callback3()
-        })
+          callback_places_series()
+        }) // end of destination series
 
       }, function(err) {
         if(err) console.error(err)
+        metadata.claims = claims
+        // Data.set(metadata)
         Connection.set(connections)
         callback(null, places)
+      }) // end of places series
+    },
+    /**
+     * Get information on all claims
+     */
+    function(places, callback) {
+
+      var claim_ids = _.keys(metadata.claims)
+
+      console.log(claim_ids)
+
+      // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
+      async.concat(_.chunk(claim_ids, 50), function(titles, concatCallback) {
+
+        // Create a string from the ids
+        claim_ids = claim_ids.join('|')
+
+        $http({
+          method: 'GET',
+          // url: 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&origin=*&titles=' + titles
+          // url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
+          url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&ids=' + claim_ids
+        }).then(function successCallback(response) {
+          console.log('Wikidata returned %s properties', _.keys(response.data.entities).length)
+          // async.concat only works with arrays so convert data to array
+          concatCallback(null, _.values(response.data.entities))
+        }, function errorCallback(response) {
+          concatCallback(true, response)
+        })
+
+      }, function(err, results) {
+        if(err) return callback(err, results)
+        
+        // Convert wikidata array to object
+        metadata.properties = _.keyBy(results, 'id')
+
+        Data.set(metadata)
+        callback(null, places)
+        // callback(null, knowledgeGraph, results)
       })
-    }
-  ], function(err, places) {
+
+    },
+
+  ],
+  /**
+   * Async waterfall complete
+   */
+  function(err, places) {
       if(err) {
         console.error(err)
       }

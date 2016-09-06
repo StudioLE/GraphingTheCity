@@ -38,6 +38,10 @@ angular.module('app.schedule', ['ngRoute'])
     return data
   }
 
+  $scope.objectLength = function(object) {
+    return Object.keys(object).length
+  }
+
   /**
    * Adjacent spaces
    *

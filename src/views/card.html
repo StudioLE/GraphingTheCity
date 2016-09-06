@@ -5,11 +5,18 @@
         <h4><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">{{ place.name }}</a></h4>
 
 
-        <span ng-repeat-start="(claimid, claim) in place.wikidata.claims"
-          class="label label-default"
-          title="{{ claim[0].mainsnak.datavalue.value }}">
-          {{ claim[0].mainsnak.datatype }}
-        </span>
-        <span ng-repeat-end>&nbsp;</span>
+
+
+        <p><span ng-repeat-start="value in place['@type']"
+          class="label label-default">{{ value }}</span> <span ng-repeat-end></span></p>
+
+        <p>
+          <span ng-repeat-start="(claim_id, claim) in place.wikidata.claims"
+            class="label label-default"
+            title="{{ data().properties[claim_id].descriptions.en.value }}">
+            {{ data().properties[claim_id].labels.en.value }}
+          </span>
+          <span ng-repeat-end>&nbsp;</span>
+        </p>
 
         <json-formatter class="json-formatter-dark" json="place" open="0"></json-formatter>
