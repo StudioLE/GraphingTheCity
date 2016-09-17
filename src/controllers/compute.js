@@ -56,7 +56,7 @@ angular.module('app.compute', ['ngRoute'])
         return element.result.name
       })
 
-      console.log(titles)
+      // console.log(titles)
 
       // Reset all counts
       metadata.count = {
@@ -80,7 +80,7 @@ angular.module('app.compute', ['ngRoute'])
           // url: 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&origin=*&titles=' + titles
           url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
         }).then(function successCallback(response) {
-          console.log('Wikidata returned %s results', _.keys(response.data.entities).length)
+          console.log('Wikidata returned %s places', _.keys(response.data.entities).length)
           // async.concat only works with arrays so convert data to array
           concatCallback(null, _.values(response.data.entities))
         }, function errorCallback(response) {
@@ -173,7 +173,7 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
 
-      console.log(places)
+      // console.log(places)
 
       metadata.count.places = places.length
 
@@ -186,7 +186,6 @@ angular.module('app.compute', ['ngRoute'])
      * Calculate connections
      */
     function(places, callback) {
-
       var destinations = places
       $scope.status = 'Analysing connections'
       // $scope.$apply()
@@ -205,8 +204,11 @@ angular.module('app.compute', ['ngRoute'])
           // If this is the first of claim type then add to object
           if( ! claims[claim_id]) claims[claim_id] = {}
           // Add claim to claims
-          claims[claim_id][place.name] = claim
+          claims[claim_id][place['@id']] = claim
         })
+
+        // Connect by distance deprecated so skip
+        return callback_places_series()
 
         // Go through each destination and compare it with this place
         async.eachSeries(destinations, function(destination, callback_destinations_series) {
@@ -248,7 +250,7 @@ angular.module('app.compute', ['ngRoute'])
 
       var claim_ids = _.keys(metadata.claims)
 
-      console.log(claim_ids)
+      // console.log(claim_ids)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
       async.concat(_.chunk(claim_ids, 50), function(titles, concatCallback) {
@@ -280,6 +282,95 @@ angular.module('app.compute', ['ngRoute'])
         // callback(null, knowledgeGraph, results)
       })
 
+    },
+    /**
+     * Calculate connections by claims
+     */
+    function(places, callback) {
+
+
+      // return callback(null, places)
+      
+
+      // var destinations = places
+      $scope.status = 'Analysing connections'
+      // $scope.$apply()
+      var claims = Data.get().claims
+
+      var connections = []
+      var analysed = []
+      // var claims = {}
+
+      var chosen_claims = [
+        'P1435', // heritage status
+        'P149',  // architectural style
+        'P31',   // instance of
+        // 'P131',  // located in the administrative territorial entity
+        'P84',   // architect
+        'P1619', // date of official opening
+        // 'P571'   // inception
+      ]
+
+      async.eachOfSeries(claims, function(claim, claim_id, callback_claims_series) {
+        // Skip if not a chosen claim
+        if( ! _.includes(chosen_claims, claim_id)) return callback_claims_series()
+        // $scope.status = 'Analysing ' + place.name
+        // $scope.$apply()
+
+        // console.log(claim_id)
+
+        // Go through each of the claims and compare
+        async.eachOfSeries(claim, function(source, source_id, callback_places_series) {
+          source = source[0]
+          async.eachOfSeries(claim, function(target, target_id, callback_destinations_series) {
+            target = target[0]
+            // console.log(target)
+            // Skip if place = destination
+            if(source_id == target_id) return callback_destinations_series()
+            
+            // Skip if this destination has already been analysed
+            if(_.includes(analysed, target_id)) return callback_destinations_series()
+
+            // console.log(source.mainsnak.datatype)
+
+            if(source.mainsnak.datatype != 'wikibase-item') {
+              console.log(claim_id + ' is of type: ' + source.mainsnak.datatype + ' not wikibase')
+            }
+
+            // If both place and destination have the same value for claim
+            if(source.mainsnak.datavalue.value.id == target.mainsnak.datavalue.value.id) {
+              var c = {
+                data: {
+                  id: claim_id + '-' + source_id + '-' + target_id,
+                  source: source_id,
+                  target: target_id
+                }
+              }
+              connections.push(c)
+            }
+
+            callback_destinations_series()
+          }, function(err) {
+            if(err) console.error(err)
+            analysed.push(source_id)
+            callback_places_series()
+          }) // end of destination series
+        }, function(err) {
+          if(err) console.error(err)
+          // analysed.push(place['@id'])
+          callback_claims_series()
+        }) // end of places series
+
+      }, function(err) {
+        if(err) console.error(err)
+        // metadata.claims = claims
+        // Data.set(metadata)
+        Connection.set(connections)
+        callback(null, places)
+      }) // end of claims series
+
+
+      // callback(null, places)
     },
 
   ],
