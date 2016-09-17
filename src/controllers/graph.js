@@ -27,6 +27,7 @@ angular.module('app.graph', ['ngRoute'])
   var criteria = Criteria.get()
   var places = Place.get()
   var connections = Connection.get()
+  // var card = places[0]
 
   $scope.criteria = function() {
     return criteria
@@ -34,10 +35,11 @@ angular.module('app.graph', ['ngRoute'])
   $scope.places = function() {
     return places
   }
+  $scope.place = places[0]
 
   var nodes = _.map(places, function(place) {
     return {
-      id: place['@id'],
+      id: place.id,
       name: place.name
       // classes: 'bg-blue',
       // selected: true,
@@ -51,6 +53,7 @@ angular.module('app.graph', ['ngRoute'])
   var links = _.map(connections, function(link) {
     // return link.data
     return {
+      // id: link.id,
       source: link.data.source,
       target: link.data.target
     }
@@ -67,11 +70,14 @@ angular.module('app.graph', ['ngRoute'])
       width = +svg.attr("width"),
       height = +svg.attr("height")
 
+  var radius = 6
+
   var color = d3.scaleOrdinal(d3.schemeCategory20);
 
   var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody())
+    .force("charge", d3.forceManyBody().strength(-2))
+    // .gravity(.5)
     .force("center", d3.forceCenter(width / 2, height / 2));
 
   var link = svg.append("g")
@@ -91,7 +97,12 @@ angular.module('app.graph', ['ngRoute'])
       .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
-          .on("end", dragended));
+          .on("end", dragended))
+      .on("mouseover", mouseover)
+      .on("mouseout", mouseout)
+      // .attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+      // .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); })
+
 
   node.append("title")
       .text(function(d) { return d.id; });
@@ -131,6 +142,22 @@ angular.module('app.graph', ['ngRoute'])
     if (!d3.event.active) simulation.alphaTarget(0);
     d.fx = null;
     d.fy = null;
+  }
+
+
+  function mouseover(obj) {
+    console.log(obj)
+    console.log(places[obj.index])
+    $scope.place = places[obj.index]
+    $scope.$apply()
+  }
+
+  function mouseout(d) {
+    // text.html("");
+
+    // d3.selectAll("path")
+    //   .filter(function(d1) { return d === d1; })
+    //   .style("opacity", colorOpacity);
   }
 
 })

@@ -118,7 +118,7 @@ angular.module('app.compute', ['ngRoute'])
         }
       })
 
-      // Go through the wikidata and add .geo and .wikidata to places entry
+      // Go through the wikidata and add id, .geo and .wikidata to places entry
       _.each(wikidata, function(element) {
         // Skip if no coords, we will filter them out later
         if( ! element.claims || ! element.claims.P625) {
@@ -130,6 +130,8 @@ angular.module('app.compute', ['ngRoute'])
           metadata.count.no_match ++
         }
         else {
+          // Add wikidata place id
+          places[Helper.formatName(element.sitelinks.enwiki.title)].id = element.id
           // Formated per http://schema.org/geo
           places[Helper.formatName(element.sitelinks.enwiki.title)].geo = {
             '@type': 'GeoCoordinates',
@@ -204,7 +206,7 @@ angular.module('app.compute', ['ngRoute'])
           // If this is the first of claim type then add to object
           if( ! claims[claim_id]) claims[claim_id] = {}
           // Add claim to claims
-          claims[claim_id][place['@id']] = claim
+          claims[claim_id][place.id] = claim
         })
 
         // Connect by distance deprecated so skip
@@ -213,17 +215,17 @@ angular.module('app.compute', ['ngRoute'])
         // Go through each destination and compare it with this place
         async.eachSeries(destinations, function(destination, callback_destinations_series) {
           // Skip if place = destination
-          if(place['@id'] == destination['@id']) return callback_destinations_series()
+          if(place.id == destination.id) return callback_destinations_series()
           // Skip if this destination has already been analysed
-          if(_.includes(analysed, destination['@id'])) return callback_destinations_series()
+          if(_.includes(analysed, destination.id)) return callback_destinations_series()
 
           var distance = Helper.haversineSchema(place.geo, destination.geo)
           if(distance <= criteria.connection.distance) {
             var c = {
               data: {
-                id: place['@id'] + '-' + destination['@id'],
-                source: place['@id'],
-                target: destination['@id']
+                id: place.id + '-' + destination.id,
+                source: place.id,
+                target: destination.id
               }
             }
             connections.push(c)
@@ -231,7 +233,7 @@ angular.module('app.compute', ['ngRoute'])
           callback_destinations_series()
         }, function(err) {
           if(err) console.error(err)
-          analysed.push(place['@id'])
+          analysed.push(place.id)
           callback_places_series()
         }) // end of destination series
 
