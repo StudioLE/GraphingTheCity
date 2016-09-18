@@ -19,7 +19,7 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, $location, Criteria, Place, Connection) {
+.controller('GraphCtrl', function($scope, $location, Criteria, Place, Connection, Data) {
 
   /**
    * Get data from local storage
@@ -27,6 +27,7 @@ angular.module('app.graph', ['ngRoute'])
   var criteria = Criteria.get()
   var places = Place.get()
   var connections = Connection.get()
+  var data = Data.get()
   // var card = places[0]
 
   $scope.criteria = function() {
@@ -35,7 +36,13 @@ angular.module('app.graph', ['ngRoute'])
   $scope.places = function() {
     return places
   }
-  $scope.place = places[0]
+  $scope.data = function() {
+    return data
+  }
+  $scope.place = {}
+  $scope.connection = {}
+  $scope.showPlace = false
+  $scope.showConnection = false
 
   var nodes = _.map(places, function(place) {
     return {
@@ -52,11 +59,7 @@ angular.module('app.graph', ['ngRoute'])
   // Cytoscape had a 'data' sub object, d3 does not so lets convert
   var links = _.map(connections, function(link) {
     // return link.data
-    return {
-      // id: link.id,
-      source: link.data.source,
-      target: link.data.target
-    }
+    return link.data
   })
 
   console.log(nodes)
@@ -85,7 +88,9 @@ angular.module('app.graph', ['ngRoute'])
     .selectAll("line")
     .data(links)
     .enter().append("line")
-    .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+    .attr("stroke-width", function(d) { return Math.sqrt(d.value); })
+      .on("mouseover", mouseoverConnection)
+      .on("mouseout", mouseoutConnection)
 
   var node = svg.append("g")
       .attr("class", "nodes")
@@ -98,8 +103,8 @@ angular.module('app.graph', ['ngRoute'])
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended))
-      .on("mouseover", mouseover)
-      .on("mouseout", mouseout)
+      .on("mouseover", mouseoverPlace)
+      .on("mouseout", mouseoutPlace)
       // .attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
       // .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); })
 
@@ -144,20 +149,36 @@ angular.module('app.graph', ['ngRoute'])
     d.fy = null;
   }
 
-
-  function mouseover(obj) {
+  function mouseoverPlace(obj) {
+    $scope.place = {}
     console.log(obj)
     console.log(places[obj.index])
     $scope.place = places[obj.index]
+    $scope.showConnection = false
+    $scope.showPlace = true
     $scope.$apply()
   }
 
-  function mouseout(d) {
-    // text.html("");
+  function mouseoutPlace(obj) {
+    // $scope.place = {}
+    // $scope.showPlace = false
+    // $scope.$apply()
+  }
 
-    // d3.selectAll("path")
-    //   .filter(function(d1) { return d === d1; })
-    //   .style("opacity", colorOpacity);
+  function mouseoverConnection(obj) {
+    $scope.connection = {}
+    console.log(obj)
+    console.log(connections[obj.index])
+    $scope.connection = obj
+    $scope.showPlace = false
+    $scope.showConnection = true
+    $scope.$apply()
+  }
+
+  function mouseoutConnection(obj) {
+    // $scope.connection = {}
+    // $scope.showConnection = false
+    // $scope.$apply()
   }
 
 })

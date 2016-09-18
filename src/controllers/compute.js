@@ -345,7 +345,9 @@ angular.module('app.compute', ['ngRoute'])
                 data: {
                   id: claim_id + '-' + source_id + '-' + target_id,
                   source: source_id,
-                  target: target_id
+                  target: target_id,
+                  claim_id: claim_id,
+                  claim: source
                 }
               }
               connections.push(c)

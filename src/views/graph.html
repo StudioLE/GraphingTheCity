@@ -1,10 +1,15 @@
 <div class="fixed">
   <div class="row">
     <div class="col-xs-3">
-      <ng-include src="'views/card.html'"></ng-include>
+      <ng-include ng-if="showPlace" src="'views/card.html'"></ng-include>
+      <div ng-if="showConnection">
+        <h4><a ng-href="https://www.wikidata.org/wiki/{{ connection.source.id }}">{{ connection.source.name }}</a> and <a ng-href="https://www.wikidata.org/wiki/{{ connection.target.id }}">{{ connection.target.name }}</a> are connected by <a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_id }}">{{ data().properties[connection.claim_id].labels.en.value }}</a>: <a ng-href="https://www.wikidata.org/wiki/{{ connection.claim.mainsnak.datavalue.value.id }}">{{ connection.claim.mainsnak.datavalue.value.id }}</a></h4>
+      </div>
+
+
     </div>
     <div class="col-xs-9">
-      <svg id="cy" width="960" height="600" viewBox="0 0 960 500"
+      <svg id="cy" width="600" height="600" viewBox="0 0 600 600"
       preserveAspectRatio="xMidYMid meet"></svg>
     </div>
   </div> <!-- .row -->
