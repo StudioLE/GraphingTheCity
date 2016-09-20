@@ -36,6 +36,9 @@ angular.module('app.compute', ['ngRoute'])
      * Get Places from Knowledge Search API
      */
     function(callback) {
+
+      $scope.status = 'Fetching places from Google Knowledge Graph'
+
       $http({
         method: 'GET',
         url: 'https://kgsearch.googleapis.com/v1/entities:search?indent=true&prefix=true&types=LandmarksOrHistoricalBuildings&types=TouristAttraction&types=CivicStructure&limit=200&key=' + Config.place_api_key + '&query=' + criteria.city.name
@@ -50,6 +53,8 @@ angular.module('app.compute', ['ngRoute'])
      * Get coords of Places from Wikipedia API
      */
     function(knowledgeGraph, callback) {
+
+      $scope.status = 'Fetching data for places from Wikidata'
 
       // Create an array of all place names from Knowledge Graph data
       var titles = _.map(knowledgeGraph, function(element) {
@@ -96,6 +101,8 @@ angular.module('app.compute', ['ngRoute'])
      * Associate knowledgeGraph with wikidata
      */
     function(knowledgeGraph, wikidata, callback) {
+
+      $scope.status = 'Associating places with Wikidata'
       
       var places = {}
 
@@ -149,6 +156,8 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
 
+      $scope.status = 'Filtering places'
+
       var centrePoint = Helper.formatGooglePlaceToSchema(criteria.city.geometry.location)
 
       // Filter out places that do not work
@@ -175,6 +184,8 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
 
+      $scope.status = 'Storing places'
+
       // console.log(places)
 
       metadata.count.places = places.length
@@ -189,7 +200,7 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
       var destinations = places
-      $scope.status = 'Analysing connections'
+      $scope.status = 'Analysing places'
       // $scope.$apply()
 
       var connections = []
@@ -250,12 +261,14 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
 
+      $scope.status = 'Fetching data for connections from Wikidata'
+
       var claim_ids = _.keys(metadata.claims)
 
-      // console.log(claim_ids)
+      console.log(claim_ids)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
-      async.concat(_.chunk(claim_ids, 50), function(titles, concatCallback) {
+      async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
 
         // Create a string from the ids
         claim_ids = claim_ids.join('|')
@@ -290,12 +303,13 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
 
+      $scope.status = 'Analysing connections'
+
 
       // return callback(null, places)
       
 
       // var destinations = places
-      $scope.status = 'Analysing connections'
       // $scope.$apply()
       var claims = Data.get().claims
 
@@ -319,10 +333,15 @@ angular.module('app.compute', ['ngRoute'])
         // $scope.status = 'Analysing ' + place.name
         // $scope.$apply()
 
-        // console.log(claim_id)
+        $scope.status = 'Analysing connection: ' + claim_id
+
+        console.log(claim_id)
 
         // Go through each of the claims and compare
         async.eachOfSeries(claim, function(source, source_id, callback_places_series) {
+
+          $scope.status = 'Analysing connection: ' + claim_id + ' for ' + source_id
+
           source = source[0]
           async.eachOfSeries(claim, function(target, target_id, callback_destinations_series) {
             target = target[0]
@@ -352,8 +371,14 @@ angular.module('app.compute', ['ngRoute'])
               }
               connections.push(c)
             }
+            // console.log('bip')
 
-            callback_destinations_series()
+            // Repress Max call stack size bug
+            async.setImmediate(function() {
+              // console.log('bop')
+              return callback_destinations_series()
+            })
+            
           }, function(err) {
             if(err) console.error(err)
             analysed.push(source_id)
