@@ -56,6 +56,10 @@ angular.module('app.graph', ['ngRoute'])
     }
   })
 
+
+  nodes = nodes.concat(data.claim_nodes)
+  console.log(nodes)
+
   // Cytoscape had a 'data' sub object, d3 does not so lets convert
   var links = _.map(connections, function(link) {
     // return link.data

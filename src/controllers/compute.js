@@ -216,8 +216,18 @@ angular.module('app.compute', ['ngRoute'])
         _.each(place.wikidata.claims, function(claim, claim_id) {
           // If this is the first of claim type then add to object
           if( ! claims[claim_id]) claims[claim_id] = {}
-          // Add claim to claims
-          claims[claim_id][place.id] = claim
+          // For this claim, add each of its values to the relevant claim object
+          _.each(claim, function(claim_val) {
+            // console.log(claim_val)
+            // Skip if no value
+            if(claim_val.mainsnak.snaktype == "novalue" ) return false
+
+            // Ensure the property exists
+            if( ! claims[claim_id][claim_val.mainsnak.datavalue.value.id]) claims[claim_id][claim_val.mainsnak.datavalue.value.id] = {}
+            
+            claims[claim_id][claim_val.mainsnak.datavalue.value.id][place.id] = claim_val
+          })
+          
         })
 
         // Connect by distance deprecated so skip
@@ -265,7 +275,7 @@ angular.module('app.compute', ['ngRoute'])
 
       var claim_ids = _.keys(metadata.claims)
 
-      console.log(claim_ids)
+      // console.log(claim_ids)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
       async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
@@ -292,7 +302,7 @@ angular.module('app.compute', ['ngRoute'])
         // Convert wikidata array to object
         metadata.properties = _.keyBy(results, 'id')
 
-        Data.set(metadata)
+        // Data.set(metadata)
         callback(null, places)
         // callback(null, knowledgeGraph, results)
       })
@@ -305,95 +315,90 @@ angular.module('app.compute', ['ngRoute'])
 
       $scope.status = 'Analysing connections'
 
-
+      // Just skip this step
       // return callback(null, places)
       
 
       // var destinations = places
       // $scope.$apply()
-      var claims = Data.get().claims
+      // var claims = Data.get().claims
+      var claims = metadata.claims
 
       var connections = []
       var analysed = []
+      var claim_nodes = []
+      // var metadata = Data.get()
       // var claims = {}
 
       var chosen_claims = [
-        'P1435', // heritage status
+        // 'P1435', // heritage status
         'P149',  // architectural style
-        'P31',   // instance of
+        // 'P31',   // instance of
         // 'P131',  // located in the administrative territorial entity
         'P84',   // architect
-        'P1619', // date of official opening
+        // 'P1619', // date of official opening
         // 'P571'   // inception
       ]
 
+
+      // WHY THE FUCK ARE YOU USING ASYNC EACH ARRRRRRRRRRRRGHHHHH THIS SHOULD BE LODASH EACH 
       async.eachOfSeries(claims, function(claim, claim_id, callback_claims_series) {
+        // Example: claim_id = P149
         // Skip if not a chosen claim
         if( ! _.includes(chosen_claims, claim_id)) return callback_claims_series()
         // $scope.status = 'Analysing ' + place.name
         // $scope.$apply()
 
-        $scope.status = 'Analysing connection: ' + claim_id
 
-        console.log(claim_id)
+
+        // $scope.status = 'Analysing connection: ' + claim_id
+
+        // console.log(claim_id)
 
         // Go through each of the claims and compare
-        async.eachOfSeries(claim, function(source, source_id, callback_places_series) {
+        async.eachOfSeries(claim, function(claim_val, claim_val_id, callback_claim_val_series) {
+          // Example: claim_val_id = Q176483 (Gothic Architecture)
 
-          $scope.status = 'Analysing connection: ' + claim_id + ' for ' + source_id
+          $scope.status = 'Analysing connection: ' + claim_id + ' for ' + claim_val_id
 
-          source = source[0]
-          async.eachOfSeries(claim, function(target, target_id, callback_destinations_series) {
-            target = target[0]
-            // console.log(target)
-            // Skip if place = destination
-            if(source_id == target_id) return callback_destinations_series()
-            
-            // Skip if this destination has already been analysed
-            if(_.includes(analysed, target_id)) return callback_destinations_series()
+          // @todo Add to list to find out wtf this value is?
 
-            // console.log(source.mainsnak.datatype)
+          // console.log(claim_val)
 
-            if(source.mainsnak.datatype != 'wikibase-item') {
-              console.log(claim_id + ' is of type: ' + source.mainsnak.datatype + ' not wikibase')
-            }
+          // Ignore if there are less than 2 answers
+          if(Object.keys(claim_val).length < 2) return callback_claim_val_series()
 
-            // If both place and destination have the same value for claim
-            if(source.mainsnak.datavalue.value.id == target.mainsnak.datavalue.value.id) {
+          claim_nodes.push({
+            id: claim_val_id,
+            name: claim_val_id // @todo request claim label from Wikidata
+          })
+
+
+          // Connect each node to the claim_val
+          _.each(claim_val, function(place, place_id) {
               var c = {
                 data: {
-                  id: claim_id + '-' + source_id + '-' + target_id,
-                  source: source_id,
-                  target: target_id,
+                  id: claim_id + '-' + place_id + '-' + claim_val_id,
+                  source: place_id,
+                  target: claim_val_id,
                   claim_id: claim_id,
-                  claim: source
+                  // claim: claim_val
                 }
               }
               connections.push(c)
-            }
-            // console.log('bip')
+          })
 
-            // Repress Max call stack size bug
-            async.setImmediate(function() {
-              // console.log('bop')
-              return callback_destinations_series()
-            })
-            
-          }, function(err) {
-            if(err) console.error(err)
-            analysed.push(source_id)
-            callback_places_series()
-          }) // end of destination series
+          return callback_claim_val_series()
         }, function(err) {
           if(err) console.error(err)
           // analysed.push(place['@id'])
           callback_claims_series()
-        }) // end of places series
+        }) // end of claim_val_series series
 
       }, function(err) {
         if(err) console.error(err)
-        // metadata.claims = claims
-        // Data.set(metadata)
+        metadata.claim_nodes = claim_nodes
+        Data.set(metadata)
         Connection.set(connections)
         callback(null, places)
       }) // end of claims series
