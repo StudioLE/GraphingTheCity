@@ -25,8 +25,7 @@
     "jquery": "~2.2.4",
     "less": "~2.7.1",
     "lodash": "~4.13.1",
-    "overpass": "*",
-    "d3": "^4.2.2"
+    "overpass": "*"
   },
   "resolutions": {
     "lodash": "~4.13.1"

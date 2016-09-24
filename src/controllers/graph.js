@@ -47,25 +47,41 @@ angular.module('app.graph', ['ngRoute'])
 
   var nodes = _.map(places, function(place) {
     return {
-      id: place.id,
-      name: place.name
-      // classes: 'bg-blue',
-      // selected: true,
-      // selectable: true,
-      // locked: true,
-      // grabbable: true
+      data: {
+        id: place.id,
+        name: place.name
+        // classes: 'bg-blue',
+        // selected: true,
+        // selectable: true,
+        // locked: true,
+        // grabbable: true
+      }
     }
   })
 
 
-  nodes = nodes.concat(_.values(data.values))
+  nodes = nodes.concat(_.map(data.values, function(val) {
+    return {
+      data: {
+        id: val.id,
+        title: val.id
+        // classes: 'bg-blue',
+        // selected: true,
+        // selectable: true,
+        // locked: true,
+        // grabbable: true
+      }
+    }
+  }))
   console.log(nodes)
 
   // Cytoscape had a 'data' sub object, d3 does not so lets convert
-  var links = _.map(connections, function(link) {
-    // return link.data
-    return link.data
-  })
+  // var links = _.map(connections, function(link) {
+  //   // return link.data
+  //   return link.data
+  // })
+
+  var links = connections
 
   console.log(nodes)
 
@@ -74,140 +90,85 @@ angular.module('app.graph', ['ngRoute'])
   // d3 graph example from: https://bl.ocks.org/mbostock/4062045
   // d3 responsive viewport: http://stackoverflow.com/questions/9400615/whats-the-best-way-to-make-a-d3-js-visualisation-layout-responsive
 
-  var svg = d3.select("svg"),
-      width = +svg.attr("width"),
-      height = +svg.attr("height")
+  var cy = window.cy = cytoscape({
+   container: document.getElementById('cy'),
+   // userZoomingEnabled: false,
+   // userPanningEnabled: false,
+   textureOnViewport: true,
+   boxSelectionEnabled: false,
+   layout: {
+     name: criteria.layout || 'circle' // 'circle' // 'cose-bilkent' 'dagre' 'grid' 'spread'
+   },
+   elements: {
+     nodes: nodes,
+     edges: connections
+   },
+   style: [
+     {
+       selector: 'node',
+       style: {
+         // 'height': 40,
+         // 'width': 40,
+         'label': 'data(label)',
+         'background-color': '#FF9800',
+         'color': '#ffffff',
+         'font-size': '10px',
+         'text-valign': 'bottom',
+         'text-halign': 'right',
+       }
+     },
 
-  var radius = 6
-
-  var color = d3.scaleOrdinal(d3.schemeCategory20);
-
-  var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody().strength(-2))
-    // .gravity(.5)
-    .force("center", d3.forceCenter(width / 2, height / 2));
-
-  var link = svg.append("g")
-    .attr("class", "links")
-    .selectAll("line")
-    .data(links)
-    .enter().append("line")
-    .attr("stroke-width", function(d) { return Math.sqrt(d.value); })
-      .on("mouseover", mouseoverConnection)
-      .on("mouseout", mouseoutConnection)
-
-  var node = svg.append("g")
-      .attr("class", "nodes")
-    .selectAll("circle")
-    .data(nodes)
-    .enter().append("circle")
-      .attr("r", 5)
-      .attr("fill", function(d) { return color(d.group); })
-      .call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended))
-      .on("mouseover", mouseoverNode)
-      .on("mouseout", mouseoutNode)
-      // .attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-      // .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); })
+     {
+       selector: 'edge',
+       style: {
+         'width': 3,
+         'line-color': '#FF9800'
+       }
+     }
+   ],
+  })
 
 
-  node.append("title")
-      .text(function(d) { return d.id; });
-
-  simulation
-      .nodes(nodes)
-      .on("tick", ticked);
-
-  simulation.force("link")
-      .links(links);
-
-  function ticked() {
-    link
-        .attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
-
-    node
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-  }
-  // });
-
-  function dragstarted(d) {
-    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
+  $scope.changeLayout = function() {
+   Criteria.set($scope.criteria())
+   cy.layout({
+     name: $scope.criteria().layout
+   })
   }
 
-  function dragged(d) {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
-  }
 
-  function dragended(d) {
-    if (!d3.event.active) simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-  }
-
-  function mouseoverNode(obj) {
+  cy.on('mouseover', 'node', function(event) {
     $scope.place = {}
     $scope.claim = {}
-    // console.log(obj)
-    // console.log(places[obj.index])
     $scope.showConnection = false
+      $scope.showClaim = false
+      $scope.showPlace = false
 
-    // If the index is within the places range then it's a place
-    if(obj.index + 1 <= places.length) {
-      $scope.place = places[obj.index]
+    // If the event has a name then it's a place
+    if(event.cyTarget._private.data.name) {
+      $scope.place = _.find(places, {
+        id: event.cyTarget.id()
+      })
 
       $scope.showPlace = true
-      $scope.showClaim = false
     }
     // Else it must be a claim val
     else {
-      // $scope.claim = data.values[obj.index - places.length]
-      $scope.claim = data.values[obj.id]
-      console.log($scope.claim)
+      $scope.claim = data.values[event.cyTarget.id()]
 
       $scope.showClaim = true
-      $scope.showPlace = false
     }
-
-    // console.log(places)
-    // console.log(places.length)
-    // console.log(obj.index + 1)
-
     
     $scope.$apply()
-  }
+  })
 
-  function mouseoutNode(obj) {
-    // $scope.place = {}
-    // $scope.showPlace = false
-    // $scope.$apply()
-  }
-
-  function mouseoverConnection(obj) {
+  cy.on('mouseover', 'edge', function(event) {
     $scope.connection = {}
-    console.log(obj)
-    console.log(connections[obj.index])
-    $scope.connection = obj
-    console.log($scope.connection)
+    $scope.connection = event.cyTarget.data()
     $scope.showPlace = false
     $scope.showClaim = false
     $scope.showConnection = true
     $scope.$apply()
-  }
-
-  function mouseoutConnection(obj) {
-    // $scope.connection = {}
-    // $scope.showConnection = false
-    // $scope.$apply()
-  }
+  })
 
 })

@@ -1,6 +1,7 @@
 <div class="fixed">
-  <div class="row">
-    <div class="col-xs-3">
+  
+  <div class="row" style="height: 100%">
+    <div class="col-xs-3" style="height: 100%">
       <ng-include ng-if="showPlace" src="'views/card.html'"></ng-include>
 
       <div ng-if="showClaim">
@@ -18,18 +19,59 @@
 
       <div ng-if="showConnection">
         <h4>
-          <a ng-href="https://www.wikidata.org/wiki/{{ connection.source.id }}">{{ connection.source.name }}</a>
+          <a ng-href="https://www.wikidata.org/wiki/{{ connection.source }}">{{ connection.source }}</a>
           <div>connects by</div>
+          <!-- @todo connection.source is an entity id, we want to know the label of the entity -->
           <a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_id }}">{{ data().properties[connection.claim_id].labels.en.value }}</a>
           <div>to</div>
-          <a ng-href="https://www.wikidata.org/wiki/{{ connection.target.id }}">{{ data().values[connection.target.id].labels.en.value }}</a>
+          <a ng-href="https://www.wikidata.org/wiki/{{ connection.target }}">{{ data().values[connection.target].labels.en.value }}</a>
+
+          <json-formatter class="json-formatter-dark" json="connection" open="0"></json-formatter>
       </div>
 
 
     </div>
-    <div class="col-xs-9">
-      <svg id="cy" width="600" height="600" viewBox="0 0 600 600"
-      preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="col-xs-9" style="height: 100%">
+      <div id="cy"></div>
     </div>
   </div> <!-- .row -->
 </div> <!-- .fixed -->
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+  <div class="container">
+    <form class="form-horizontal" name="form">
+      <div class="form-group">
+        <div class="col-sm-2">
+          <a class="btn btn-primary"
+            ng-click="export()"
+            href="filesystem:http://localhost:1337/temporary/citygraph.json"
+            download="citygraph.cyjs">Export to Cytoscape</a>
+          <!-- <a class="btn btn-primary"
+            ng-click="savePNG()"
+            ng-href="{{ pngSrc }}"
+            download="citygraph.png">Save PNG</a> -->
+        </div>
+        <label for="" class="col-sm-offset-4 col-sm-2 control-label">Layout</label>
+        <div class="col-sm-4">
+          <select class="form-control"
+            ng-model="criteria().layout"
+            ng-change="changeLayout()">
+            <option>breadthfirst</option>
+            <option>circle</option>
+            <option>concentric</option>
+            <option>cose</option>
+            <option>cose-bilkent</option>
+            <option>dagre</option>
+            <option>grid</option>
+            <option>spread</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div> <!-- .container -->
+</nav>
