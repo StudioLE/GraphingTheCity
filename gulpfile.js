@@ -136,6 +136,7 @@ gulp.task('vendor-js', function() {
     'src/bower_components/bootstrap/dist/js/bootstrap.min.js',
     'src/bower_components/lodash/dist/lodash.min.js',
     'src/bower_components/async/dist/async.min.js',
+    'src/bower_components/d3/d3.min.js',
     'src/bower_components/cytoscape/dist/cytoscape.min.js',
     'src/bower_components/cytoscape-spread/cytoscape-spread.js',
     'src/bower_components/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js',
