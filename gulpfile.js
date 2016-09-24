@@ -25,7 +25,6 @@ var build = {
     return p.join('build', path)
   },
 
-
   /**
    * Format version query string
    */

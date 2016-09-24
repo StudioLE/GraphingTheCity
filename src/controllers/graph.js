@@ -59,7 +59,6 @@ angular.module('app.graph', ['ngRoute'])
     }
   })
 
-
   nodes = nodes.concat(_.map(data.values, function(val) {
     return {
       data: {
@@ -73,22 +72,8 @@ angular.module('app.graph', ['ngRoute'])
       }
     }
   }))
-  console.log(nodes)
-
-  // Cytoscape had a 'data' sub object, d3 does not so lets convert
-  // var links = _.map(connections, function(link) {
-  //   // return link.data
-  //   return link.data
-  // })
 
   var links = connections
-
-  console.log(nodes)
-
-  console.log(links)
-
-  // d3 graph example from: https://bl.ocks.org/mbostock/4062045
-  // d3 responsive viewport: http://stackoverflow.com/questions/9400615/whats-the-best-way-to-make-a-d3-js-visualisation-layout-responsive
 
   var cy = window.cy = cytoscape({
    container: document.getElementById('cy'),
@@ -128,14 +113,12 @@ angular.module('app.graph', ['ngRoute'])
    ],
   })
 
-
   $scope.changeLayout = function() {
    Criteria.set($scope.criteria())
    cy.layout({
      name: $scope.criteria().layout
    })
   }
-
 
   cy.on('mouseover', 'node', function(event) {
     $scope.place = {}
@@ -158,7 +141,7 @@ angular.module('app.graph', ['ngRoute'])
 
       $scope.showClaim = true
     }
-    
+
     $scope.$apply()
   })
 

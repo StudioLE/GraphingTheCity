@@ -20,7 +20,7 @@ angular.module('app.config', [])
     }
   },
   endpoint: function(req) {
-    return this.endpoint_url + req + '/json' 
+    return this.endpoint_url + req + '/json'
     // ?key=AIzaSyClYM73nng_qK5MdY2mvVYcafxNESu4RIQ&location=55,-1.6&radius=10000&type=train_station&rankby=prominence
   }
 })

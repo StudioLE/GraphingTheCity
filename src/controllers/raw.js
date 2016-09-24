@@ -58,5 +58,4 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
     return Data.unset()
   }
 
-
 })

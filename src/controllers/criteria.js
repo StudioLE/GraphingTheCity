@@ -36,7 +36,6 @@ angular.module('app.criteria', ['ngRoute'])
     // componentRestrictions: { country: 'au' },
     types: ['(cities)']
   }
-  
 
   /**
    * Update data model

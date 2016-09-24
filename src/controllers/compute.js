@@ -26,12 +26,12 @@ angular.module('app.compute', ['ngRoute'])
    */
   var criteria = Criteria.get()
   var places = []
-  // var metadata = Data.get()
   var metadata = {}
 
   $scope.status = 'Computing'
 
   async.waterfall([
+
     /**
      * Get Places from Knowledge Search API
      */
@@ -49,6 +49,7 @@ angular.module('app.compute', ['ngRoute'])
         callback(true, response)
       })
     },
+
     /**
      * Get coords of Places from Wikipedia API
      */
@@ -60,8 +61,6 @@ angular.module('app.compute', ['ngRoute'])
       var titles = _.map(knowledgeGraph, function(element) {
         return element.result.name
       })
-
-      // console.log(titles)
 
       // Reset all counts
       metadata.count = {
@@ -97,13 +96,14 @@ angular.module('app.compute', ['ngRoute'])
         callback(null, knowledgeGraph, results)
       })
     },
+
     /**
      * Associate knowledgeGraph with wikidata
      */
     function(knowledgeGraph, wikidata, callback) {
 
       $scope.status = 'Associating places with Wikidata'
-      
+
       var places = {}
 
       // Count wikidata results
@@ -151,6 +151,7 @@ angular.module('app.compute', ['ngRoute'])
 
       callback(null, places)
     },
+
     /**
      * Filter out non-local objects
      */
@@ -179,6 +180,7 @@ angular.module('app.compute', ['ngRoute'])
       }))
 
     },
+
     /**
      * Add to local storage
      */
@@ -186,23 +188,19 @@ angular.module('app.compute', ['ngRoute'])
 
       $scope.status = 'Storing places'
 
-      // console.log(places)
-
       metadata.count.places = places.length
 
       Place.set(_.values(places))
-      // Data.set(metadata)
       callback(null, places)
-
     },
+
     /**
      * Calculate connections
      */
     function(places, callback) {
-      var destinations = places
       $scope.status = 'Analysing places'
-      // $scope.$apply()
 
+      var destinations = places
       var connections = []
       var analysed = []
       var claims = {}
@@ -210,7 +208,6 @@ angular.module('app.compute', ['ngRoute'])
       async.eachSeries(places, function(place, callback_places_series) {
 
         $scope.status = 'Analysing ' + place.name
-        // $scope.$apply()
 
         // Add each of this place's claims to the claims object
         _.each(place.wikidata.claims, function(claim, claim_id) {
@@ -224,10 +221,10 @@ angular.module('app.compute', ['ngRoute'])
 
             // Ensure the property exists
             if( ! claims[claim_id][claim_val.mainsnak.datavalue.value.id]) claims[claim_id][claim_val.mainsnak.datavalue.value.id] = {}
-            
+
             claims[claim_id][claim_val.mainsnak.datavalue.value.id][place.id] = claim_val
           })
-          
+
         })
 
         // Connect by distance deprecated so skip
@@ -261,11 +258,11 @@ angular.module('app.compute', ['ngRoute'])
       }, function(err) {
         if(err) console.error(err)
         metadata.claims = claims
-        // Data.set(metadata)
         Connection.set(connections)
         callback(null, places)
       }) // end of places series
     },
+
     /**
      * Get information on all claims
      */
@@ -274,8 +271,6 @@ angular.module('app.compute', ['ngRoute'])
       $scope.status = 'Fetching data for connections from Wikidata'
 
       var claim_ids = _.keys(metadata.claims)
-
-      // console.log(claim_ids)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
       async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
@@ -298,16 +293,14 @@ angular.module('app.compute', ['ngRoute'])
 
       }, function(err, results) {
         if(err) return callback(err, results)
-        
+
         // Convert wikidata array to object
         metadata.properties = _.keyBy(results, 'id')
-
-        // Data.set(metadata)
         callback(null, places)
-        // callback(null, knowledgeGraph, results)
       })
 
     },
+
     /**
      * Calculate connections by claims
      */
@@ -315,13 +308,6 @@ angular.module('app.compute', ['ngRoute'])
 
       $scope.status = 'Analysing connections'
 
-      // Just skip this step
-      // return callback(null, places)
-      
-
-      // var destinations = places
-      // $scope.$apply()
-      // var claims = Data.get().claims
       var claims = metadata.claims
 
       var connections = []
@@ -344,14 +330,6 @@ angular.module('app.compute', ['ngRoute'])
         // Example: claim_prop_id = P149
         // Skip if not a chosen claim
         if( ! _.includes(chosen_claims, claim_prop_id)) return callback_claim_properties_series()
-        // $scope.status = 'Analysing ' + place.name
-        // $scope.$apply()
-
-
-
-        // $scope.status = 'Analysing connection: ' + claim_id
-
-        // console.log(claim_id)
 
         // Go through each of the claims and compare
         async.eachOfSeries(claim_prop, function(claim_val, claim_val_id, callback_claim_val_series) {
@@ -370,7 +348,6 @@ angular.module('app.compute', ['ngRoute'])
             id: claim_val_id,
             name: claim_val_id // @todo request claim label from Wikidata
           })
-
 
           // Connect each node to the claim_val
           _.each(claim_val, function(place, place_id) {
@@ -400,10 +377,8 @@ angular.module('app.compute', ['ngRoute'])
         Connection.set(connections)
         callback(null, places)
       }) // end of claims series
-
-
-      // callback(null, places)
     },
+
     /**
      * Get information on all claims
      */
@@ -414,8 +389,6 @@ angular.module('app.compute', ['ngRoute'])
       var claim_ids = _.map(metadata.claim_nodes, function(c) {
         return c.id
       })
-
-      console.log(claim_ids)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
       async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
@@ -438,13 +411,10 @@ angular.module('app.compute', ['ngRoute'])
 
       }, function(err, results) {
         if(err) return callback(err, results)
-        
+
         // Convert wikidata array to object
         metadata.values = _.keyBy(results, 'id')
         // metadata.values = results
-        
-        console.log(results)
-        console.log(metadata.properties)
 
         Data.set(metadata)
         callback(null, places)
@@ -454,6 +424,7 @@ angular.module('app.compute', ['ngRoute'])
     },
 
   ],
+
   /**
    * Async waterfall complete
    */
@@ -464,8 +435,6 @@ angular.module('app.compute', ['ngRoute'])
 
       $scope.status = 'Computation complete'
       $location.path('/schedule')
-      // $scope.$apply()
-      // window.location.href = '/#/schedule'
   })
 
 })

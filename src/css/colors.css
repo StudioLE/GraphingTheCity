@@ -120,10 +120,10 @@
 .black {
   color: #111; }
 
-/* Border colors 
+/* Border colors
 
-   Use with another border utility that sets border-width and style 
-   i.e .border { border-width: 1px; border-style: solid; }     
+   Use with another border utility that sets border-width and style
+   i.e .border { border-width: 1px; border-style: solid; }
 */
 .border--navy {
   border-color: #001F3F; }
