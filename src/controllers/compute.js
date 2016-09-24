@@ -333,19 +333,17 @@ angular.module('app.compute', ['ngRoute'])
       var chosen_claims = [
         // 'P1435', // heritage status
         'P149',  // architectural style
-        // 'P31',   // instance of
+        'P31',   // instance of
         // 'P131',  // located in the administrative territorial entity
         'P84',   // architect
         // 'P1619', // date of official opening
         // 'P571'   // inception
       ]
 
-
-      // WHY THE FUCK ARE YOU USING ASYNC EACH ARRRRRRRRRRRRGHHHHH THIS SHOULD BE LODASH EACH 
-      async.eachOfSeries(claims, function(claim, claim_id, callback_claims_series) {
-        // Example: claim_id = P149
+      async.eachOfSeries(claims, function(claim_prop, claim_prop_id, callback_claim_properties_series) {
+        // Example: claim_prop_id = P149
         // Skip if not a chosen claim
-        if( ! _.includes(chosen_claims, claim_id)) return callback_claims_series()
+        if( ! _.includes(chosen_claims, claim_prop_id)) return callback_claim_properties_series()
         // $scope.status = 'Analysing ' + place.name
         // $scope.$apply()
 
@@ -356,10 +354,10 @@ angular.module('app.compute', ['ngRoute'])
         // console.log(claim_id)
 
         // Go through each of the claims and compare
-        async.eachOfSeries(claim, function(claim_val, claim_val_id, callback_claim_val_series) {
+        async.eachOfSeries(claim_prop, function(claim_val, claim_val_id, callback_claim_val_series) {
           // Example: claim_val_id = Q176483 (Gothic Architecture)
 
-          $scope.status = 'Analysing connection: ' + claim_id + ' for ' + claim_val_id
+          $scope.status = 'Analysing connection: ' + claim_prop_id + ' for ' + claim_val_id
 
           // @todo Add to list to find out wtf this value is?
 
@@ -378,10 +376,10 @@ angular.module('app.compute', ['ngRoute'])
           _.each(claim_val, function(place, place_id) {
               var c = {
                 data: {
-                  id: claim_id + '-' + place_id + '-' + claim_val_id,
+                  id: claim_prop_id + '-' + place_id + '-' + claim_val_id,
                   source: place_id,
                   target: claim_val_id,
-                  claim_id: claim_id,
+                  claim_id: claim_prop_id,
                   // claim: claim_val
                 }
               }
@@ -392,19 +390,67 @@ angular.module('app.compute', ['ngRoute'])
         }, function(err) {
           if(err) console.error(err)
           // analysed.push(place['@id'])
-          callback_claims_series()
+          callback_claim_properties_series()
         }) // end of claim_val_series series
 
       }, function(err) {
         if(err) console.error(err)
         metadata.claim_nodes = claim_nodes
-        Data.set(metadata)
+        // Data.set(metadata)
         Connection.set(connections)
         callback(null, places)
       }) // end of claims series
 
 
       // callback(null, places)
+    },
+    /**
+     * Get information on all claims
+     */
+    function(places, callback) {
+
+      $scope.status = 'Fetching data for claim nodes from Wikidata'
+
+      var claim_ids = _.map(metadata.claim_nodes, function(c) {
+        return c.id
+      })
+
+      console.log(claim_ids)
+
+      // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
+      async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
+
+        // Create a string from the ids
+        claim_ids = claim_ids.join('|')
+
+        $http({
+          method: 'GET',
+          // url: 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&origin=*&titles=' + titles
+          // url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
+          url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&ids=' + claim_ids
+        }).then(function successCallback(response) {
+          console.log('Wikidata returned %s claim values', _.keys(response.data.entities).length)
+          // async.concat only works with arrays so convert data to array
+          concatCallback(null, _.values(response.data.entities))
+        }, function errorCallback(response) {
+          concatCallback(true, response)
+        })
+
+      }, function(err, results) {
+        if(err) return callback(err, results)
+        
+        // Convert wikidata array to object
+        metadata.values = _.keyBy(results, 'id')
+        // metadata.values = results
+        
+        console.log(results)
+        console.log(metadata.properties)
+
+        Data.set(metadata)
+        callback(null, places)
+        // callback(null, knowledgeGraph, results)
+      })
+
     },
 
   ],

@@ -40,6 +40,7 @@ angular.module('app.graph', ['ngRoute'])
     return data
   }
   $scope.place = {}
+  $scope.claim = {}
   $scope.connection = {}
   $scope.showPlace = false
   $scope.showConnection = false
@@ -57,7 +58,7 @@ angular.module('app.graph', ['ngRoute'])
   })
 
 
-  nodes = nodes.concat(data.claim_nodes)
+  nodes = nodes.concat(_.values(data.values))
   console.log(nodes)
 
   // Cytoscape had a 'data' sub object, d3 does not so lets convert
@@ -83,7 +84,7 @@ angular.module('app.graph', ['ngRoute'])
 
   var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody().strength(-2))
+    .force("charge", d3.forceManyBody().strength(-120))
     // .gravity(.5)
     .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -107,8 +108,8 @@ angular.module('app.graph', ['ngRoute'])
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended))
-      .on("mouseover", mouseoverPlace)
-      .on("mouseout", mouseoutPlace)
+      .on("mouseover", mouseoverNode)
+      .on("mouseout", mouseoutNode)
       // .attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
       // .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); })
 
@@ -153,17 +154,39 @@ angular.module('app.graph', ['ngRoute'])
     d.fy = null;
   }
 
-  function mouseoverPlace(obj) {
+  function mouseoverNode(obj) {
     $scope.place = {}
-    console.log(obj)
-    console.log(places[obj.index])
-    $scope.place = places[obj.index]
+    $scope.claim = {}
+    // console.log(obj)
+    // console.log(places[obj.index])
     $scope.showConnection = false
-    $scope.showPlace = true
+
+    // If the index is within the places range then it's a place
+    if(obj.index + 1 <= places.length) {
+      $scope.place = places[obj.index]
+
+      $scope.showPlace = true
+      $scope.showClaim = false
+    }
+    // Else it must be a claim val
+    else {
+      // $scope.claim = data.values[obj.index - places.length]
+      $scope.claim = data.values[obj.id]
+      console.log($scope.claim)
+
+      $scope.showClaim = true
+      $scope.showPlace = false
+    }
+
+    // console.log(places)
+    // console.log(places.length)
+    // console.log(obj.index + 1)
+
+    
     $scope.$apply()
   }
 
-  function mouseoutPlace(obj) {
+  function mouseoutNode(obj) {
     // $scope.place = {}
     // $scope.showPlace = false
     // $scope.$apply()
@@ -174,7 +197,9 @@ angular.module('app.graph', ['ngRoute'])
     console.log(obj)
     console.log(connections[obj.index])
     $scope.connection = obj
+    console.log($scope.connection)
     $scope.showPlace = false
+    $scope.showClaim = false
     $scope.showConnection = true
     $scope.$apply()
   }

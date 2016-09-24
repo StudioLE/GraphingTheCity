@@ -1,10 +1,10 @@
         <a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}" class="thumbnail">
-          <img ng-src="{{ place.image.contentUrl }}">
+          <img ng-if="place.image" ng-src="{{ place.image.contentUrl }}">
+          <img ng-if=" ! place.image" ng-src="http://placehold.it/350x150">
+          
         </a>
         
         <h4><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">{{ place.name }}</a></h4>
-
-
 
 
         <p><span ng-repeat-start="value in place['@type']"
