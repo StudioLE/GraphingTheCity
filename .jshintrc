@@ -16,7 +16,7 @@
     "async": false,
     "require": false,
     "process": false,
-    "d3": "false"
+    "d3": false
   },
   "asi": true
 }
