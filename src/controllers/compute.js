@@ -19,7 +19,7 @@ angular.module('app.compute', ['ngRoute'])
 * ComputeCtrl controller
 *
 ******************************************************************/
-.controller('ComputeCtrl', function($scope, $http, $location, Config, Criteria, Place, Connection, Data, Helper) {
+.controller('ComputeCtrl', function($scope, $http, $location, Config, Criteria, Entity, Claim, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
@@ -48,8 +48,7 @@ angular.module('app.compute', ['ngRoute'])
       return ''
     }
   }
-  
-  var places = []
+
   var metadata = {}
 
   async.waterfall([
@@ -91,7 +90,11 @@ angular.module('app.compute', ['ngRoute'])
         out_of_bounds: 0,
         no_geo: 0,
         no_name: 0,
-        no_match: 0
+        no_match: 0,
+        nodes: 0,
+        connections: 0,
+        places: 0,
+        claims: 0
       }
 
       // Count Knowledge Graph results
@@ -129,7 +132,13 @@ angular.module('app.compute', ['ngRoute'])
       $scope.status = 'Associate Places with Data'
       $scope.step = 4
 
-      var places = {}
+      var places = _.keyBy(wikidata, 'id')
+      // Store all places to local storage
+      Entity.set(places)
+
+      return callback(null, places)
+
+      // @todo the rest of this method is no longer required.
 
       // Count wikidata results
       metadata.count.wikidata = wikidata.length
@@ -188,14 +197,21 @@ angular.module('app.compute', ['ngRoute'])
       var centrePoint = Helper.formatGooglePlaceToSchema(criteria.city.geometry.location)
 
       // Filter out places that do not work
-      callback(null, _.filter(places, function(place) {
-        if( ! place.geo) {
+      places = _.filter(places, function(place) {
+        if( ! place.claims || ! place.claims.P625) {
           // console.log('No .geo for:', place.name, place)
           metadata.count.no_geo ++
           return false
         }
+
+        place.geo = {
+          '@type': 'GeoCoordinates',
+          latitude: place.claims.P625[0].mainsnak.datavalue.value.latitude,
+          longitude: place.claims.P625[0].mainsnak.datavalue.value.longitude
+        }
+
         // @todo use criteria.city.geometry.viewport as bounds instead
-        else if(Helper.haversineSchema(place.geo, centrePoint) > 5000) {
+        if(Helper.haversineSchema(place.geo, centrePoint) > 5000) {
           // console.log('Place out of bounds:', place)
           metadata.count.out_of_bounds ++
           return false
@@ -203,12 +219,14 @@ angular.module('app.compute', ['ngRoute'])
         else {
           return true
         }
-      }))
+      })
+
+      callback(null, places)
 
     },
 
     /**
-     * Add to local storage
+     * Store places as Nodes
      */
     function(places, callback) {
 
@@ -216,7 +234,22 @@ angular.module('app.compute', ['ngRoute'])
 
       metadata.count.places = places.length
 
-      Place.set(_.values(places))
+      var nodes = _.map(places, function(place) {
+        return {
+          data: {
+            id: place.id,
+            name: place.labels.en.value,
+            type: 'place'
+            // classes: 'bg-blue',
+            // selected: true,
+            // selectable: true,
+            // locked: true,
+            // grabbable: true
+          }
+        }
+      })
+
+      Node.set(nodes)
       callback(null, places)
     },
 
@@ -237,7 +270,7 @@ angular.module('app.compute', ['ngRoute'])
         $scope.status = 'Analysing ' + place.name
 
         // Add each of this place's claims to the claims object
-        _.each(place.wikidata.claims, function(claim, claim_id) {
+        _.each(place.claims, function(claim, claim_id) {
           // If this is the first of claim type then add to object
           if( ! claims[claim_id]) claims[claim_id] = {}
           // For this claim, add each of its values to the relevant claim object
@@ -259,20 +292,23 @@ angular.module('app.compute', ['ngRoute'])
 
       }, function(err) {
         if(err) console.error(err)
-        metadata.claims = claims
-        callback(null, places)
+        
+        // Store all Claims in local storage
+        Claim.set(claims)
+
+        callback(null, places, claims)
       }) // end of places series
     },
 
     /**
      * Get data for Claim Properties
      */
-    function(places, callback) {
+    function(places, claims, callback) {
 
       $scope.status = 'Get data for Claim Properties from Wikidata API'
       $scope.step = 7
 
-      var claim_ids = _.keys(metadata.claims)
+      var claim_ids = _.keys(claims)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
       async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
@@ -296,9 +332,10 @@ angular.module('app.compute', ['ngRoute'])
       }, function(err, results) {
         if(err) return callback(err, results)
 
-        // Convert wikidata array to object
-        metadata.properties = _.keyBy(results, 'id')
-        callback(null, places)
+        // Store all Claim Properties in local storage
+        Entity.add(_.keyBy(results, 'id'))
+
+        callback(null, places, claims)
       })
 
     },
@@ -306,12 +343,10 @@ angular.module('app.compute', ['ngRoute'])
     /**
      * Analyse Connections
      */
-    function(places, callback) {
+    function(places, claims, callback) {
 
       $scope.status = 'Analyse Connections'
       $scope.step = 8
-
-      var claims = metadata.claims
 
       var connections = []
       var analysed = []
@@ -348,9 +383,13 @@ angular.module('app.compute', ['ngRoute'])
           // Ignore if there are less than 2 answers
           if(Object.keys(claim_val).length < 2) return callback_claim_val_series()
 
-          claim_nodes.push({
-            id: claim_val_id,
-            name: claim_val_id // @todo request claim label from Wikidata
+          claim_nodes.push( {
+            data: {
+              id: claim_val_id,
+              name: claim_val_id, // @todo request claim label from Wikidata
+              property: claim_prop_id,
+              type: 'claim'
+            }
           })
 
           // Connect each node to the claim_val
@@ -360,7 +399,7 @@ angular.module('app.compute', ['ngRoute'])
                   id: claim_prop_id + '-' + place_id + '-' + claim_val_id,
                   source: place_id,
                   target: claim_val_id,
-                  claim_id: claim_prop_id,
+                  claim_property: claim_prop_id,
                   // claim: claim_val
                 }
               }
@@ -376,9 +415,13 @@ angular.module('app.compute', ['ngRoute'])
 
       }, function(err) {
         if(err) console.error(err)
-        metadata.claim_nodes = claim_nodes
-        // Data.set(metadata)
+
+        // Store all claim nodes in local storage
+        Node.add(claim_nodes)
+
+        // Store all connections in local storage
         Connection.set(connections)
+
         callback(null, places)
       }) // end of claims series
     },
@@ -391,9 +434,16 @@ angular.module('app.compute', ['ngRoute'])
       $scope.status = 'Get data for Claim Values from Wikidata API'
       $scope.step = 9
 
-      var claim_ids = _.map(metadata.claim_nodes, function(c) {
-        return c.id
-      })
+      var nodes = Node.get()
+
+      var claim_ids = _.filter(_.map(nodes, function(c) {
+        if(c.data.type == 'claim') {
+          return c.data.id
+        }
+        else {
+          return false
+        }
+      }))
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
       async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
@@ -417,15 +467,39 @@ angular.module('app.compute', ['ngRoute'])
       }, function(err, results) {
         if(err) return callback(err, results)
 
-        // Convert wikidata array to object
-        metadata.values = _.keyBy(results, 'id')
-        // metadata.values = results
+        // Store Claim Values in local storage
+        Entity.add(_.keyBy(results, 'id'))
 
-        Data.set(metadata)
+        
         callback(null, places)
         // callback(null, knowledgeGraph, results)
       })
 
+    },
+
+    /**
+     * Final counts
+     */
+    function(places, callback) {
+
+      $scope.status = 'Storing places'
+
+      var nodes = Node.get()
+      var connections = Connection.get()
+
+      metadata.count.nodes = nodes.length
+      metadata.count.connections = connections.length
+      metadata.count.places = _.filter(nodes, function(node) {
+        return node.data.type == 'place'
+      }).length
+      metadata.count.claims = _.filter(nodes, function(node) {
+        return node.data.type == 'claim'
+      }).length
+
+      // Store Metadata in local storage
+      Data.set(metadata)
+
+      callback(null, places)
     },
 
   ],
@@ -435,7 +509,8 @@ angular.module('app.compute', ['ngRoute'])
    */
   function(err, places) {
     if(err) {
-      console.error(err)
+      // @todo Display error to user
+      return console.error(err)
     }
 
     $scope.status = 'Computation complete'

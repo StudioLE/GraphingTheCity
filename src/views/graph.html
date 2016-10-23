@@ -28,24 +28,24 @@
       <div class="inset" ng-if="infobox('default')">
 
         <p class="property">Nodes</p>
-        <h2>123</h2>
+        <h2>{{ data().count.nodes }}</h2>
 
         <hr>
 
         <p class="property">Connections</p>
-        <h2>123</h2>
+        <h2>{{ data().count.connections }}</h2>
 
         <hr>
 
         <div class="row">
           <div class="col-xs-6">
             <p class="property">Places</p>
-            <h3>123</h3>
+            <h3>{{ data().count.places }}</h3>
           </div>
 
           <div class="col-xs-6">
             <p class="property">Claims</p>
-            <h3>123</h3>
+            <h3>{{ data().count.claims }}</h3>
           </div>
         </div> <!-- .row -->
 
@@ -89,39 +89,34 @@
       <div ng-if="infobox('claim')">
         <a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}" class="thumbnail">
           <img ng-if="claim.claims.P18" ng-src="{{ wikimediaImage(claim.claims.P18[0].mainsnak.datavalue.value) }}">
-          <img ng-if=" ! claim.claims.P18" ng-src="http://placehold.it/350x150">
         </a>
 
         <div class="inset">
-          <p class="property">Claim Property</p>
-          <h3><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h3>
-
-          <hr>
-          <p class="property">Claim Value</p>
-          <h3><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h3>
+          <p class="property"><a ng-href="https://www.wikidata.org/wiki/{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</p>
+          <h2><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h2>
 
           <hr>
 
           <p class="property">Description</p>
-          <h4>{{ claim.descriptions.en.value }}</h4>
+          <h3>{{ claim.descriptions.en.value }}</h3>
         </div>
       </div>
 
       <div ng-if="infobox('connection')">
       <div class="inset">
           <!-- @todo connection.source is an entity id, we want to know the label of the entity -->
-          <p class="property">Source</p>
-          <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.source }}">{{ connection.source }}</a></h3>
+          <p class="property">Place</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.source }}">{{ entities()[connection.source].labels.en.value }}</a></h3>
 
           <hr>
           
-          <p class="property">Target</p>
-          <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.target }}">{{ data().values[connection.target].labels.en.value }}</a></h3>
+          <p class="property">Is Connected By</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_property }}">{{ entities()[connection.claim_property].labels.en.value }}</a></h3>
 
           <hr>
           
-          <p class="property">By</p>
-          <h3><a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_id }}">{{ data().properties[connection.claim_id].labels.en.value }}</a></h3>
+          <p class="property">To Target</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.target }}">{{ entities()[connection.target].labels.en.value }}</a></h3>
         </div>
       </div>
 

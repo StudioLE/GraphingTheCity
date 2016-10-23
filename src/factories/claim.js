@@ -1,13 +1,13 @@
 'use strict'
 
-angular.module('app.placeFactory', [])
+angular.module('app.claimFactory', [])
 
 /*****************************************************************
 *
-* Place factory
+* Claim factory
 *
 ******************************************************************/
-.factory('Place', function(localStorageService) {
+.factory('Claim', function(localStorageService) {
   return {
 
     /**
@@ -16,7 +16,7 @@ angular.module('app.placeFactory', [])
      * @return {Array} data
      */
     get: function() {
-      return localStorageService.get('place')
+      return localStorageService.get('claim')
     },
 
     /**
@@ -25,7 +25,7 @@ angular.module('app.placeFactory', [])
      * @return {Array} data
      */
     set: function(data) {
-      return localStorageService.set('place', data)
+      return localStorageService.set('claim', data)
     },
 
     /**
@@ -34,7 +34,7 @@ angular.module('app.placeFactory', [])
      * @return {Bool} data
      */
     isset: function() {
-      if(localStorageService.get('place')) {
+      if(localStorageService.get('claim')) {
         return true
       }
       else {
@@ -46,7 +46,7 @@ angular.module('app.placeFactory', [])
      * Data unset
      */
     unset: function() {
-      return localStorageService.remove('place')
+      return localStorageService.remove('claim')
     }
   }
 })

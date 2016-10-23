@@ -19,7 +19,7 @@ angular.module('app.criteria', ['ngRoute'])
 * CriteriaCtrl controlller
 *
 ******************************************************************/
-.controller('CriteriaCtrl', function($scope, $location, $timeout, Criteria) {
+.controller('CriteriaCtrl', function($scope, $location, Criteria) {
 
   /**
    * Get data from local storage
@@ -63,8 +63,10 @@ angular.module('app.criteria', ['ngRoute'])
    */
   $scope.saveCriteria = function() {
     criteria = $scope.criteria()
+    if( ! criteria.layout) {
+      criteria.layout = 'cose'
+    }
     Criteria.set(criteria)
-    // console.log(data)
 
     $location.path('/compute')
 

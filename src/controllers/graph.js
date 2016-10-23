@@ -19,22 +19,22 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, $location, Criteria, Place, Connection, Data) {
+.controller('GraphCtrl', function($scope, $location, Criteria, Entity, Node, Connection, Data) {
 
   /**
    * Get data from local storage
    */
   var criteria = Criteria.get()
-  var places = Place.get()
+  var entities = Entity.get()
+  var nodes = Node.get()
   var connections = Connection.get()
   var data = Data.get()
-  // var card = places[0]
 
   $scope.criteria = function() {
     return criteria
   }
-  $scope.places = function() {
-    return places
+  $scope.entities = function() {
+    return entities
   }
   $scope.data = function() {
     return data
@@ -42,6 +42,17 @@ angular.module('app.graph', ['ngRoute'])
   $scope.place = {}
   $scope.claim = {}
   $scope.connection = {}
+
+  $scope.chosenClaims = [
+        // 'P1435', // heritage status
+        'P31',   // instance of
+        'P149',  // architectural style
+        // 'P131',  // located in the administrative territorial entity
+        'P84',   // architect
+        // 'P1619', // date of official opening
+        // 'P571'   // inception
+        'P177' // Crosses
+      ]
 
   $scope.infoboxState = 'default'
 
@@ -55,34 +66,6 @@ angular.module('app.graph', ['ngRoute'])
     return 'https://upload.wikimedia.org/wikipedia/commons/' + hash.slice(0, 1)  + '/' + hash.slice(0, 2)  + '/' + file
   }
 
-  var nodes = _.map(places, function(place) {
-    return {
-      data: {
-        id: place.id,
-        name: place.name
-        // classes: 'bg-blue',
-        // selected: true,
-        // selectable: true,
-        // locked: true,
-        // grabbable: true
-      }
-    }
-  })
-
-  nodes = nodes.concat(_.map(data.values, function(val) {
-    return {
-      data: {
-        id: val.id,
-        title: val.id
-        // classes: 'bg-blue',
-        // selected: true,
-        // selectable: true,
-        // locked: true,
-        // grabbable: true
-      }
-    }
-  }))
-
   var links = connections
 
   var cy = window.cy = cytoscape({
@@ -92,7 +75,7 @@ angular.module('app.graph', ['ngRoute'])
    textureOnViewport: true,
    boxSelectionEnabled: false,
    layout: {
-     name: criteria.layout || 'circle' // 'circle' // 'cose-bilkent' 'dagre' 'grid' 'spread'
+     name: criteria.layout || 'cose' // 'circle' // 'cose-bilkent' 'dagre' 'grid' 'spread'
    },
    elements: {
      nodes: nodes,
@@ -134,18 +117,15 @@ angular.module('app.graph', ['ngRoute'])
     $scope.place = {}
     $scope.claim = {}
 
-    // If the event has a name then it's a place
-    if(event.cyTarget._private.data.name) {
-      $scope.place = _.find(places, {
-        id: event.cyTarget.id()
-      })
-
+    // If the event is place
+    if(event.cyTarget._private.data.type == 'place') {
+      $scope.place = entities[event.cyTarget.id()]
       $scope.infoboxState = 'place'
     }
-    // Else it must be a claim val
+    // Else it must be a claim
     else {
-      $scope.claim = data.values[event.cyTarget.id()]
-
+      $scope.claim = entities[event.cyTarget.id()]
+      $scope.claim.property = event.cyTarget._private.data.property
       $scope.infoboxState = 'claim'
     }
 

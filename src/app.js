@@ -10,7 +10,6 @@ angular.module('app', [
   'ngResource',
   'LocalStorageModule',
   'google.places',
-  'nav',
   'app.config',
   'app.static',
   'app.criteria',
@@ -19,10 +18,12 @@ angular.module('app', [
   'app.graph',
   'app.map',
   'app.raw',
-  'app.dataFactory',
   'app.criteriaFactory',
-  'app.placeFactory',
+  'app.entityFactory',
+  'app.claimFactory',
+  'app.nodeFactory',
   'app.connectionFactory',
+  'app.dataFactory',
   'app.helperFactory'
 ])
 
