@@ -33,11 +33,11 @@ angular.module('app.compute', ['ngRoute'])
   async.waterfall([
 
     /**
-     * Get Places from Knowledge Search API
+     * Get list of Places from Google Knowledge Search API
      */
     function(callback) {
 
-      $scope.status = 'Fetching places from Google Knowledge Graph'
+      $scope.status = 'Get list of Places from Google Knowledge Search API'
 
       $http({
         method: 'GET',
@@ -51,11 +51,11 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Get coords of Places from Wikipedia API
+     * Get data for Places from Wikidata API
      */
     function(knowledgeGraph, callback) {
 
-      $scope.status = 'Fetching data for places from Wikidata'
+      $scope.status = 'Get data for Places from Wikidata API'
 
       // Create an array of all place names from Knowledge Graph data
       var titles = _.map(knowledgeGraph, function(element) {
@@ -98,11 +98,11 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Associate knowledgeGraph with wikidata
+     * Associate Places with Data
      */
     function(knowledgeGraph, wikidata, callback) {
 
-      $scope.status = 'Associating places with Wikidata'
+      $scope.status = 'Associate Places with Data'
 
       var places = {}
 
@@ -157,7 +157,7 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
 
-      $scope.status = 'Filtering places'
+      $scope.status = 'Filter Places'
 
       var centrePoint = Helper.formatGooglePlaceToSchema(criteria.city.geometry.location)
 
@@ -195,10 +195,10 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Calculate connections
+     * Record all Claims
      */
     function(places, callback) {
-      $scope.status = 'Analysing places'
+      $scope.status = 'Record all Claims'
 
       var destinations = places
       var connections = []
@@ -230,45 +230,19 @@ angular.module('app.compute', ['ngRoute'])
         // Connect by distance deprecated so skip
         return callback_places_series()
 
-        // Go through each destination and compare it with this place
-        async.eachSeries(destinations, function(destination, callback_destinations_series) {
-          // Skip if place = destination
-          if(place.id == destination.id) return callback_destinations_series()
-          // Skip if this destination has already been analysed
-          if(_.includes(analysed, destination.id)) return callback_destinations_series()
-
-          var distance = Helper.haversineSchema(place.geo, destination.geo)
-          if(distance <= criteria.connection.distance) {
-            var c = {
-              data: {
-                id: place.id + '-' + destination.id,
-                source: place.id,
-                target: destination.id
-              }
-            }
-            connections.push(c)
-          }
-          callback_destinations_series()
-        }, function(err) {
-          if(err) console.error(err)
-          analysed.push(place.id)
-          callback_places_series()
-        }) // end of destination series
-
       }, function(err) {
         if(err) console.error(err)
         metadata.claims = claims
-        Connection.set(connections)
         callback(null, places)
       }) // end of places series
     },
 
     /**
-     * Get information on all claims
+     * Get data for Claim Properties
      */
     function(places, callback) {
 
-      $scope.status = 'Fetching data for connections from Wikidata'
+      $scope.status = 'Get data for Claim Properties from Wikidata API'
 
       var claim_ids = _.keys(metadata.claims)
 
@@ -302,11 +276,11 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Calculate connections by claims
+     * Analyse Connections
      */
     function(places, callback) {
 
-      $scope.status = 'Analysing connections'
+      $scope.status = 'Analyse Connections'
 
       var claims = metadata.claims
 
@@ -324,6 +298,7 @@ angular.module('app.compute', ['ngRoute'])
         'P84',   // architect
         // 'P1619', // date of official opening
         // 'P571'   // inception
+        'P177' // Crosses
       ]
 
       async.eachOfSeries(claims, function(claim_prop, claim_prop_id, callback_claim_properties_series) {
@@ -380,11 +355,11 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Get information on all claims
+     * Get data for Claim Values
      */
     function(places, callback) {
 
-      $scope.status = 'Fetching data for claim nodes from Wikidata'
+      $scope.status = 'Get data for Claim Values from Wikidata API'
 
       var claim_ids = _.map(metadata.claim_nodes, function(c) {
         return c.id
