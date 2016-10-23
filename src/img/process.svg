@@ -1,0 +1,102 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28">
+  <defs>
+    <style>
+.node {
+    fill: #000;
+    stroke-width: 4px;
+}
+.node.active,
+.node.complete {
+    fill: #f18326;
+}
+.node,
+.node-edge {
+    stroke: #fff;
+}
+.node-action {
+    font-size: 18px;
+    fill: #fff;
+    font-family: Overpass;
+    font-weight: 200;
+}
+.node-label {
+    font-weight: 600;
+}
+.node-edge {
+    fill: none;
+    stroke-width: 5px;
+}
+    </style>
+  </defs>
+  <title>Artboard 1</title>
+
+  <path class="node" ng-class="checkProgress(1)" d="M69.33,156.64a25,25,0,1,0-35.33,0,25,25,0,0,0,35.33,0"/>
+  <text class="node-action" transform="translate(73.65 111.48) rotate(-45)">
+    Define
+    <tspan class="node-label" x="0" y="18">Criteria</tspan>
+  </text>
+
+  <path class="node" ng-class="checkProgress(2)" d="M114,236.64a25,25,0,1,0,0-35.33,25,25,0,0,0,0,35.33"/>
+  <text class="node-action" transform="translate(159.15 240.96) rotate(45)">
+    Get list of
+    <tspan class="node-label" x="0" y="18">Places</tspan>
+  </text>
+
+  <path class="node" ng-class="checkProgress(3)" d="M229.33,156.64a25,25,0,1,0-35.33,0,25,25,0,0,0,35.33,0"/>
+  <text class="node-action" transform="translate(233.65 111.48) rotate(-45)">
+    Get data for
+    <tspan class="node-label" x="0" y="18">Places</tspan>
+  </text>
+
+  <path class="node" ng-class="checkProgress(4)" d="M274,236.64a25,25,0,1,0,0-35.33,25,25,0,0,0,0,35.33"/>
+  <text class="node-action" transform="translate(319.15 240.96) rotate(45)">
+    Associate
+    <tspan class="node-label" x="0" y="18">Data with Place</tspan>
+  </text>
+
+  <line class="node-edge" x1="69.33" y1="156.64" x2="114" y2="201.31"/>
+  <line class="node-edge" x1="149.33" y1="201.31" x2="194" y2="156.64"/>
+  <path class="node" ng-class="checkProgress(5)" d="M389.33,156.64a25,25,0,1,0-35.33,0,25,25,0,0,0,35.33,0"/>
+  <text class="node-action" transform="translate(393.65 111.48) rotate(-45)">
+    Filter
+    <tspan class="node-label" x="0" y="18">Places</tspan>
+  </text>
+
+  <path class="node" ng-class="checkProgress(6)" d="M434,236.64a25,25,0,1,0,0-35.33,25,25,0,0,0,0,35.33"/>
+  <text class="node-action" transform="translate(479.15 240.96) rotate(45)">
+    Record all
+    <tspan class="node-label" x="0" y="18">Claims</tspan>
+  </text>
+
+  <line class="node-edge" x1="229.33" y1="156.64" x2="274" y2="201.31"/>
+  <line class="node-edge" x1="309.33" y1="201.31" x2="354" y2="156.64"/>
+  <path class="node" ng-class="checkProgress(7)" d="M549.33,156.64a25,25,0,1,0-35.33,0,25,25,0,0,0,35.33,0"/>
+  <text class="node-action" transform="translate(553.65 111.48) rotate(-45)">
+    Get data for
+    <tspan class="node-label" x="0" y="18">Claim Properties</tspan>
+  </text>
+
+  <path class="node" ng-class="checkProgress(8)" d="M594,236.64a25,25,0,1,0,0-35.33,25,25,0,0,0,0,35.33"/>
+  <text class="node-action" transform="translate(639.15 240.96) rotate(45)">
+    Analyse
+    <tspan class="node-label" x="0" y="18">Connections</tspan>
+  </text>
+
+  <line class="node-edge" x1="389.33" y1="156.64" x2="434" y2="201.31"/>
+  <line class="node-edge" x1="469.33" y1="201.31" x2="514" y2="156.64"/>
+  <path class="node" ng-class="checkProgress(9)" d="M709.33,156.64a25,25,0,1,0-35.33,0,25,25,0,0,0,35.33,0"/>
+  <text class="node-action" transform="translate(713.65 111.48) rotate(-45)">
+    Get data for
+    <tspan class="node-label" x="0" y="18">Claim Values</tspan>
+  </text>
+
+  <line class="node-edge" x1="549.33" y1="156.64" x2="594" y2="201.31"/>
+  <path class="node" ng-class="checkProgress(10)" d="M754,236.64a25,25,0,1,0,0-35.33,25,25,0,0,0,0,35.33"/>
+  <text class="node-action" transform="translate(799.15 240.96) rotate(45)">
+    Draw
+    <tspan class="node-label" x="0" y="18">Graph</tspan>
+  </text>
+
+  <line class="node-edge" x1="709.33" y1="156.64" x2="754" y2="201.31"/>
+  <line class="node-edge" x1="629.33" y1="201.31" x2="674" y2="156.64"/>
+</svg>

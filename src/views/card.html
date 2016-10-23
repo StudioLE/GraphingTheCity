@@ -1,21 +1,20 @@
-        <a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}" class="thumbnail">
-          <img ng-if="place.image" ng-src="{{ place.image.contentUrl }}">
-          <img ng-if=" ! place.image" ng-src="http://placehold.it/350x150">
+<a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}" class="thumbnail">
+  <img ng-if="place.image" ng-src="{{ place.image.contentUrl }}">
+  <img ng-if=" ! place.image" ng-src="http://placehold.it/350x150">
+</a>
 
-        </a>
+<div class="inset">
+  <p class="property">Place</p>
+  <h2><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">{{ place.name }}</a></h2>
 
-        <h4><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">{{ place.name }}</a></h4>
+  <hr>
 
-        <p><span ng-repeat-start="value in place['@type']"
-          class="label label-default">{{ value }}</span> <span ng-repeat-end></span></p>
+  <p class="property">Instance of</p>
+  <h3><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">Museum</a></h3>
 
-        <p>
-          <span ng-repeat-start="(claim_id, claim) in place.wikidata.claims"
-            class="label label-default"
-            title="{{ data().properties[claim_id].descriptions.en.value }}">
-            {{ data().properties[claim_id].labels.en.value }}
-          </span>
-          <span ng-repeat-end>&nbsp;</span>
-        </p>
+  <hr>
 
-        <json-formatter class="json-formatter-dark" json="place" open="0"></json-formatter>
+  <p class="property">Architectural Style</p>
+  <h3><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">Greek Revival Architecture</a></h3>
+  <h3><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">Gothic Architecture</a></h3>
+</div>

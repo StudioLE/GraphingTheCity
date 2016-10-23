@@ -9,7 +9,7 @@ angular.module('app.compute', ['ngRoute'])
 ******************************************************************/
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/compute', {
-    templateUrl: 'views/compute.html',
+    templateUrl: 'views/criteria.html',
     controller: 'ComputeCtrl'
   })
 }])
@@ -25,10 +25,32 @@ angular.module('app.compute', ['ngRoute'])
    * Get data from local storage
    */
   var criteria = Criteria.get()
+
+  $scope.criteria = function() {
+    return criteria
+  }
+
+  $scope.step = 1;
+
+  /**
+   * Check Stage
+   *
+   * Show progress
+   */
+  $scope.checkProgress = function(num) {
+    if(num == $scope.step ) {
+      return 'active'
+    }
+    else if (num < $scope.step) {
+      return 'complete'
+    }
+    else {
+      return ''
+    }
+  }
+  
   var places = []
   var metadata = {}
-
-  $scope.status = 'Computing'
 
   async.waterfall([
 
@@ -38,6 +60,7 @@ angular.module('app.compute', ['ngRoute'])
     function(callback) {
 
       $scope.status = 'Get list of Places from Google Knowledge Search API'
+      $scope.step = 2
 
       $http({
         method: 'GET',
@@ -56,6 +79,7 @@ angular.module('app.compute', ['ngRoute'])
     function(knowledgeGraph, callback) {
 
       $scope.status = 'Get data for Places from Wikidata API'
+      $scope.step = 3
 
       // Create an array of all place names from Knowledge Graph data
       var titles = _.map(knowledgeGraph, function(element) {
@@ -103,6 +127,7 @@ angular.module('app.compute', ['ngRoute'])
     function(knowledgeGraph, wikidata, callback) {
 
       $scope.status = 'Associate Places with Data'
+      $scope.step = 4
 
       var places = {}
 
@@ -158,6 +183,7 @@ angular.module('app.compute', ['ngRoute'])
     function(places, callback) {
 
       $scope.status = 'Filter Places'
+      $scope.step = 5
 
       var centrePoint = Helper.formatGooglePlaceToSchema(criteria.city.geometry.location)
 
@@ -199,6 +225,7 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
       $scope.status = 'Record all Claims'
+      $scope.step = 6
 
       var destinations = places
       var connections = []
@@ -243,6 +270,7 @@ angular.module('app.compute', ['ngRoute'])
     function(places, callback) {
 
       $scope.status = 'Get data for Claim Properties from Wikidata API'
+      $scope.step = 7
 
       var claim_ids = _.keys(metadata.claims)
 
@@ -281,6 +309,7 @@ angular.module('app.compute', ['ngRoute'])
     function(places, callback) {
 
       $scope.status = 'Analyse Connections'
+      $scope.step = 8
 
       var claims = metadata.claims
 
@@ -310,7 +339,7 @@ angular.module('app.compute', ['ngRoute'])
         async.eachOfSeries(claim_prop, function(claim_val, claim_val_id, callback_claim_val_series) {
           // Example: claim_val_id = Q176483 (Gothic Architecture)
 
-          $scope.status = 'Analysing connection: ' + claim_prop_id + ' for ' + claim_val_id
+          // $scope.status = 'Analysing connection: ' + claim_prop_id + ' for ' + claim_val_id
 
           // @todo Add to list to find out wtf this value is?
 
@@ -360,6 +389,7 @@ angular.module('app.compute', ['ngRoute'])
     function(places, callback) {
 
       $scope.status = 'Get data for Claim Values from Wikidata API'
+      $scope.step = 9
 
       var claim_ids = _.map(metadata.claim_nodes, function(c) {
         return c.id
@@ -404,12 +434,13 @@ angular.module('app.compute', ['ngRoute'])
    * Async waterfall complete
    */
   function(err, places) {
-      if(err) {
-        console.error(err)
-      }
+    if(err) {
+      console.error(err)
+    }
 
-      $scope.status = 'Computation complete'
-      $location.path('/schedule')
+    $scope.status = 'Computation complete'
+    $scope.step = 10
+    $location.path('/graph')
   })
 
 })

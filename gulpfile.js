@@ -106,6 +106,7 @@ gulp.task('vendor-css', function() {
     'src/bower_components/font-awesome/css/font-awesome.min.css',
     'src/bower_components/json-formatter/dist/json-formatter.min.css',
     'src/bower_components/angular-google-places-autocomplete/src/autocomplete.css',
+    'src/bower_components/js-md5/build/md5.min.js',
     'src/css/colors.css'
   ])
   .pipe(gp_concat('concat.js'))

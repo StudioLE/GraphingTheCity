@@ -42,8 +42,18 @@ angular.module('app.graph', ['ngRoute'])
   $scope.place = {}
   $scope.claim = {}
   $scope.connection = {}
-  $scope.showPlace = false
-  $scope.showConnection = false
+
+  $scope.infoboxState = 'default'
+
+  $scope.infobox = function(request) {
+    return $scope.infoboxState == request
+  }
+
+  $scope.wikimediaImage = function(file) {
+    file = file.replace(/ /g, '_')
+    var hash = md5(file)
+    return 'https://upload.wikimedia.org/wikipedia/commons/' + hash.slice(0, 1)  + '/' + hash.slice(0, 2)  + '/' + file
+  }
 
   var nodes = _.map(places, function(place) {
     return {
@@ -123,9 +133,6 @@ angular.module('app.graph', ['ngRoute'])
   cy.on('mouseover', 'node', function(event) {
     $scope.place = {}
     $scope.claim = {}
-    $scope.showConnection = false
-      $scope.showClaim = false
-      $scope.showPlace = false
 
     // If the event has a name then it's a place
     if(event.cyTarget._private.data.name) {
@@ -133,13 +140,13 @@ angular.module('app.graph', ['ngRoute'])
         id: event.cyTarget.id()
       })
 
-      $scope.showPlace = true
+      $scope.infoboxState = 'place'
     }
     // Else it must be a claim val
     else {
       $scope.claim = data.values[event.cyTarget.id()]
 
-      $scope.showClaim = true
+      $scope.infoboxState = 'claim'
     }
 
     $scope.$apply()
@@ -148,9 +155,7 @@ angular.module('app.graph', ['ngRoute'])
   cy.on('mouseover', 'edge', function(event) {
     $scope.connection = {}
     $scope.connection = event.cyTarget.data()
-    $scope.showPlace = false
-    $scope.showClaim = false
-    $scope.showConnection = true
+    $scope.infoboxState = 'connection'
     $scope.$apply()
   })
 

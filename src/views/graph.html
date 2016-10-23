@@ -1,32 +1,128 @@
 <div class="fixed">
 
-  <div class="row" style="height: 100%">
-    <div class="col-xs-3" style="height: 100%">
-      <ng-include ng-if="showPlace" src="'views/card.html'"></ng-include>
+  <div class="row full-height">
+    <div class="col-xs-3 infobox full-height">
 
-      <div ng-if="showClaim">
-          <a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}" class="thumbnail">
-            <img ng-if="claim.claims.P18" ng-src="{{ claim.claims.P18[0].mainsnak.datavalue.value }}">
-            <img ng-if=" ! claim.claims.P18" ng-src="http://placehold.it/350x150">
-        </a>
+      <form class="inset">
+        <div class="form-group">
+          <label for="" class="control-label">City</label>
+          <div class="input-group">
+            <input type="text" class="form-control"
+              placeholder="Choose a city…"
+              required
+              g-places-autocomplete
+              force-selection="true"
+              options="autocompleteOptions"
+              ng-model="criteria().city">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary"
+                ng-disabled="form.$invalid"
+                ng-click="saveCriteria()">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </button>
+            </span>
+          </div><!-- .input-group -->
+        </div> <!-- .form-group -->
+      </form>
 
-        <h4><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h4>
-        <p>{{ claim.descriptions.en.value }}</p>
+      <div class="inset" ng-if="infobox('default')">
 
-        <json-formatter class="json-formatter-dark" json="claim" open="0"></json-formatter>
+        <p class="property">Nodes</p>
+        <h2>123</h2>
 
+        <hr>
+
+        <p class="property">Connections</p>
+        <h2>123</h2>
+
+        <hr>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <p class="property">Places</p>
+            <h3>123</h3>
+          </div>
+
+          <div class="col-xs-6">
+            <p class="property">Claims</p>
+            <h3>123</h3>
+          </div>
+        </div> <!-- .row -->
+
+        <hr>
+
+        <p class="property">Export</p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h3><a ng-click="export()"
+              href="filesystem:http://localhost:1337/temporary/citygraph.json"
+              download="citygraph.cyjs">Cytoscape</a></h3>
+          </div>
+
+          <div class="col-md-6">
+            <h3><a ng-click="savePNG()"
+              ng-href="{{ pngSrc }}"
+              download="citygraph.png">PNG</a></h3>
+          </div>
+        </div> <!-- .row -->
+
+        <hr>
+
+        <p class="property">Layout</p>
+        <select class="form-control"
+          ng-model="criteria().layout"
+          ng-change="changeLayout()">
+          <option>breadthfirst</option>
+          <option>circle</option>
+          <option>concentric</option>
+          <option>cose</option>
+          <option>cose-bilkent</option>
+          <option>dagre</option>
+          <option>grid</option>
+          <option>spread</option>
+        </select>
       </div>
 
-      <div ng-if="showConnection">
-        <h4>
-          <a ng-href="https://www.wikidata.org/wiki/{{ connection.source }}">{{ connection.source }}</a>
-          <div>connects by</div>
-          <!-- @todo connection.source is an entity id, we want to know the label of the entity -->
-          <a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_id }}">{{ data().properties[connection.claim_id].labels.en.value }}</a>
-          <div>to</div>
-          <a ng-href="https://www.wikidata.org/wiki/{{ connection.target }}">{{ data().values[connection.target].labels.en.value }}</a>
+      <ng-include ng-if="infobox('place')" src="'views/card.html'"></ng-include>
 
-          <json-formatter class="json-formatter-dark" json="connection" open="0"></json-formatter>
+      <div ng-if="infobox('claim')">
+        <a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}" class="thumbnail">
+          <img ng-if="claim.claims.P18" ng-src="{{ wikimediaImage(claim.claims.P18[0].mainsnak.datavalue.value) }}">
+          <img ng-if=" ! claim.claims.P18" ng-src="http://placehold.it/350x150">
+        </a>
+
+        <div class="inset">
+          <p class="property">Claim Property</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h3>
+
+          <hr>
+          <p class="property">Claim Value</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h3>
+
+          <hr>
+
+          <p class="property">Description</p>
+          <h4>{{ claim.descriptions.en.value }}</h4>
+        </div>
+      </div>
+
+      <div ng-if="infobox('connection')">
+      <div class="inset">
+          <!-- @todo connection.source is an entity id, we want to know the label of the entity -->
+          <p class="property">Source</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.source }}">{{ connection.source }}</a></h3>
+
+          <hr>
+          
+          <p class="property">Target</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.target }}">{{ data().values[connection.target].labels.en.value }}</a></h3>
+
+          <hr>
+          
+          <p class="property">By</p>
+          <h3><a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_id }}">{{ data().properties[connection.claim_id].labels.en.value }}</a></h3>
+        </div>
       </div>
 
     </div>
@@ -35,37 +131,3 @@
     </div>
   </div> <!-- .row -->
 </div> <!-- .fixed -->
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div class="container">
-    <form class="form-horizontal" name="form">
-      <div class="form-group">
-        <div class="col-sm-2">
-          <a class="btn btn-primary"
-            ng-click="export()"
-            href="filesystem:http://localhost:1337/temporary/citygraph.json"
-            download="citygraph.cyjs">Export to Cytoscape</a>
-          <!-- <a class="btn btn-primary"
-            ng-click="savePNG()"
-            ng-href="{{ pngSrc }}"
-            download="citygraph.png">Save PNG</a> -->
-        </div>
-        <label for="" class="col-sm-offset-4 col-sm-2 control-label">Layout</label>
-        <div class="col-sm-4">
-          <select class="form-control"
-            ng-model="criteria().layout"
-            ng-change="changeLayout()">
-            <option>breadthfirst</option>
-            <option>circle</option>
-            <option>concentric</option>
-            <option>cose</option>
-            <option>cose-bilkent</option>
-            <option>dagre</option>
-            <option>grid</option>
-            <option>spread</option>
-          </select>
-        </div>
-      </div>
-    </form>
-  </div> <!-- .container -->
-</nav>
