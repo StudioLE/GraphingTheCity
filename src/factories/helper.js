@@ -7,7 +7,7 @@ angular.module('app.helperFactory', [])
 * Helper factory
 *
 ******************************************************************/
-.factory('Helper', function() {
+.factory('Helper', function($location, Criteria) {
 return {
 
   latLng: function(location) {
@@ -104,6 +104,27 @@ var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     file = file.replace(/ /g, '_')
     var hash = md5(file)
     return 'https://upload.wikimedia.org/wikipedia/commons/' + hash.slice(0, 1)  + '/' + hash.slice(0, 2)  + '/' + file
+  },
+
+  /**
+   * Save Criteria
+   */
+  saveCriteria: function(criteria) {
+    if( ! criteria.layout) {
+      criteria.layout = 'cose'
+      criteria.properties = [
+        // 'P1435', // heritage status
+        'P31',   // instance of
+        'P149',  // architectural style
+        // 'P131',  // located in the administrative territorial entity
+        'P84',   // architect
+        // 'P1619', // date of official opening
+        // 'P571'   // inception
+        'P177' // Crosses
+      ]
+    }
+    Criteria.set(criteria)
+    $location.path('/compute')
   }
 
 }

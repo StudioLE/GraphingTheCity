@@ -49,6 +49,7 @@ angular.module('app.map', ['ngRoute'])
     return $scope.infoboxState == request
   }
 
+  $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage
 
   var map_params = {

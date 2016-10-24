@@ -48,7 +48,8 @@ angular.module('app.graph', ['ngRoute'])
   $scope.infobox = function(request) {
     return $scope.infoboxState == request
   }
-
+  
+  $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage
 
   var links = connections
