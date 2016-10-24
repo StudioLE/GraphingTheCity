@@ -29,6 +29,17 @@ angular.module('app.dataFactory', [])
     },
 
     /**
+     * Data add
+     *
+     * @return {Array} data
+     */
+    add: function(data) {
+      return localStorageService.set('data',
+        _.assign({}, data, this.get())
+      )
+    },
+
+    /**
      * Data is set
      *
      * @return {Bool} data

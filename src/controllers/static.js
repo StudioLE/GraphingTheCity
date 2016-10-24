@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('app.static', ['ngRoute'])
+angular.module('app.static', ['ngRoute', 'jsonFormatter'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
@@ -8,20 +8,33 @@ angular.module('app.static', ['ngRoute'])
     templateUrl: 'views/home.html',
     controller: 'HomeCtrl'
   })
-  $routeProvider.when('/404', {
-    templateUrl: 'views/404.html',
-    controller: 'StaticCtrl'
+  $routeProvider.when('/error', {
+    templateUrl: 'views/error.html',
+    controller: 'ErrorCtrl'
   })
 }])
 
-.controller('StaticCtrl', function() {
+.controller('ErrorCtrl', function($window, $location, $scope, Data) {
+
+  /**
+   * Get data from local storage
+   */
+  var data = Data.get()
+  $scope.data = function() {
+    return data
+  }
+
+  var restart = function() {
+    $location.path('/criteria')
+    $window.location.reload()
+  }
 })
 
-.controller('HomeCtrl', function(Data) {
-  if(Data.isset()) {
-    window.location.href = '/#/map'
+.controller('HomeCtrl', function($location, Node) {
+  if(Node.isset()) {
+    $location.path('/graph')
   }
   else {
-    window.location.href = '/#/criteria'
+    $location.path('/criteria')
   }
 })

@@ -33,7 +33,7 @@ angular.module('app', [
 *
 ******************************************************************/
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/404'})
+  $routeProvider.otherwise({redirectTo: '/error'})
 }])
 
 /*****************************************************************

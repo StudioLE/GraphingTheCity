@@ -68,7 +68,7 @@ angular.module('app.compute', ['ngRoute'])
         console.log('Knowledge Graph returned %s results', response.data.itemListElement.length)
         callback(null, response.data.itemListElement)
       }, function errorCallback(response) {
-        callback(true, response)
+        callback(response)
       })
     },
 
@@ -115,7 +115,7 @@ angular.module('app.compute', ['ngRoute'])
           // async.concat only works with arrays so convert data to array
           concatCallback(null, _.values(response.data.entities))
         }, function errorCallback(response) {
-          concatCallback(true, response)
+          concatCallback(response)
         })
 
       }, function(err, results) {
@@ -327,7 +327,7 @@ angular.module('app.compute', ['ngRoute'])
           // async.concat only works with arrays so convert data to array
           concatCallback(null, _.values(response.data.entities))
         }, function errorCallback(response) {
-          concatCallback(true, response)
+          concatCallback(response)
         })
 
       }, function(err, results) {
@@ -462,7 +462,7 @@ angular.module('app.compute', ['ngRoute'])
           // async.concat only works with arrays so convert data to array
           concatCallback(null, _.values(response.data.entities))
         }, function errorCallback(response) {
-          concatCallback(true, response)
+          concatCallback(response)
         })
 
       }, function(err, results) {
@@ -510,7 +510,10 @@ angular.module('app.compute', ['ngRoute'])
    */
   function(err, places) {
     if(err) {
-      // @todo Display error to user
+      Data.add({
+        error: err
+      })
+      $location.path('/error')
       return console.error(err)
     }
 
