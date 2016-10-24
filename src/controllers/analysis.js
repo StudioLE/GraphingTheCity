@@ -63,21 +63,9 @@ angular.module('app.analysis', ['ngRoute'])
       }
     }))
   }
-  $scope.place = {}
-  $scope.claim = {}
-  $scope.connection = {}
 
-  $scope.infoboxState = 'place'
-  $scope.infoboxSchedule = true
+  $scope.sortType = 'sna.betweennessCentrality'
+  $scope.sortReverse = true
 
-  $scope.infobox = function(request) {
-    return $scope.infoboxState == request
-  }
-
-  $scope.wikimediaImage = Helper.wikimediaImage
-
-  $scope.objectLength = function(object) {
-    return Object.keys(object).length
-  }
 
 })
