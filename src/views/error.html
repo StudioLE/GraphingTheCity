@@ -1,7 +1,7 @@
 <div class="container">
   <div class="head">
     <h2>An Error has occurred</h2>
-    <h1><a href="#" ng-click="restart()">Restart Application</a></h1>
+    <h1><a ng-click="restart()">Restart Application</a></h1>
   </div>
   <h3 ng-if="data().error">Error</h3>
   <json-formatter ng-if="data().error" class="json-formatter-dark" json="data().error" open="2"></json-formatter>

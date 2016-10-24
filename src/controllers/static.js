@@ -24,7 +24,7 @@ angular.module('app.static', ['ngRoute', 'jsonFormatter'])
     return data
   }
 
-  var restart = function() {
+  $scope.restart = function() {
     $location.path('/criteria')
     $window.location.reload()
   }
