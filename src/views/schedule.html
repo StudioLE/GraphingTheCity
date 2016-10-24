@@ -1,67 +1,18 @@
-<div class="main">
-  <div class="container">
+<div class="container-fluid">
+  <div class="head">
     <h1>{{ data().count.places }} places of interest were found in {{ criteria().city.name }}</h1>
 
-    <p>From an initial data set of {{ data().count.knowledgegraph }} places, {{ data().count.wikidata }} were matched with structured data, {{ data().count.no_match }} could not be matched, {{ data().count.no_geo }} had no geolocation data and {{ data().count.out_of_bounds }} were out of bounds of our search area.</p>
+    <h2>From an initial data set of {{ data().count.knowledgegraph }} places, {{ data().count.wikidata }} were matched with structured data, {{ data().count.no_match }} could not be matched, {{ data().count.no_geo }} had no geolocation data and {{ data().count.out_of_bounds }} were out of bounds of our search area.</h2>
+  </div>
 
-    <p><span ng-repeat-start="(key, value) in criteria().types" ng-if="value"
-      class="label label-default">{{ key }}</span> <span ng-repeat-end></span></p>
+  <p><span ng-repeat-start="(key, value) in criteria().types" ng-if="value"
+    class="label label-default">{{ key }}</span> <span ng-repeat-end></span></p>
 
-    <div class="row">
-      <div ng-repeat-start="(key, place) in places()"
-           class="col-xs-6 col-md-3">
-
-        <ng-include src="'views/card.html'" ng-init="place = place"></ng-include>
-
-      <br><br><br>
-
-      </div>
-
-      <div ng-repeat-end ng-if="($index + 1) % 4 == 0" style="clear: both;"></div>
+  <div class="row">
+    <div ng-repeat-start="(key, place) in places()"
+         class="col-xs-3">
+      <ng-include src="'views/infobox.html'" ng-init="place = place"></ng-include>
     </div>
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th style="width: 10%;"></th>
-        <th style="width: 40%;">Name</th>
-        <th style="width: 50%;">Location</th>
-        <th style="width: 50%;">Types</th>
-        <th style="width: 50%;">Score</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="(key, place) in places()">
-        <td><img ng-src="{{ place.image.contentUrl }}" style="height: 20px"></td>
-        <td><a ng-href="https://www.wikidata.org/wiki/{{ place.wikidata.title }}">{{ place.name }}</a></td>
-        <td>{{ place.geo.latitude }}, {{ place.geo.longitude }}</td>
-        <td><span ng-repeat-start="value in place['@type']"
-          class="label label-default">{{ value }}</span> <span ng-repeat-end></span></td>
-        <td>{{ place.resultScore }}</td>
-      </tr>
-      </tbody>
-    </table>
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th style="width: 10%;">ID</th>
-        <th style="width: 15%;">Name</th>
-        <th style="width: 10%;">Count</th>
-        <th style="width: 15%;">Data Type</th>
-        <th style="width: 50%;">Result</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="(claim_id, claim) in data().claims">
-        <td><a ng-href="https://www.wikidata.org/wiki/Property:{{ claim_id }}">{{ claim_id }}</a></td>
-        <td><a ng-href="https://www.wikidata.org/wiki/Property:{{ claim_id }}" title="{{ data().properties[claim_id].descriptions.en.value }}">{{ data().properties[claim_id].labels.en.value }}</a></td>
-        <td>{{ objectLength(claim) }}</td>
-        <td>{{ claim[0][0].mainsnak.datavalue.type }}</td>
-        <td><json-formatter class="json-formatter-dark" json="claim" open="0"></json-formatter></td>
-      </tr>
-      </tbody>
-    </table>
-
-  </div> <!-- .container -->
-</div> <!-- .main -->
+    <div ng-repeat-end ng-if="($index + 1) % 4 == 0" style="clear: both;"></div>
+  </div>
+</div>

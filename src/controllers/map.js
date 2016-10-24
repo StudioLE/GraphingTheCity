@@ -9,7 +9,7 @@ angular.module('app.map', ['ngRoute'])
 ******************************************************************/
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/map', {
-    templateUrl: 'views/map.html',
+    templateUrl: 'views/ui.html',
     controller: 'MapCtrl'
   })
 }])
@@ -19,20 +19,37 @@ angular.module('app.map', ['ngRoute'])
 * MapCtrl controlller
 *
 ******************************************************************/
-.controller('MapCtrl', function($scope, Criteria, Place) {
+.controller('MapCtrl', function($scope, Criteria, Entity, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
    */
   var criteria = Criteria.get()
-  var places = Place.get()
+  var entities = Entity.get()
+  var nodes = Node.get()
+  var connections = Connection.get()
+  var data = Data.get()
 
   $scope.criteria = function() {
     return criteria
   }
-  $scope.places = function() {
-    return places
+  $scope.entities = function() {
+    return entities
   }
+  $scope.data = function() {
+    return data
+  }
+  $scope.place = {}
+  $scope.claim = {}
+  $scope.connection = {}
+
+  $scope.infoboxState = 'default'
+
+  $scope.infobox = function(request) {
+    return $scope.infoboxState == request
+  }
+
+  $scope.wikimediaImage = Helper.wikimediaImage
 
   var map_params = {
     style: 'clean_grey',
@@ -43,7 +60,7 @@ angular.module('app.map', ['ngRoute'])
     }
   }
 
-  var map = new google.maps.Map(document.getElementById('map'), {
+  var map = new google.maps.Map(document.getElementById('interface'), {
     center: criteria.city.geometry.location,
     zoom: map_params.zoom
   })
@@ -58,8 +75,9 @@ angular.module('app.map', ['ngRoute'])
 
   var infowindow = new google.maps.InfoWindow()
 
-  _.each(places, function(place){
-    if(place.geo) {
+  _.each(nodes, function(node){
+    if(node.data.type == 'place') {
+      var place = node.data
       var marker = new google.maps.Marker({
         map: map,
         position: {
@@ -77,6 +95,18 @@ angular.module('app.map', ['ngRoute'])
       })
 
       google.maps.event.addListener(marker, 'click', function() {
+
+
+        $scope.place = {}
+        $scope.claim = {}
+
+        // If the event is place
+        $scope.place = entities[place.id]
+        $scope.infoboxState = 'place'
+
+        $scope.$apply()
+
+
         infowindow.setContent(place.name)
         infowindow.open(map, this)
       })

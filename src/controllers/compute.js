@@ -239,7 +239,8 @@ angular.module('app.compute', ['ngRoute'])
           data: {
             id: place.id,
             name: place.labels.en.value,
-            type: 'place'
+            type: 'place',
+            geo: place.geo
             // classes: 'bg-blue',
             // selected: true,
             // selectable: true,

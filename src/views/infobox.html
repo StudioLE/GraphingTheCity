@@ -1,0 +1,132 @@
+<form class="inset" ng-if=" ! infoboxSchedule">
+  <div class="form-group">
+    <label for="" class="control-label">City</label>
+    <div class="input-group">
+      <input type="text" class="form-control"
+        placeholder="Choose a city…"
+        required
+        g-places-autocomplete
+        force-selection="true"
+        options="autocompleteOptions"
+        ng-model="criteria().city">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary"
+          ng-disabled="form.$invalid"
+          ng-click="saveCriteria()">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </span>
+    </div><!-- .input-group -->
+  </div> <!-- .form-group -->
+</form>
+
+<div class="inset" ng-if="infobox('default')">
+
+  <p class="property">Nodes</p>
+  <h2>{{ data().count.nodes }}</h2>
+
+  <hr>
+
+  <p class="property">Connections</p>
+  <h2>{{ data().count.connections }}</h2>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-xs-6">
+      <p class="property">Places</p>
+      <h3>{{ data().count.places }}</h3>
+    </div>
+
+    <div class="col-xs-6">
+      <p class="property">Claims</p>
+      <h3>{{ data().count.claims }}</h3>
+    </div>
+  </div> <!-- .row -->
+
+  <hr>
+
+  <p class="property">Export</p>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3><a ng-click="export()"
+        href="filesystem:http://localhost:1337/temporary/citygraph.json"
+        download="citygraph.cyjs">Cytoscape</a></h3>
+    </div>
+
+    <div class="col-md-6">
+      <h3><a ng-click="savePNG()"
+        ng-href="{{ pngSrc }}"
+        download="citygraph.png">PNG</a></h3>
+    </div>
+  </div> <!-- .row -->
+
+  <hr>
+
+  <p class="property">Layout</p>
+  <select class="form-control"
+    ng-model="criteria().layout"
+    ng-change="changeLayout()">
+    <option>breadthfirst</option>
+    <option>circle</option>
+    <option>concentric</option>
+    <option>cose</option>
+    <option>cose-bilkent</option>
+    <option>dagre</option>
+    <option>grid</option>
+    <option>spread</option>
+  </select>
+</div> <!-- infobox('default') -->
+
+<div ng-if="infobox('place')">
+  <a ng-href="https://www.wikidata.org/wiki/{{ place.id }}" class="thumbnail">
+    <img ng-if="place.claims.P18" ng-src="{{ wikimediaImage(place.claims.P18[0].mainsnak.datavalue.value) }}">
+  </a>
+
+  <div class="inset">
+    <p class="property">Place</p>
+    <h2><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.labels.en.value }}</a></h2>
+
+    <div ng-repeat="claim_prop_id in criteria().properties"
+      ng-if="place.claims[claim_prop_id]">
+      <hr>
+
+      <p class="property">{{ entities()[claim_prop_id].labels.en.value }}</p>
+      <h3 ng-repeat="claim in place.claims[claim_prop_id]"><a ng-href="https://www.wikidata.org/wiki/{{ claim.mainsnak.datavalue.value.id }}">{{ entities()[claim.mainsnak.datavalue.value.id].labels.en.value }}</a></h3>
+    </div>
+  </div>
+</div> <!-- infobox('place') -->
+
+<div ng-if="infobox('claim')">
+  <a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}" class="thumbnail">
+    <img ng-if="claim.claims.P18" ng-src="{{ wikimediaImage(claim.claims.P18[0].mainsnak.datavalue.value) }}">
+  </a>
+
+  <div class="inset">
+    <p class="property"><a ng-href="https://www.wikidata.org/wiki/{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</p>
+    <h2><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h2>
+
+    <hr>
+
+    <p class="property">Description</p>
+    <h3>{{ claim.descriptions.en.value }}</h3>
+  </div>
+</div> <!-- infobox('claim') -->
+
+<div ng-if="infobox('connection')">
+  <div class="inset">
+    <p class="property">Place</p>
+    <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.source }}">{{ entities()[connection.source].labels.en.value }}</a></h3>
+
+    <hr>
+    
+    <p class="property">Is Connected By</p>
+    <h3><a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_property }}">{{ entities()[connection.claim_property].labels.en.value }}</a></h3>
+
+    <hr>
+    
+    <p class="property">To Target</p>
+    <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.target }}">{{ entities()[connection.target].labels.en.value }}</a></h3>
+  </div>
+</div> <!-- infobox('connection') -->

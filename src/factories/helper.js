@@ -93,6 +93,17 @@ var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   formatName: function(str) {
     // Un-convert html entities to url encoded entities
     return str.replace(/&amp;/g, '&')
+  },
+  
+  /**
+   * Derive Wikimedia Image URL
+   *
+   * http://stackoverflow.com/questions/34393884/how-to-get-image-url-property-from-wikidata-item-by-api
+   */
+  wikimediaImage: function(file) {
+    file = file.replace(/ /g, '_')
+    var hash = md5(file)
+    return 'https://upload.wikimedia.org/wikipedia/commons/' + hash.slice(0, 1)  + '/' + hash.slice(0, 2)  + '/' + file
   }
 
 }

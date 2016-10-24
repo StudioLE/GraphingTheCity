@@ -94,12 +94,9 @@ hr {
   left: 0;
 }
 
-#cy, #map, #graph {
+#interface {
   width: 100%;
   height: 100%;
-}
-
-#map {
   color: #000;
 }
 
@@ -240,7 +237,8 @@ input.form-control {
 }
 
 .inset {
-  margin: 15px;
+  margin-left: 15px;
+  margin-right: -15px;
 }
 
 .full-height {
@@ -248,15 +246,19 @@ input.form-control {
 }
 
 .thumbnail {
+  margin-right: -30px;
   padding: 0;
   height: 250px;
   overflow: hidden;
+  background-color: fade(@orange, 25%);
   border: none;
   border-radius: 0;
 }
 
 .thumbnail a>img, .thumbnail>img {
   min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
 }
 
 /*****************************************************************

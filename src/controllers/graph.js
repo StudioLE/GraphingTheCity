@@ -9,7 +9,7 @@ angular.module('app.graph', ['ngRoute'])
 ******************************************************************/
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/graph', {
-    templateUrl: 'views/graph.html',
+    templateUrl: 'views/ui.html',
     controller: 'GraphCtrl'
   })
 }])
@@ -19,7 +19,7 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, $location, Criteria, Entity, Node, Connection, Data) {
+.controller('GraphCtrl', function($scope, $location, Criteria, Entity, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
@@ -43,33 +43,18 @@ angular.module('app.graph', ['ngRoute'])
   $scope.claim = {}
   $scope.connection = {}
 
-  $scope.chosenClaims = [
-        // 'P1435', // heritage status
-        'P31',   // instance of
-        'P149',  // architectural style
-        // 'P131',  // located in the administrative territorial entity
-        'P84',   // architect
-        // 'P1619', // date of official opening
-        // 'P571'   // inception
-        'P177' // Crosses
-      ]
-
   $scope.infoboxState = 'default'
 
   $scope.infobox = function(request) {
     return $scope.infoboxState == request
   }
 
-  $scope.wikimediaImage = function(file) {
-    file = file.replace(/ /g, '_')
-    var hash = md5(file)
-    return 'https://upload.wikimedia.org/wikipedia/commons/' + hash.slice(0, 1)  + '/' + hash.slice(0, 2)  + '/' + file
-  }
+  $scope.wikimediaImage = Helper.wikimediaImage
 
   var links = connections
 
   var cy = window.cy = cytoscape({
-   container: document.getElementById('cy'),
+   container: document.getElementById('interface'),
    // userZoomingEnabled: false,
    // userPanningEnabled: false,
    textureOnViewport: true,

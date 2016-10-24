@@ -65,6 +65,16 @@ angular.module('app.criteria', ['ngRoute'])
     criteria = $scope.criteria()
     if( ! criteria.layout) {
       criteria.layout = 'cose'
+      criteria.properties = [
+        // 'P1435', // heritage status
+        'P31',   // instance of
+        'P149',  // architectural style
+        // 'P131',  // located in the administrative territorial entity
+        'P84',   // architect
+        // 'P1619', // date of official opening
+        // 'P571'   // inception
+        'P177' // Crosses
+      ]
     }
     Criteria.set(criteria)
 
