@@ -210,14 +210,19 @@ angular.module('app.compute', ['ngRoute'])
           longitude: place.claims.P625[0].mainsnak.datavalue.value.longitude
         }
 
-        // @todo use criteria.city.geometry.viewport as bounds instead
-        if(Helper.haversineSchema(place.geo, centrePoint) > 5000) {
-          // console.log('Place out of bounds:', place)
-          metadata.count.out_of_bounds ++
-          return false
+        var bounds = criteria.city.geometry.viewport
+
+        if(
+          place.geo.latitude <= bounds.north &&
+          place.geo.latitude >= bounds.south &&
+          place.geo.longitude <= bounds.east &&
+          place.geo.longitude >= bounds.west
+        ) {
+          return true
         }
         else {
-          return true
+          metadata.count.out_of_bounds ++
+          return false
         }
       })
 
@@ -473,7 +478,6 @@ angular.module('app.compute', ['ngRoute'])
 
         
         callback(null, places)
-        // callback(null, knowledgeGraph, results)
       })
 
     },
