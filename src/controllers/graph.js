@@ -44,6 +44,7 @@ angular.module('app.graph', ['ngRoute'])
   $scope.connection = {}
 
   $scope.infoboxState = 'default'
+  $scope.infoboxClicked = false
 
   $scope.infobox = function(request) {
     return $scope.infoboxState == request
@@ -68,27 +69,44 @@ angular.module('app.graph', ['ngRoute'])
      edges: connections
    },
    style: [
-     {
-       selector: 'node',
-       style: {
-         // 'height': 40,
-         // 'width': 40,
-         'label': 'data(label)',
-         'background-color': '#FF9800',
-         'color': '#ffffff',
-         'font-size': '10px',
-         'text-valign': 'bottom',
-         'text-halign': 'right',
-       }
-     },
-
-     {
-       selector: 'edge',
-       style: {
-         'width': 3,
-         'line-color': '#FF9800'
-       }
-     }
+    {
+      selector: 'node',
+      style: {
+        'height': 50,
+        'width': 50,
+        'label': 'data(label)',
+        'background-color': 'red',
+        'color': '#ffffff',
+        'font-size': '10px',
+        'text-valign': 'bottom',
+        'text-halign': 'right',
+        'background-fit': 'cover',
+        'border-color': '#fff',
+        'border-width': 5,
+        'hover-border-width': 8
+      }
+    },
+    {
+      selector: 'node.place',
+      style: {
+        'background-color': '#ff9800',
+      }
+    },
+    {
+      selector: 'node.claim',
+      style: {
+        'background-color': '#001f3f',
+      }
+    },
+    {
+      selector: 'edge',
+      style: {
+        // 'curve-style': 'unbundled-bezier',
+        'width': 6,
+        'line-color': '#fff',
+        'opacity': 1,
+      }
+    }
    ],
   })
 
@@ -99,7 +117,7 @@ angular.module('app.graph', ['ngRoute'])
    })
   }
 
-  cy.on('mouseover', 'node', function(event) {
+  var setInfobox = function(event) {
     $scope.place = {}
     $scope.claim = {}
 
@@ -116,9 +134,42 @@ angular.module('app.graph', ['ngRoute'])
     }
 
     $scope.$apply()
+  }
+
+  var unsetInfobox = function() {
+    $scope.infoboxState = 'default'
+    $scope.$apply()
+  }
+
+  cy.on('mouseover', 'node', function(event) {
+    event.cyTarget.style('border-width', 7)
+    event.cyTarget.style('width', 55)
+    event.cyTarget.style('height', 55)
+
+    if( ! $scope.infoboxClicked) setInfobox(event)
   })
 
-  cy.on('mouseover', 'edge', function(event) {
+  cy.on('mouseout', 'node', function(event) {
+    event.cyTarget.style('border-width', 5)
+    event.cyTarget.style('width', 50)
+    event.cyTarget.style('height', 50)
+
+    if( ! $scope.infoboxClicked) unsetInfobox()
+  })
+
+  cy.on('click', 'node', function(event) {
+    setInfobox(event)
+    $scope.infoboxClicked = true
+  })
+
+  cy.on('click', function(event) {
+    if(event.cyTarget === cy) {
+      unsetInfobox()
+      $scope.infoboxClicked = false
+    }
+  })
+
+  cy.on('click', 'edge', function(event) {
     $scope.connection = {}
     $scope.connection = event.cyTarget.data()
     $scope.infoboxState = 'connection'

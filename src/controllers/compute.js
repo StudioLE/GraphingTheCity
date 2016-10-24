@@ -246,12 +246,12 @@ angular.module('app.compute', ['ngRoute'])
             name: place.labels.en.value,
             type: 'place',
             geo: place.geo
-            // classes: 'bg-blue',
-            // selected: true,
-            // selectable: true,
-            // locked: true,
-            // grabbable: true
-          }
+          },
+          classes: 'place'
+          // selected: true,
+          // selectable: true,
+          // locked: true,
+          // grabbable: true
         }
       })
 
@@ -360,6 +360,8 @@ angular.module('app.compute', ['ngRoute'])
       // var metadata = Data.get()
       // var claims = {}
 
+      // @todo Get chosen_claims from Criteria
+
       var chosen_claims = [
         // 'P1435', // heritage status
         'P149',  // architectural style
@@ -395,7 +397,8 @@ angular.module('app.compute', ['ngRoute'])
               name: claim_val_id, // @todo request claim label from Wikidata
               property: claim_prop_id,
               type: 'claim'
-            }
+            },
+            classes: 'claim'
           })
 
           // Connect each node to the claim_val
@@ -406,7 +409,6 @@ angular.module('app.compute', ['ngRoute'])
                   source: place_id,
                   target: claim_val_id,
                   claim_property: claim_prop_id,
-                  // claim: claim_val
                 }
               }
               connections.push(c)
