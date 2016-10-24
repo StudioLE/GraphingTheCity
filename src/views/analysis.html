@@ -1,0 +1,54 @@
+<div class="container">
+
+  <div class="head">
+    <h1>Graphing the City</h1>
+    <h2>Extracting the DNA of the city as an urban metadata graph</h2>
+  </div>
+
+  <h2>Places</h2>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th style="width: 15%;">ID</th>
+      <th style="width: 40%;">Name</th>
+      <th class="num" style="width: 15%;">Degree Centrality</th>
+      <th class="num" style="width: 15%;">Closeness Centrality</th>
+      <th class="num" style="width: 15%;">Betweenness Centrality</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="place in places()">
+      <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.id }}</a></td>
+      <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.labels.en.value }}</a></td>
+      <td class="num">{{ place.sna.degreeCentrality.toFixed(2) }}</td>
+      <td class="num">{{ place.sna.closenessCentrality.toFixed(2) }}</td>
+      <td class="num">{{ place.sna.betweennessCentrality.toFixed(2) }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Claims</h2>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th style="width: 15%;">ID</th>
+      <th style="width: 40%;">Name</th>
+      <th class="num" style="width: 15%;">Degree Centrality</th>
+      <th class="num" style="width: 15%;">Closeness Centrality</th>
+      <th class="num" style="width: 15%;">Betweenness Centrality</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="claim in claims()">
+      <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.id }}</a></td>
+      <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></td>
+      <td class="num">{{ claim.sna.degreeCentrality.toFixed(2) }}</td>
+      <td class="num">{{ claim.sna.closenessCentrality.toFixed(2) }}</td>
+      <td class="num">{{ claim.sna.betweennessCentrality.toFixed(2) }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

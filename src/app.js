@@ -17,6 +17,7 @@ angular.module('app', [
   'app.schedule',
   'app.graph',
   'app.map',
+  'app.analysis',
   'app.raw',
   'app.criteriaFactory',
   'app.entityFactory',

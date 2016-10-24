@@ -117,26 +117,43 @@ angular.module('app.graph', ['ngRoute'])
    })
   }
 
+  var calculateSNA = function() {
+    // Don't run if already set...
+    if(data.sna) return false
+
+    _.map(nodes, function(node) {
+      var target = cy.nodes('#' + node.data.id)
+      node.data.sna  = {
+        degreeCentrality: cy.$().dc({ root: target }).degree,
+        closenessCentrality: cy.$().cc({ root: target }),
+        betweennessCentrality: cy.$().bc().betweenness(target)
+      }
+      return node
+    })
+
+    // Add SNA data to local storage
+    Data.add({
+      sna: true
+    })
+    Node.set(nodes)
+
+    console.log('SNA complete')
+  }
+
   var setInfobox = function(event) {
     $scope.place = {}
     $scope.claim = {}
-    
-    var sna = {
-      degreeCentrality: cy.$().dc({ root: event.cyTarget }).degree,
-      closenessCentrality: cy.$().cc({ root: event.cyTarget }),
-      betweennessCentrality: cy.$().bc().betweenness(event.cyTarget)
-    }
 
     // If the event is place
     if(event.cyTarget._private.data.type == 'place') {
       $scope.place = entities[event.cyTarget.id()]
-      $scope.place.sna = sna
+      $scope.place.sna = event.cyTarget.data('sna')
       $scope.infoboxState = 'place'
     }
     // Else it must be a claim
     else {
       $scope.claim = entities[event.cyTarget.id()]
-      $scope.claim.sna = sna
+      $scope.claim.sna = event.cyTarget.data('sna')
       $scope.claim.property = event.cyTarget._private.data.property
       $scope.infoboxState = 'claim'
     }
@@ -182,6 +199,10 @@ angular.module('app.graph', ['ngRoute'])
     $scope.connection = event.cyTarget.data()
     $scope.infoboxState = 'connection'
     $scope.$apply()
+  })
+
+  cy.ready(function(event) {
+    calculateSNA()
   })
 
 })

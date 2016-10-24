@@ -225,6 +225,32 @@ input.form-control {
   max-width: 800px;
 }
 
+/*****************************************************************
+*
+* Table
+*
+******************************************************************/
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: fade(@orange, 10%);
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  border: none;
+}
+
+th {
+  // color: @light_navy;
+  font-weight: 200; // Extra Light
+}
+
+th.num, td.num {
+  text-align: right;
+}
+
+td.num {
+  font-family: monospace;
+}
+
 
 /*****************************************************************
 *
