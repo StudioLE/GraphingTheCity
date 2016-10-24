@@ -120,15 +120,23 @@ angular.module('app.graph', ['ngRoute'])
   var setInfobox = function(event) {
     $scope.place = {}
     $scope.claim = {}
+    
+    var sna = {
+      degreeCentrality: cy.$().dc({ root: event.cyTarget }).degree,
+      closenessCentrality: cy.$().cc({ root: event.cyTarget }),
+      betweennessCentrality: cy.$().bc().betweenness(event.cyTarget)
+    }
 
     // If the event is place
     if(event.cyTarget._private.data.type == 'place') {
       $scope.place = entities[event.cyTarget.id()]
+      $scope.place.sna = sna
       $scope.infoboxState = 'place'
     }
     // Else it must be a claim
     else {
       $scope.claim = entities[event.cyTarget.id()]
+      $scope.claim.sna = sna
       $scope.claim.property = event.cyTarget._private.data.property
       $scope.infoboxState = 'claim'
     }
