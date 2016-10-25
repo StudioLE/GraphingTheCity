@@ -136,53 +136,6 @@ angular.module('app.compute', ['ngRoute'])
       // Store all places to local storage
       Entity.set(places)
 
-      return callback(null, places)
-
-      // @todo the rest of this method is no longer required.
-
-      // Count wikidata results
-      metadata.count.wikidata = wikidata.length
-
-      // Convert wikidata array to object
-      wikidata = _.keyBy(wikidata, 'title')
-
-      // Create a places object entry for each Knowledge Graph Place
-      _.each(knowledgeGraph, function(element) {
-        // Do not include if it has no name
-        if( ! element.result.name) {
-          console.log('Element has no name: ' + element.result['@id'])
-          metadata.count.no_name ++
-        }
-        else {
-          places[Helper.formatName(element.result.name)] = element.result
-          places[Helper.formatName(element.result.name)].resultScore = element.resultScore
-        }
-      })
-
-      // Go through the wikidata and add id, .geo and .wikidata to places entry
-      _.each(wikidata, function(element) {
-        // Skip if no coords, we will filter them out later
-        if( ! element.claims || ! element.claims.P625) {
-          // console.log('No coords for:', element.title, element)
-        }
-        // Skip if no match
-        else if( ! places[Helper.formatName(element.sitelinks.enwiki.title)]) {
-          console.log('No place in object:', Helper.formatName(element.sitelinks.enwiki.title))
-          metadata.count.no_match ++
-        }
-        else {
-          // Add wikidata place id
-          places[Helper.formatName(element.sitelinks.enwiki.title)].id = element.id
-          // Formated per http://schema.org/geo
-          places[Helper.formatName(element.sitelinks.enwiki.title)].geo = {
-            '@type': 'GeoCoordinates',
-            latitude: element.claims.P625[0].mainsnak.datavalue.value.latitude,
-            longitude: element.claims.P625[0].mainsnak.datavalue.value.longitude
-          }
-          places[Helper.formatName(element.sitelinks.enwiki.title)].wikidata = element
-        }
-      })
-
       callback(null, places)
     },
 
@@ -307,46 +260,6 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Get data for Claim Properties
-     */
-    function(places, claims, callback) {
-
-      $scope.status = 'Get data for Claim Properties from Wikidata API'
-      $scope.step = 7
-
-      var claim_ids = _.keys(claims)
-
-      // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
-      async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
-
-        // Create a string from the ids
-        claim_ids = claim_ids.join('|')
-
-        $http({
-          method: 'GET',
-          // url: 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&origin=*&titles=' + titles
-          // url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
-          url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&ids=' + claim_ids
-        }).then(function successCallback(response) {
-          console.log('Wikidata returned %s properties', _.keys(response.data.entities).length)
-          // async.concat only works with arrays so convert data to array
-          concatCallback(null, _.values(response.data.entities))
-        }, function errorCallback(response) {
-          concatCallback(response)
-        })
-
-      }, function(err, results) {
-        if(err) return callback(err, results)
-
-        // Store all Claim Properties in local storage
-        Entity.add(_.keyBy(results, 'id'))
-
-        callback(null, places, claims)
-      })
-
-    },
-
-    /**
      * Analyse Connections
      */
     function(places, claims, callback) {
@@ -357,21 +270,9 @@ angular.module('app.compute', ['ngRoute'])
       var connections = []
       var analysed = []
       var claim_nodes = []
-      // var metadata = Data.get()
-      // var claims = {}
+      metadata.entities = []
 
-      // @todo Get chosen_claims from Criteria
-
-      var chosen_claims = [
-        // 'P1435', // heritage status
-        'P149',  // architectural style
-        'P31',   // instance of
-        // 'P131',  // located in the administrative territorial entity
-        'P84',   // architect
-        // 'P1619', // date of official opening
-        // 'P571'   // inception
-        'P177' // Crosses
-      ]
+      var chosen_claims = criteria.properties
 
       async.eachOfSeries(claims, function(claim_prop, claim_prop_id, callback_claim_properties_series) {
         // Example: claim_prop_id = P149
@@ -382,11 +283,8 @@ angular.module('app.compute', ['ngRoute'])
         async.eachOfSeries(claim_prop, function(claim_val, claim_val_id, callback_claim_val_series) {
           // Example: claim_val_id = Q176483 (Gothic Architecture)
 
-          // $scope.status = 'Analysing connection: ' + claim_prop_id + ' for ' + claim_val_id
-
-          // @todo Add to list to find out wtf this value is?
-
-          // console.log(claim_val)
+          // Store the claim_val_id so we can fetch it later
+          metadata.entities.push(claim_val_id)
 
           // Ignore if there are less than 2 answers
           if(Object.keys(claim_val).length < 2) return callback_claim_val_series()
@@ -394,7 +292,7 @@ angular.module('app.compute', ['ngRoute'])
           claim_nodes.push( {
             data: {
               id: claim_val_id,
-              name: claim_val_id, // @todo request claim label from Wikidata
+              name: claim_val_id,
               property: claim_prop_id,
               type: 'claim'
             },
@@ -435,7 +333,7 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Get data for Claim Values
+     * Get data for Claim Values & Claim Properties
      */
     function(places, callback) {
 
@@ -444,17 +342,11 @@ angular.module('app.compute', ['ngRoute'])
 
       var nodes = Node.get()
 
-      var claim_ids = _.filter(_.map(nodes, function(c) {
-        if(c.data.type == 'claim') {
-          return c.data.id
-        }
-        else {
-          return false
-        }
-      }))
+      // Combine claim values and properties  
+      metadata.entities = metadata.entities.concat(criteria.properties)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
-      async.concat(_.chunk(claim_ids, 50), function(claim_ids, concatCallback) {
+      async.concat(_.chunk(metadata.entities, 50), function(claim_ids, concatCallback) {
 
         // Create a string from the ids
         claim_ids = claim_ids.join('|')
@@ -465,7 +357,7 @@ angular.module('app.compute', ['ngRoute'])
           // url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&titles=' + titles
           url: 'https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&format=json&languages=en&origin=*&ids=' + claim_ids
         }).then(function successCallback(response) {
-          console.log('Wikidata returned %s claim values', _.keys(response.data.entities).length)
+          console.log('Wikidata returned %s claims', _.keys(response.data.entities).length)
           // async.concat only works with arrays so convert data to array
           concatCallback(null, _.values(response.data.entities))
         }, function errorCallback(response) {
@@ -478,7 +370,6 @@ angular.module('app.compute', ['ngRoute'])
         // Store Claim Values in local storage
         Entity.add(_.keyBy(results, 'id'))
 
-        
         callback(null, places)
       })
 
