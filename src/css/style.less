@@ -287,13 +287,19 @@ td.num {
   font-size: 24px;
 }
 
+.nav-tabs>li>a span {
+  display: none;
+}
+
 .nav>li>a:focus, .nav>li>a:hover {
   background-color: transparent;
   border: none;
 }
 
-.nav-tabs>li>a span {
-  display: none;
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+  color: @orange;
+  background-color: transparent;
+  border: none;
 }
 
 // .nav-tabs>li>a:hover span,

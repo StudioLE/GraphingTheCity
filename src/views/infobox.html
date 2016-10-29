@@ -22,21 +22,9 @@
 
 <div class="inset">
   <ul class="nav nav-tabs">
-    <li>
-      <a href="#/criteria"><i class="fa fa-edit"></i>
-      <span>Criteria</span></a>
-    </li>
-    <li>
-      <a href="#/graph"><i class="fa fa-link"></i>
-      <span>Graph</span></a>
-    </li>
-    <li>
-      <a href="#/analysis"><i class="fa fa-table"></i>
-      <span>Analysis</span></a>
-    </li>
-    <li>
-      <a href="#/map"><i class="fa fa-map"></i>
-      <span>Map</span></a>
+    <li ng-repeat="link in nav" ng-class="navClass(link.url)">
+      <a href="{{link.url}}"><i class="fa" ng-class="link.icon"></i>
+      <span>{{link.title}}</span></a>
     </li>
   </ul>
 </div>

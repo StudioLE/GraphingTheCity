@@ -2,7 +2,7 @@
 
 angular.module('app.infobox', [])
 
-.controller('InfoboxCtrl', function($scope, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
+.controller('InfoboxCtrl', function($scope, $location, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
@@ -31,11 +31,6 @@ angular.module('app.infobox', [])
   $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage
 
-
-  ////////////////////////////
-
-
-
   $scope.navClass = function(href) {
     return href === '#' + $location.path() ? 'active' : ''
   }
@@ -44,8 +39,7 @@ angular.module('app.infobox', [])
     {
       url: '#/criteria',
       title: 'Criteria',
-      icon: 'fa-edit',
-      if: true
+      icon: 'fa-edit'
     },
     {
       url: '#/graph',
