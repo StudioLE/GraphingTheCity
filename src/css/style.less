@@ -98,10 +98,13 @@ hr {
   padding: 0;
 }
 
+.interface {
+  overflow-y: scroll;
+}
+
 #interface {
   width: 100%;
   height: 100%;
-  color: #000;
 }
 
 .head {
@@ -174,6 +177,27 @@ input.form-control {
 
   &:hover, &:focus {
     color: @orange;
+  }
+}
+
+select.form-control {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600; // Bold
+}
+
+.form-control option {
+  margin: 0;
+  padding: 7px 15px;
+  color: #9d9c9c;
+  
+  &:hover, &:focus {
+    color: #fff;
+    background-color: @orange;
+    // border-color: @orange;
   }
 }
 
@@ -258,12 +282,13 @@ td.num {
 
 /*****************************************************************
 *
-* Graph
+* Infobox
 *
 ******************************************************************/
 
 .infobox {
-  margin-top: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 
 .inset {
@@ -273,7 +298,8 @@ td.num {
 
 .full-height {
   height: 100%;
-  // overflow: auto;
+  // overflow-x: visible;
+  // overflow-y: auto;
 }
 
 .nav-tabs {
