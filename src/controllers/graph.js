@@ -19,7 +19,7 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, $location, Criteria, Entity, Node, Connection, Data, Helper) {
+.controller('GraphCtrl', function($scope, Infobox, Criteria, Entity, Node, Connection, Data) {
 
   /**
    * Get data from local storage
@@ -30,28 +30,7 @@ angular.module('app.graph', ['ngRoute'])
   var connections = Connection.get()
   var data = Data.get()
 
-  $scope.criteria = function() {
-    return criteria
-  }
-  $scope.entities = function() {
-    return entities
-  }
-  $scope.data = function() {
-    return data
-  }
-  $scope.place = {}
-  $scope.claim = {}
-  $scope.connection = {}
-
-  $scope.infoboxState = 'default'
   $scope.infoboxClicked = false
-
-  $scope.infobox = function(request) {
-    return $scope.infoboxState == request
-  }
-  
-  $scope.saveCriteria = Helper.saveCriteria
-  $scope.wikimediaImage = Helper.wikimediaImage
 
   var links = connections
 
@@ -141,28 +120,26 @@ angular.module('app.graph', ['ngRoute'])
   }
 
   var setInfobox = function(event) {
-    $scope.place = {}
-    $scope.claim = {}
 
     // If the event is place
     if(event.cyTarget._private.data.type == 'place') {
-      $scope.place = entities[event.cyTarget.id()]
-      $scope.place.sna = event.cyTarget.data('sna')
-      $scope.infoboxState = 'place'
+      var place = entities[event.cyTarget.id()]
+      place.sna = event.cyTarget.data('sna')
+      Infobox.set('place', place)
     }
     // Else it must be a claim
     else {
-      $scope.claim = entities[event.cyTarget.id()]
-      $scope.claim.sna = event.cyTarget.data('sna')
-      $scope.claim.property = event.cyTarget._private.data.property
-      $scope.infoboxState = 'claim'
+      var claim = entities[event.cyTarget.id()]
+      claim.sna = event.cyTarget.data('sna')
+      claim.property = event.cyTarget._private.data.property
+      Infobox.set('claim', claim)
     }
 
     $scope.$apply()
   }
 
   var unsetInfobox = function() {
-    $scope.infoboxState = 'default'
+    Infobox.unset()
     $scope.$apply()
   }
 
@@ -195,9 +172,7 @@ angular.module('app.graph', ['ngRoute'])
   })
 
   cy.on('click', 'edge', function(event) {
-    $scope.connection = {}
-    $scope.connection = event.cyTarget.data()
-    $scope.infoboxState = 'connection'
+    Infobox.set('connection', event.cyTarget.data())
     $scope.$apply()
   })
 

@@ -19,7 +19,7 @@ angular.module('app.map', ['ngRoute'])
 * MapCtrl controlller
 *
 ******************************************************************/
-.controller('MapCtrl', function($scope, Criteria, Entity, Node, Connection, Data, Helper) {
+.controller('MapCtrl', function($scope, Infobox, Criteria, Entity, Node) {
 
   /**
    * Get data from local storage
@@ -27,30 +27,8 @@ angular.module('app.map', ['ngRoute'])
   var criteria = Criteria.get()
   var entities = Entity.get()
   var nodes = Node.get()
-  var connections = Connection.get()
-  var data = Data.get()
 
-  $scope.criteria = function() {
-    return criteria
-  }
-  $scope.entities = function() {
-    return entities
-  }
-  $scope.data = function() {
-    return data
-  }
-  $scope.place = {}
-  $scope.claim = {}
-  $scope.connection = {}
-
-  $scope.infoboxState = 'default'
-
-  $scope.infobox = function(request) {
-    return $scope.infoboxState == request
-  }
-
-  $scope.saveCriteria = Helper.saveCriteria
-  $scope.wikimediaImage = Helper.wikimediaImage
+  Infobox.unset()
 
   var map_params = {
     style: 'clean_grey',
@@ -74,8 +52,6 @@ angular.module('app.map', ['ngRoute'])
   map.mapTypes.set(map_params.style, cleanGrey)
   map.setMapTypeId(map_params.style)
 
-  var infowindow = new google.maps.InfoWindow()
-
   _.each(nodes, function(node){
     if(node.data.type == 'place') {
       var place = node.data
@@ -96,20 +72,8 @@ angular.module('app.map', ['ngRoute'])
       })
 
       google.maps.event.addListener(marker, 'click', function() {
-
-
-        $scope.place = {}
-        $scope.claim = {}
-
-        // If the event is place
-        $scope.place = entities[place.id]
-        $scope.infoboxState = 'place'
-
+        Infobox.set('place', entities[place.id])
         $scope.$apply()
-
-
-        infowindow.setContent(place.name)
-        infowindow.open(map, this)
       })
     }
   })

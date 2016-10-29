@@ -19,7 +19,7 @@ angular.module('app.analysis', ['ngRoute'])
 * AnalysisCtrl controlller
 *
 ******************************************************************/
-.controller('AnalysisCtrl', function($scope, Criteria, Entity, Node, Connection, Data, Helper) {
+.controller('AnalysisCtrl', function($scope, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
@@ -67,5 +67,6 @@ angular.module('app.analysis', ['ngRoute'])
   $scope.sortType = 'sna.betweennessCentrality'
   $scope.sortReverse = true
 
+  Infobox.unset()
 
 })

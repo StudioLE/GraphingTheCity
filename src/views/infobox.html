@@ -41,8 +41,9 @@
   </ul>
 </div>
 
+<div class="inset" ng-if="infobox().state == 'default'">
 
-<div class="inset" ng-if="infobox('default')">
+  <hr>
 
   <p class="property">Nodes</p>
   <h2>{{ data().count.nodes }}</h2>
@@ -101,84 +102,87 @@
   </select>
 </div> <!-- infobox('default') -->
 
-<div ng-if="infobox('place')">
-  <a ng-href="https://www.wikidata.org/wiki/{{ place.id }}" class="thumbnail">
-    <img ng-if="place.claims.P18" ng-src="{{ wikimediaImage(place.claims.P18[0].mainsnak.datavalue.value) }}">
+<div ng-if="infobox().state == 'place'">
+  <a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.id }}" class="thumbnail">
+    <img ng-if="infobox().content.claims.P18" ng-src="{{ wikimediaImage(infobox().content.claims.P18[0].mainsnak.datavalue.value) }}">
   </a>
 
   <div class="inset">
     <p class="property">Place</p>
-    <h2><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.labels.en.value }}</a></h2>
+    <h2><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.id }}">{{ infobox().content.labels.en.value }}</a></h2>
     
+    <div ng-if="infobox().content.sna">
     <hr>
 
     <p class="property">Degree Centrality</p>
-    <h3>{{ place.sna.degreeCentrality.toFixed(2) }}</h3>
+    <h3>{{ infobox().content.sna.degreeCentrality.toFixed(2) }}</h3>
     
     <hr>
 
     <p class="property">Closeness Centrality</p>
-    <h3>{{ place.sna.closenessCentrality.toFixed(2) }}</h3>
+    <h3>{{ infobox().content.sna.closenessCentrality.toFixed(2) }}</h3>
     
     <hr>
 
     <p class="property">Betweenness Centrality</p>
-    <h3>{{ place.sna.betweennessCentrality.toFixed(2) }}</h3>
+    <h3>{{ infobox().content.sna.betweennessCentrality.toFixed(2) }}</h3>
+
+    </div>
 
     <div ng-repeat="claim_prop_id in criteria().properties"
-      ng-if="place.claims[claim_prop_id]">
+      ng-if="infobox().content.claims[claim_prop_id]">
       <hr>
 
       <p class="property">{{ entities()[claim_prop_id].labels.en.value }}</p>
-      <h3 ng-repeat="claim in place.claims[claim_prop_id]"><a ng-href="https://www.wikidata.org/wiki/{{ claim.mainsnak.datavalue.value.id }}">{{ entities()[claim.mainsnak.datavalue.value.id].labels.en.value }}</a></h3>
+      <h3 ng-repeat="claim in infobox().content.claims[claim_prop_id]"><a ng-href="https://www.wikidata.org/wiki/{{ claim.mainsnak.datavalue.value.id }}">{{ entities()[claim.mainsnak.datavalue.value.id].labels.en.value }}</a></h3>
     </div>
   </div>
 </div> <!-- infobox('place') -->
 
-<div ng-if="infobox('claim')">
-  <a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}" class="thumbnail">
-    <img ng-if="claim.claims.P18" ng-src="{{ wikimediaImage(claim.claims.P18[0].mainsnak.datavalue.value) }}">
+<div ng-if="infobox().state == 'claim'">
+  <a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.id }}" class="thumbnail">
+    <img ng-if="infobox().content.claims.P18" ng-src="{{ wikimediaImage(infobox().content.claims.P18[0].mainsnak.datavalue.value) }}">
   </a>
 
   <div class="inset">
-    <p class="property"><a ng-href="https://www.wikidata.org/wiki/{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</p>
-    <h2><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></h2>
+    <p class="property"><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.property }}">{{ entities()[infobox().content.property].labels.en.value }}</p>
+    <h2><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.id }}">{{ infobox().content.labels.en.value }}</a></h2>
 
     <hr>
 
     <p class="property">Description</p>
-    <h3>{{ claim.descriptions.en.value }}</h3>
+    <h3>{{ infobox().content.descriptions.en.value }}</h3>
     
     <hr>
 
     <p class="property">Degree Centrality</p>
-    <h3>{{ claim.sna.degreeCentrality.toFixed(2) }}</h3>
+    <h3>{{ infobox().content.sna.degreeCentrality.toFixed(2) }}</h3>
     
     <hr>
 
     <p class="property">Closeness Centrality</p>
-    <h3>{{ claim.sna.closenessCentrality.toFixed(2) }}</h3>
+    <h3>{{ infobox().content.sna.closenessCentrality.toFixed(2) }}</h3>
     
     <hr>
 
     <p class="property">Betweenness Centrality</p>
-    <h3>{{ claim.sna.betweennessCentrality.toFixed(2) }}</h3>
+    <h3>{{ infobox().content.sna.betweennessCentrality.toFixed(2) }}</h3>
   </div>
 </div> <!-- infobox('claim') -->
 
-<div ng-if="infobox('connection')">
+<div ng-if="infobox().state == 'connection'">
   <div class="inset">
     <p class="property">Place</p>
-    <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.source }}">{{ entities()[connection.source].labels.en.value }}</a></h3>
+    <h3><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.source }}">{{ entities()[infobox().content.source].labels.en.value }}</a></h3>
 
     <hr>
     
     <p class="property">Is Connected By</p>
-    <h3><a ng-href="https://www.wikidata.org/wiki/Property:{{ connection.claim_property }}">{{ entities()[connection.claim_property].labels.en.value }}</a></h3>
+    <h3><a ng-href="https://www.wikidata.org/wiki/Property:{{ infobox().content.claim_property }}">{{ entities()[infobox().content.claim_property].labels.en.value }}</a></h3>
 
     <hr>
     
     <p class="property">To Target</p>
-    <h3><a ng-href="https://www.wikidata.org/wiki/{{ connection.target }}">{{ entities()[connection.target].labels.en.value }}</a></h3>
+    <h3><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.target }}">{{ entities()[infobox().content.target].labels.en.value }}</a></h3>
   </div>
 </div> <!-- infobox('connection') -->

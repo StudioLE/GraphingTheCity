@@ -19,7 +19,7 @@ angular.module('app.criteria', ['ngRoute'])
 * CriteriaCtrl controlller
 *
 ******************************************************************/
-.controller('CriteriaCtrl', function($scope, $location, Criteria, Helper) {
+.controller('CriteriaCtrl', function($scope, $location, Infobox, Criteria, Helper) {
 
   /**
    * Get data from local storage
@@ -30,6 +30,8 @@ angular.module('app.criteria', ['ngRoute'])
   $scope.criteria = function() {
     return criteria
   }
+
+  Infobox.unset()
 
   $scope.autocompleteOptions = {
     // componentRestrictions: { country: 'au' },

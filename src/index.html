@@ -27,8 +27,17 @@
 </head>
 <body>
 
-<div class="frame" ng-view>
-</div> <!-- .frame -->
+
+<div class="container-fluid fixed">
+  <div class="row full-height">
+    <div class="col-xs-3 infobox full-height">
+      <ng-include src="'views/infobox.html'" ng-controller="InfoboxCtrl"></ng-include>
+    </div> <!-- .col -->
+    <div class="col-xs-9 full-height">
+      <div id="interface" ng-view></div>
+    </div> <!-- .col -->
+  </div> <!-- .row -->
+</div> <!-- .container-fluid .fixed -->
 
 <div id="bg"></div>
 
@@ -56,6 +65,7 @@
 <script src="app.js"></script>
 <script src="config.js"></script>
 <script src="controllers/static.js"></script>
+<script src="controllers/infobox.js"></script>
 <script src="controllers/criteria.js"></script>
 <script src="controllers/compute.js"></script>
 <script src="controllers/schedule.js"></script>
@@ -63,6 +73,7 @@
 <script src="controllers/map.js"></script>
 <script src="controllers/analysis.js"></script>
 <script src="controllers/raw.js"></script>
+<script src="factories/infobox.js"></script>
 <script src="factories/data.js"></script>
 <script src="factories/criteria.js"></script>
 <script src="factories/entity.js"></script>
