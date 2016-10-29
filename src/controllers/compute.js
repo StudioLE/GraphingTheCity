@@ -61,9 +61,11 @@ angular.module('app.compute', ['ngRoute'])
       $scope.status = 'Get list of Places from Google Knowledge Search API'
       $scope.step = 2
 
+      // Types from types hierarchy: http://schema.org/docs/full.html
+
       $http({
         method: 'GET',
-        url: 'https://kgsearch.googleapis.com/v1/entities:search?indent=true&prefix=true&types=LandmarksOrHistoricalBuildings&types=TouristAttraction&types=CivicStructure&limit=200&key=' + Config.place_api_key + '&query=' + criteria.city.name
+        url: 'https://kgsearch.googleapis.com/v1/entities:search?indent=true&prefix=true&types=LandmarksOrHistoricalBuildings&types=TouristAttraction&types=CivicStructure&types=BodyOfWater&limit=200&key=' + Config.place_api_key + '&query=' + criteria.city.name
       }).then(function successCallback(response) {
         console.log('Knowledge Graph returned %s results', response.data.itemListElement.length)
         callback(null, response.data.itemListElement)
@@ -125,11 +127,11 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Associate Places with Data
+     * Store Places data
      */
     function(knowledgeGraph, wikidata, callback) {
 
-      $scope.status = 'Associate Places with Data'
+      $scope.status = 'Store Places data'
       $scope.step = 4
 
       var places = _.keyBy(wikidata, 'id')
@@ -234,9 +236,9 @@ angular.module('app.compute', ['ngRoute'])
           if( ! claims[claim_id]) claims[claim_id] = {}
           // For this claim, add each of its values to the relevant claim object
           _.each(claim, function(claim_val) {
-            // console.log(claim_val)
-            // Skip if no value
-            if(claim_val.mainsnak.snaktype == "novalue" ) return false
+
+            // Skip if snaktype isn't value. Otherwise app will break.
+            if(claim_val.mainsnak.snaktype != 'value') return false
 
             // Ensure the property exists
             if( ! claims[claim_id][claim_val.mainsnak.datavalue.value.id]) claims[claim_id][claim_val.mainsnak.datavalue.value.id] = {}
