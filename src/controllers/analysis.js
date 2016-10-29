@@ -67,6 +67,4 @@ angular.module('app.analysis', ['ngRoute'])
   $scope.sortType = 'sna.betweennessCentrality'
   $scope.sortReverse = true
 
-  Infobox.unset()
-
 })

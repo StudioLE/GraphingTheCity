@@ -8,7 +8,7 @@ angular.module('app.infoboxFactory', [])
 *
 ******************************************************************/
 .factory('Infobox', function() {
-var data 
+var data
 return {
 
   data: {
@@ -20,6 +20,7 @@ return {
    * Get infobox content
    */
   get: function() {
+    if( ! data) data = this.unset()
     return data
   },
 
@@ -35,7 +36,7 @@ return {
   },
 
   unset: function() {
-    data = {
+    return data = {
       state: 'default',
       clicked: false,
       content: {},

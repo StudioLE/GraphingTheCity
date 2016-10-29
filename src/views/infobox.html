@@ -1,4 +1,4 @@
-<form class="inset" ng-if=" ! infoboxSchedule">
+<form class="inset" ng-if=" ! navClass('#/criteria')">
   <div class="form-group">
     <label for="" class="control-label">City</label>
     <div class="input-group">
@@ -29,7 +29,7 @@
   </ul>
 </div>
 
-<div class="inset" ng-if="infobox().state == 'default'">
+<div class="inset" ng-if="navClass('#/graph') && infobox().state == 'default'">
 
   <hr>
 

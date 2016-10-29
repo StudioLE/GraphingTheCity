@@ -28,8 +28,6 @@ angular.module('app.map', ['ngRoute'])
   var entities = Entity.get()
   var nodes = Node.get()
 
-  Infobox.unset()
-
   var map_params = {
     style: 'clean_grey',
     zoom: 13,

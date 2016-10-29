@@ -2,7 +2,7 @@
 
 angular.module('app.infobox', [])
 
-.controller('InfoboxCtrl', function($scope, $location, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
+.controller('InfoboxCtrl', function($rootScope, $scope, $location, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
@@ -10,9 +10,6 @@ angular.module('app.infobox', [])
   // var infobox = Infobox.get()
   var criteria = Criteria.get()
   var entities = Entity.get()
-  var nodes = Node.get()
-  var connections = Connection.get()
-  var data = Data.get()
 
   $scope.infobox = function() {
     // @todo Direct binding doesn't seem right. Investigate..
@@ -25,8 +22,15 @@ angular.module('app.infobox', [])
     return entities
   }
   $scope.data = function() {
-    return data
+    // @todo Direct binding doesn't seem right. Investigate..
+    return Data.get()
   }
+
+  // Ensure the infobox is populated on first run and on all route changes
+  $rootScope.$on("$routeChangeSuccess", function(event, next, current) {
+    criteria = Criteria.get()
+    Infobox.unset()
+  })
 
   $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage

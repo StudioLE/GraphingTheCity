@@ -31,8 +31,6 @@ angular.module('app.criteria', ['ngRoute'])
     return criteria
   }
 
-  Infobox.unset()
-
   $scope.autocompleteOptions = {
     // componentRestrictions: { country: 'au' },
     types: ['(cities)']
