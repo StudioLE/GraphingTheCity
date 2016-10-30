@@ -14,6 +14,7 @@ angular.module('app', [
   'app.static',
   'app.infobox',
   'app.criteria',
+  'app.load',
   'app.compute',
   'app.schedule',
   'app.graph',

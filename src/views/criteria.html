@@ -26,6 +26,7 @@
         </span>
       </div><!-- .input-group -->
     </div> <!-- .form-group -->
+    <p>Or, load stored data: <a ng-repeat="(key, name) in cities" ng-href="#/load/{{ key }}">{{ name }}<span ng-if=" ! $last">, </span></a></p>
   </form>
 
   <ng-include class="process" src="'img/process.svg'" ng-init="checkProgress = checkProgress"></ng-include>

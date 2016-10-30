@@ -67,6 +67,9 @@ gulp.task('assets', function() {
   // Views
   gulp.src('src/views/*')
   .pipe(gulp.dest(build.path('views')))
+  // Data
+  gulp.src('src/data/*')
+  .pipe(gulp.dest(build.path('data')))
   // Images
   gulp.src('src/img/norwich-b&w.jpg')
   .pipe(gulp.dest(build.path('img')))

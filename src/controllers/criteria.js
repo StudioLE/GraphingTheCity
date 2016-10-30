@@ -62,4 +62,14 @@ angular.module('app.criteria', ['ngRoute'])
    */
   $scope.saveCriteria = Helper.saveCriteria
 
+  $scope.cities = {
+    london: 'London',
+    paris: 'Paris',
+    berlin: 'Berlin',
+    tokyo: 'Tokyo',
+    barcelona: 'Barcelona',
+    venice: 'Venice',
+    vienna: 'Vienna'
+  }
+
 })
