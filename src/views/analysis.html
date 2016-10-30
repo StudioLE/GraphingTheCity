@@ -1,11 +1,20 @@
 <div class="row">
 <div class="col-sm-10 col-sm-offset-1">
 
+  <hr>
+
+  <h1>Social Network Analysis</h1>
+
+  <hr>
+
   <h2>Places</h2>
+
+  <hr>
 
   <table class="table table-striped">
     <thead>
     <tr>
+      <th class="num" style="width: 5%;"></th>
       <th style="width: 15%;">
         <a ng-click="sortType = 'id'; sortReverse = !sortReverse">
           ID 
@@ -13,28 +22,28 @@
           <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th style="width: 40%;">
+      <th style="width: 50%;">
         <a ng-click="sortType = 'labels.en.value'; sortReverse = !sortReverse">
           Label
           <span ng-show="sortType == 'labels.en.value' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'labels.en.value' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th class="num" style="width: 15%;">
+      <th class="num" style="width: 10%;">
         <a ng-click="sortType = 'sna.degreeCentrality'; sortReverse = !sortReverse">
           Degree Centrality
           <span ng-show="sortType == 'sna.degreeCentrality' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'sna.degreeCentrality' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th class="num" style="width: 15%;">
+      <th class="num" style="width: 10%;">
         <a ng-click="sortType = 'sna.closenessCentrality'; sortReverse = !sortReverse">
           Closeness Centrality
           <span ng-show="sortType == 'sna.closenessCentrality' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'sna.closenessCentrality' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th class="num" style="width: 15%;">
+      <th class="num" style="width: 10%;">
         <a ng-click="sortType = 'sna.betweennessCentrality'; sortReverse = !sortReverse">
           Betweenness Centrality
           <span ng-show="sortType == 'sna.betweennessCentrality' && ! sortReverse" class="fa fa-caret-down"></span>
@@ -45,6 +54,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="place in places() | orderBy:sortType:sortReverse">
+      <td class="num">{{ $index + 1 }}</td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.id }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.labels.en.value }}</a></td>
       <td class="num">{{ place.sna.degreeCentrality.toFixed(2) }}</td>
@@ -54,11 +64,16 @@
     </tbody>
   </table>
 
+  <hr>
+
   <h2>Claims</h2>
+
+  <hr>
 
   <table class="table table-striped">
     <thead>
     <tr>
+      <th class="num" style="width: 5%;"></th>
       <th style="width: 15%;">
         <a ng-click="sortType = 'id'; sortReverse = !sortReverse">
           ID 
@@ -66,28 +81,35 @@
           <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th style="width: 40%;">
+      <th style="width: 20%;">
+        <a ng-click="sortType = 'property'; sortReverse = !sortReverse">
+          Property
+          <span ng-show="sortType == 'property' && ! sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'property' && sortReverse" class="fa fa-caret-up"></span>
+        </a>
+      </th>
+      <th style="width: 30%;">
         <a ng-click="sortType = 'labels.en.value'; sortReverse = !sortReverse">
           Label
           <span ng-show="sortType == 'labels.en.value' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'labels.en.value' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th class="num" style="width: 15%;">
+      <th class="num" style="width: 10%;">
         <a ng-click="sortType = 'sna.degreeCentrality'; sortReverse = !sortReverse">
           Degree Centrality
           <span ng-show="sortType == 'sna.degreeCentrality' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'sna.degreeCentrality' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th class="num" style="width: 15%;">
+      <th class="num" style="width: 10%;">
         <a ng-click="sortType = 'sna.closenessCentrality'; sortReverse = !sortReverse">
           Closeness Centrality
           <span ng-show="sortType == 'sna.closenessCentrality' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'sna.closenessCentrality' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th class="num" style="width: 15%;">
+      <th class="num" style="width: 10%;">
         <a ng-click="sortType = 'sna.betweennessCentrality'; sortReverse = !sortReverse">
           Betweenness Centrality
           <span ng-show="sortType == 'sna.betweennessCentrality' && ! sortReverse" class="fa fa-caret-down"></span>
@@ -98,7 +120,9 @@
     </thead>
     <tbody>
     <tr ng-repeat="claim in claims() | orderBy:sortType:sortReverse">
+      <td class="num">{{ $index + 1 }}</td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.id }}</a></td>
+      <td><a ng-href="https://www.wikidata.org/wiki/Property:{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></td>
       <td class="num">{{ claim.sna.degreeCentrality.toFixed(2) }}</td>
       <td class="num">{{ claim.sna.closenessCentrality.toFixed(2) }}</td>

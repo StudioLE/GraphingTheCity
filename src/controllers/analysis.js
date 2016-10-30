@@ -56,6 +56,7 @@ angular.module('app.analysis', ['ngRoute'])
       if(node.data.type == 'claim') {
         var claim = entities[node.data.id]
         claim.sna = node.data.sna
+        claim.property = node.data.property
         return claim
       }
       else {
