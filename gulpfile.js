@@ -71,7 +71,7 @@ gulp.task('assets', function() {
   gulp.src('src/data/*')
   .pipe(gulp.dest(build.path('data')))
   // Images
-  gulp.src('src/img/norwich-b&w.jpg')
+  gulp.src('src/img/*')
   .pipe(gulp.dest(build.path('img')))
   // Overpass Font
   gulp.src('src/bower_components/overpass/Webfonts/*')
@@ -85,8 +85,6 @@ gulp.task('assets', function() {
   // Favicon
   gulp.src('src/favicon.ico')
   .pipe(gulp.dest(build.path()))
-  gulp.src('src/img/favicon.png')
-  .pipe(gulp.dest(build.path('img')))
 })
 
 // Build app CSS

@@ -131,9 +131,6 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(knowledgeGraph, wikidata, callback) {
 
-      $scope.status = 'Store Places data'
-      $scope.step = 4
-
       var places = _.keyBy(wikidata, 'id')
       // Store all places to local storage
       Entity.set(places)
@@ -147,7 +144,7 @@ angular.module('app.compute', ['ngRoute'])
     function(places, callback) {
 
       $scope.status = 'Filter Places'
-      $scope.step = 5
+      $scope.step = 4
 
       var centrePoint = Helper.formatGooglePlaceToSchema(criteria.city.geometry.location)
 
@@ -219,7 +216,7 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
       $scope.status = 'Record all Claims'
-      $scope.step = 6
+      $scope.step = 5
 
       var destinations = places
       var connections = []
@@ -262,12 +259,11 @@ angular.module('app.compute', ['ngRoute'])
     },
 
     /**
-     * Analyse Connections
+     * Analyse Claims
      */
     function(places, claims, callback) {
 
-      $scope.status = 'Analyse Connections'
-      $scope.step = 8
+      $scope.status = 'Analyse Claims'
 
       var connections = []
       var analysed = []
@@ -339,8 +335,8 @@ angular.module('app.compute', ['ngRoute'])
      */
     function(places, callback) {
 
-      $scope.status = 'Get data for Claim Values from Wikidata API'
-      $scope.step = 9
+      $scope.status = 'Get data for Claims from Wikidata API'
+      $scope.step = 6
 
       var nodes = Node.get()
 
@@ -417,7 +413,7 @@ angular.module('app.compute', ['ngRoute'])
     }
 
     $scope.status = 'Computation complete'
-    $scope.step = 10
+    // $scope.step = 10
     $location.path('/graph')
   })
 
