@@ -2,7 +2,7 @@
 
 angular.module('app.infobox', [])
 
-.controller('InfoboxCtrl', function($rootScope, $scope, $location, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
+.controller('InfoboxCtrl', function($rootScope, $scope, $location, Infobox, Criteria, Entity, Claim, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
@@ -34,6 +34,24 @@ angular.module('app.infobox', [])
 
   $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage
+
+  $scope.export = function () {
+    // http://stackoverflow.com/questions/16514509/how-do-you-serve-a-file-for-download-with-angularjs-or-javascript
+    $scope.toJSON = '';
+    $scope.toJSON = angular.toJson({
+      criteria: Criteria.get(),
+      entities: Entity.get(),
+      claims: Claim.get(),
+      nodes: Node.get(),
+      connections: Connection.get(),
+      data: Data.get()
+    })
+    var blob = new Blob([$scope.toJSON], { type:"application/json;charset=utf-8;" })
+    var downloadLink = angular.element('<a></a>')
+    downloadLink.attr('href', window.URL.createObjectURL(blob))
+    downloadLink.attr('download', 'graphing-the-city-' + $scope.criteria().city.name.replace(/\s+/g, '-').toLowerCase() + '.json')
+    downloadLink[0].click();
+  }
 
   $scope.navClass = function(href) {
     return href === '#' + $location.path() ? 'active' : ''
