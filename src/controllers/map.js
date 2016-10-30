@@ -50,6 +50,20 @@ angular.module('app.map', ['ngRoute'])
   map.mapTypes.set(map_params.style, cleanGrey)
   map.setMapTypeId(map_params.style)
 
+
+  // Draw bounds
+  var rectangle = new google.maps.Rectangle({
+    strokeColor: '#000',
+    strokeOpacity: 0.25,
+    strokeWeight: 5,
+    strokePosition: google.maps.StrokePosition.OUTSIDE,
+    // fillColor: '#FF0000',
+    fillOpacity: 0,
+    map: map,
+    bounds: criteria.city.geometry.viewport
+  });
+
+  // Draw nodes
   _.each(nodes, function(node){
     if(node.data.type == 'place') {
       var place = node.data
