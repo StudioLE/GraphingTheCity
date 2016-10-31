@@ -7,22 +7,19 @@ angular.module('app.infobox', [])
   /**
    * Get data from local storage
    */
-  // var infobox = Infobox.get()
   var criteria = Criteria.get()
-  var entities = Entity.get()
 
+  // @todo Direct binding doesn't seem right. Investigate..
   $scope.infobox = function() {
-    // @todo Direct binding doesn't seem right. Investigate..
     return Infobox.get()
   }
   $scope.criteria = function() {
     return criteria
   }
   $scope.entities = function() {
-    return entities
+    return Entity.get()
   }
   $scope.data = function() {
-    // @todo Direct binding doesn't seem right. Investigate..
     return Data.get()
   }
 
