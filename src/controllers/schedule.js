@@ -41,7 +41,6 @@ angular.module('app.schedule', ['ngRoute'])
   }
   $scope.places = function() {
     return _.filter(_.map(nodes, function(node) {
-      console.log(node)
       if(node.data.type == 'place') {
         return entities[node.data.id]
       }
@@ -49,16 +48,6 @@ angular.module('app.schedule', ['ngRoute'])
         return false
       }
     }))
-  }
-  $scope.place = {}
-  $scope.claim = {}
-  $scope.connection = {}
-
-  $scope.infoboxState = 'place'
-  $scope.infoboxSchedule = true
-
-  $scope.infobox = function(request) {
-    return $scope.infoboxState == request
   }
 
   $scope.wikimediaImage = Helper.wikimediaImage

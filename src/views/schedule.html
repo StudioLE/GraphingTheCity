@@ -11,7 +11,43 @@
   <div class="row">
     <div ng-repeat-start="(key, place) in places()"
          class="col-xs-3">
-      <ng-include src="'views/infobox.html'" ng-init="place = place"></ng-include>
+<div>
+  <a ng-href="https://www.wikidata.org/wiki/{{ place.id }}" class="thumbnail">
+    <img ng-if="place.claims.P18" ng-src="{{ wikimediaImage(place.claims.P18[0].mainsnak.datavalue.value) }}">
+  </a>
+
+  <div class="inset">
+    <p class="property">Place</p>
+    <h2><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.labels.en.value }}</a></h2>
+    
+    <div ng-if="place.sna">
+    <hr>
+
+    <p class="property">Degree Centrality</p>
+    <h3>{{ place.sna.degreeCentrality.toFixed(2) }}</h3>
+    
+    <hr>
+
+    <p class="property">Closeness Centrality</p>
+    <h3>{{ place.sna.closenessCentrality.toFixed(2) }}</h3>
+    
+    <hr>
+
+    <p class="property">Betweenness Centrality</p>
+    <h3>{{ place.sna.betweennessCentrality.toFixed(2) }}</h3>
+
+    </div>
+
+    <div ng-repeat="claim_prop_id in criteria().properties"
+      ng-if="place.claims[claim_prop_id]">
+      <hr>
+
+      <p class="property">{{ entities()[claim_prop_id].labels.en.value }}</p>
+      <h3 ng-repeat="claim in place.claims[claim_prop_id]"><a ng-href="https://www.wikidata.org/wiki/{{ claim.mainsnak.datavalue.value.id }}">{{ entities()[claim.mainsnak.datavalue.value.id].labels.en.value }}</a></h3>
+    </div>
+  </div>
+</div> <!-- infobox('place') -->
+
     </div>
     <div ng-repeat-end ng-if="($index + 1) % 4 == 0" style="clear: both;"></div>
   </div>
