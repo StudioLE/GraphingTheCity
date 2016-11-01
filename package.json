@@ -1,18 +1,24 @@
 {
-  "name": "citygraph",
+  "name": "graphingthecity",
   "description": "Graphing the City",
   "version": "0.0.4",
-  "repository": "https://github.com/StudioLE/CityGraph",
+  "author": {
+    "name": "Laurence Elsdon",
+    "email": "hi@studiole.uk",
+    "url": "https://studiole.uk"
+  },
+  "homepage": "https://graphingthecity.studiole.uk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StudioLE/GraphingTheCity"
+  },
+  "bugs": {
+    "url": "https://github.com/StudioLE/GraphingTheCity/issues"
+  },
   "license": "",
-  "private": true,
   "devDependencies": {
     "http-server": "^0.9.0",
     "shelljs": "^0.7.1"
-  },
-  "scripts": {
-    "postinstall": "bower install",
-    "prestart": "npm install",
-    "start": "http-server src -a localhost -p 1337 -c-1"
   },
   "dependencies": {
     "bower": "^1.7.9",
@@ -25,5 +31,10 @@
     "gulp-less": "^3.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.4"
+  },
+  "scripts": {
+    "postinstall": "bower install",
+    "prestart": "npm install",
+    "start": "http-server src -a localhost -p 1337 -c-1"
   }
 }

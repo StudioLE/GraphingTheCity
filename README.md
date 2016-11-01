@@ -1,6 +1,8 @@
-# CityGraph
+# Graphing the City
 
-Find the app at [http://citygraph.studiole.uk](http://citygraph.studiole.uk)
+Extracting the DNA of the city as an identity graph
+
+Find the application at [https://graphingthecity.studiole.uk](https://graphingthecity.studiole.uk)
 
 ## Source
 
@@ -12,7 +14,7 @@ I'm always on the look out for collaborators so feel free to suggest new feature
 
 ## Install
 
-If you want to host your own private version or run a local version feel free to follow these [installation instructions](https://gitlab.com/StudioLE/CityGraph/blob/master/README.md).
+If you want to host your own private version or run a local version feel free to follow these [installation instructions](https://gitlab.com/StudioLE/GraphingTheCity/blob/master/INSTALL.md).
 
 ## Usage
 

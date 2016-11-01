@@ -1,10 +1,9 @@
 {
-  "name": "citygraph",
+  "name": "graphingthecity",
   "description": "Graphing the City",
   "version": "0.0.4",
-  "homepage": "https://github.com/StudioLE/CityGraph",
+  "homepage": "https://graphingthecity.studiole.uk",
   "license": "",
-  "private": true,
   "dependencies": {
     "angular": "~1.5.8",
     "angular-google-places-autocomplete": "~0.2.7",
