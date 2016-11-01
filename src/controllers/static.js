@@ -5,7 +5,7 @@ angular.module('app.static', ['ngRoute', 'jsonFormatter'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
     // redirectTo: '/import'
-    templateUrl: 'views/home.html',
+    templateUrl: 'views/ui.html',
     controller: 'HomeCtrl'
   })
   $routeProvider.when('/error', {
