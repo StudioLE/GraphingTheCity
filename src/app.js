@@ -9,6 +9,8 @@ angular.module('app', [
   'ngRoute',
   'ngResource',
   'LocalStorageModule',
+  'angulartics',
+  'angulartics.google.analytics',
   'google.places',
   'app.config',
   'app.static',

@@ -145,6 +145,8 @@ gulp.task('vendor-js', function() {
     'src/bower_components/angular-route/angular-route.min.js',
     'src/bower_components/angular-resource/angular-resource.min.js',
     'src/bower_components/angular-local-storage/dist/angular-local-storage.min.js',
+    'src/bower_components/angulartics/dist/angulartics.min.js',
+    'src/bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
     'src/bower_components/json-formatter/dist/json-formatter.min.js',
     'src/bower_components/angular-google-places-autocomplete/src/autocomplete.js',
     'src/bower_components/js-md5/build/md5.min.js'

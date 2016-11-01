@@ -12,6 +12,8 @@
     "angular-mocks": "~1.5.8",
     "angular-resource": "~1.5.8",
     "angular-route": "~1.5.8",
+    "angular-simple-logger": "~0.1.5",
+    "angulartics-google-analytics": "~0.1.2",
     "async": "^2.0.1",
     "bootstrap": "~3.3.6",
     "cytoscape": "~2.7.6",
