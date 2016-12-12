@@ -99,13 +99,16 @@ angular.module('app.graph', ['ngRoute'])
   var calculateSNA = function() {
     // Don't run if already set...
     if(data.sna) return false
+    console.log('Running SNA')
+    var dcn = cy.$().dcn()
+    var ccn = cy.$().ccn()
+    var bc = cy.$().bc()
 
     _.map(nodes, function(node) {
-      var target = cy.nodes('#' + node.data.id)
       node.data.sna  = {
-        degreeCentrality: cy.$().dc({ root: target }).degree,
-        closenessCentrality: cy.$().cc({ root: target }),
-        betweennessCentrality: cy.$().bc().betweenness(target)
+        degreeCentrality: dcn.degree('#' + node.data.id),
+        closenessCentrality: ccn.closeness('#' + node.data.id),
+        betweennessCentrality: bc.betweenness('#' + node.data.id)
       }
       return node
     })
@@ -177,6 +180,7 @@ angular.module('app.graph', ['ngRoute'])
   })
 
   cy.ready(function(event) {
+    console.log('cy.ready()')
     calculateSNA()
   })
 

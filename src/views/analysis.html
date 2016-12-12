@@ -65,8 +65,8 @@
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.id }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/Property:{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></td>
-      <td class="num">{{ claim.sna.degreeCentrality.toFixed(2) }}</td>
-      <td class="num">{{ claim.sna.closenessCentrality.toFixed(2) }}</td>
+      <td class="num">{{ claim.sna.degreeCentrality.toFixed(4) }}</td>
+      <td class="num">{{ claim.sna.closenessCentrality.toFixed(4) }}</td>
       <td class="num">{{ claim.sna.betweennessCentrality.toFixed(2) }}</td>
     </tr>
     </tbody>
@@ -124,8 +124,8 @@
       <td class="num">{{ $index + 1 }}</td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.id }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.labels.en.value }}</a></td>
-      <td class="num">{{ place.sna.degreeCentrality.toFixed(2) }}</td>
-      <td class="num">{{ place.sna.closenessCentrality.toFixed(2) }}</td>
+      <td class="num">{{ place.sna.degreeCentrality.toFixed(4) }}</td>
+      <td class="num">{{ place.sna.closenessCentrality.toFixed(4) }}</td>
       <td class="num">{{ place.sna.betweennessCentrality.toFixed(2) }}</td>
     </tr>
     </tbody>
