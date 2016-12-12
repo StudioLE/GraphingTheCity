@@ -2,6 +2,11 @@
 
 angular.module('app.infobox', [])
 
+/*****************************************************************
+*
+* InfoboxCtrl controlller
+*
+******************************************************************/
 .controller('InfoboxCtrl', function($rootScope, $scope, $location, Infobox, Criteria, Entity, Claim, Node, Connection, Data, Helper) {
 
   /**

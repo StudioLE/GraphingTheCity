@@ -2,9 +2,13 @@
 
 angular.module('app.static', ['ngRoute', 'jsonFormatter'])
 
+/*****************************************************************
+*
+* Route provider
+*
+******************************************************************/
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
-    // redirectTo: '/import'
     templateUrl: 'views/ui.html',
     controller: 'HomeCtrl'
   })
@@ -14,6 +18,12 @@ angular.module('app.static', ['ngRoute', 'jsonFormatter'])
   })
 }])
 
+
+/*****************************************************************
+*
+* ErrorCtrl controlller
+*
+******************************************************************/
 .controller('ErrorCtrl', function($window, $location, $scope, Data) {
 
   /**
@@ -30,6 +40,11 @@ angular.module('app.static', ['ngRoute', 'jsonFormatter'])
   }
 })
 
+/*****************************************************************
+*
+* HomeCtrl controlller
+*
+******************************************************************/
 .controller('HomeCtrl', function($location, Node) {
   if(Node.isset()) {
     $location.path('/graph')
