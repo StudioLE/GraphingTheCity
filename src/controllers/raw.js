@@ -66,7 +66,7 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
     return Node.unset()
   }
 
-  $scope.clearConnection = function() {
+  $scope.clearConnections = function() {
     return Connection.unset()
   }
 
