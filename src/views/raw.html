@@ -3,7 +3,10 @@
     <div class="row">
       <div class="col-sm-2">
         <div class="btn-group">
-          <a class="btn btn-primary">Criteria</a>
+          <a class="btn btn-primary">
+            Criteria
+            <span class="badge">{{ len(criteria()) }}</span>
+          </a>
           <a class="btn btn-default" 
             ng-click="clearCriteria()"><i class="fa fa-trash"></i></a>
         </div>
@@ -11,7 +14,10 @@
       </div>
       <div class="col-sm-2">
         <div class="btn-group">
-          <a class="btn btn-primary">Entities</a>
+          <a class="btn btn-primary">
+            Entities
+            <span class="badge">{{ len(entities()) }}</span>
+          </a>
           <a class="btn btn-default" 
             ng-click="clearEntities()"><i class="fa fa-trash"></i></a>
         </div>
@@ -19,7 +25,10 @@
       </div>
       <div class="col-sm-2">
         <div class="btn-group">
-          <a class="btn btn-primary">Claims</a>
+          <a class="btn btn-primary">
+            Claims
+            <span class="badge">{{ len(claims()) }}</span>
+          </a>
           <a class="btn btn-default" 
             ng-click="clearClaims()"><i class="fa fa-trash"></i></a>
         </div>
@@ -27,7 +36,10 @@
       </div>
       <div class="col-sm-2">
         <div class="btn-group">
-          <a class="btn btn-primary">Nodes</a>
+          <a class="btn btn-primary">
+            Nodes
+            <span class="badge">{{ len(nodes()) }}</span>
+          </a>
           <a class="btn btn-default" 
             ng-click="clearNodes()"><i class="fa fa-trash"></i></a>
         </div>
@@ -35,7 +47,10 @@
       </div>
       <div class="col-sm-2">
         <div class="btn-group">
-          <a class="btn btn-primary">Connections</a>
+          <a class="btn btn-primary">
+            Connections
+            <span class="badge">{{ len(connections()) }}</span>
+          </a>
           <a class="btn btn-default" 
             ng-click="clearConnections()"><i class="fa fa-trash"></i></a>
         </div>
@@ -43,7 +58,10 @@
       </div>
       <div class="col-sm-2">
         <div class="btn-group">
-          <a class="btn btn-primary">Data</a>
+          <a class="btn btn-primary">
+            Data
+            <span class="badge">{{ len(data()) }}</span>
+          </a>
           <a class="btn btn-default" 
             ng-click="clearData()"><i class="fa fa-trash"></i></a>
         </div>

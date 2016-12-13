@@ -50,6 +50,18 @@ angular.module('app.raw', ['ngRoute', 'jsonFormatter'])
     return data
   }
 
+  $scope.len = function(obj) {
+    if(_.isObject(obj)) {
+      return Object.keys(obj).length
+    }
+    else if(_.isArray(obj)) {
+      return obj.length
+    }
+    else {
+      return '?'
+    }
+  }
+
   $scope.clearCriteria = function() {
     return Criteria.unset()
   }
