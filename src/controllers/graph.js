@@ -133,6 +133,15 @@ angular.module('app.graph', ['ngRoute'])
     // Else it must be a claim
     else {
       var claim = entities[event.cyTarget.id()]
+      // If we can't find the claim in entities it's probably due to the local storage being full
+      // This is a temporary workaround to surpress errors
+      // @todo Look into alternative storage options
+      if( ! claim) {
+        console.error(event.cyTarget.id() + ' not found in entities')
+        claim = {
+          id: event.cyTarget.id()
+        }
+      }
       claim.sna = event.cyTarget.data('sna')
       claim.property = event.cyTarget._private.data.property
       Infobox.set('claim', claim)

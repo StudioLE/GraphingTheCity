@@ -52,9 +52,18 @@ angular.module('app.analysis', ['ngRoute'])
     }))
   }
   $scope.claims = function() {
-    return _.filter(_.map(nodes, function(node) {
+    var data = _.filter(_.map(nodes, function(node) {
       if(node.data.type == 'claim') {
         var claim = entities[node.data.id]
+        // If we can't find the claim in entities it's probably due to the local storage being full
+        // This is a temporary workaround to surpress errors
+        // @todo Look into alternative storage options
+        if( ! claim) {
+          console.error(node.data.id + ' not found in entities')
+          claim = {
+            id: node.data.id
+          }
+        }
         claim.sna = node.data.sna
         claim.property = node.data.property
         return claim
@@ -63,6 +72,8 @@ angular.module('app.analysis', ['ngRoute'])
         return false
       }
     }))
+    console.log(data)
+    return data
   }
 
   $scope.sortType = 'sna.betweennessCentrality'
