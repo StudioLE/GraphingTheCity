@@ -27,7 +27,8 @@
     "less": "~2.7.1",
     "lodash": "~4.13.1",
     "overpass": "*",
-    "js-md5": "md5#^0.4.1"
+    "js-md5": "md5#^0.4.1",
+    "ng-tags-input": "^3.1.1"
   },
   "resolutions": {
     "lodash": "~4.13.1"

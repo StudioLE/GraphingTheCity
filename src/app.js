@@ -12,6 +12,7 @@ angular.module('app', [
   'angulartics',
   'angulartics.google.analytics',
   'google.places',
+  'ngTagsInput',
   'app.config',
   'app.static',
   'app.infobox',

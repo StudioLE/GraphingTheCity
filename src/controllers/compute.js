@@ -270,24 +270,35 @@ angular.module('app.compute', ['ngRoute'])
       var claim_nodes = []
       metadata.entities = []
 
-      var chosen_claims = criteria.properties
+      // Convert properties from ng-tags-input format to a simple array
+      var chosen_claims = _.map(criteria.properties, function(prop) {
+        return prop.text
+      })
 
       async.eachOfSeries(claims, function(claim_prop, claim_prop_id, callback_claim_properties_series) {
+
         // Example: claim_prop_id = P149
         // Skip if not a chosen claim
-        if( ! _.includes(chosen_claims, claim_prop_id)) return callback_claim_properties_series()
+        if( ! _.isEmpty(chosen_claims) && ! _.includes(chosen_claims, claim_prop_id)) return callback_claim_properties_series()
 
         // Go through each of the claims and compare
         async.eachOfSeries(claim_prop, function(claim_val, claim_val_id, callback_claim_val_series) {
           // Example: claim_val_id = Q176483 (Gothic Architecture)
 
+          // Ignore if undefined
+          if( ! claim_val_id || claim_val_id == 'undefined') return callback_claim_val_series()
+
           // Store the claim_val_id so we can fetch it later
           metadata.entities.push(claim_val_id)
 
-          // Ignore if there are less than 2 answers
+          // Ignore if there are fewer than 2 answers
           if(Object.keys(claim_val).length < 2) return callback_claim_val_series()
 
-          claim_nodes.push( {
+
+          // If all claims then store the claim_prop_id so we can fetch it later
+          if(_.isEmpty(chosen_claims) && _.includes(metadata.entities, claim_prop_id)) metadata.entities.push(claim_prop_id)
+
+          claim_nodes.push({
             data: {
               id: claim_val_id,
               name: claim_val_id,
@@ -340,7 +351,7 @@ angular.module('app.compute', ['ngRoute'])
 
       var nodes = Node.get()
 
-      // Combine claim values and properties  
+      // Combine claim values and properties
       metadata.entities = metadata.entities.concat(criteria.properties)
 
       // Wikidata API will only return 50 results so we divide the titles into chunks for separate queries
@@ -364,6 +375,10 @@ angular.module('app.compute', ['ngRoute'])
 
       }, function(err, results) {
         if(err) return callback(err, results)
+
+        // @todo With unrestricted number of properties it's very easy to run out of localStorage space. Investigate other storage solutions.
+        console.log('Storing entities')
+        console.log(results.length)
 
         // Store Claim Values in local storage
         Entity.add(_.keyBy(results, 'id'))
