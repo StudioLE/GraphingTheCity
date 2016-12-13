@@ -289,15 +289,14 @@ angular.module('app.compute', ['ngRoute'])
           // Ignore if undefined
           if( ! claim_val_id || claim_val_id == 'undefined') return callback_claim_val_series()
 
-          // Store the claim_val_id so we can fetch it later
-          metadata.entities.push(claim_val_id)
-
           // Ignore if there are fewer than 2 answers
           if(Object.keys(claim_val).length < 2) return callback_claim_val_series()
 
-
           // If all claims then store the claim_prop_id so we can fetch it later
           if(_.isEmpty(chosen_claims) && _.includes(metadata.entities, claim_prop_id)) metadata.entities.push(claim_prop_id)
+          
+          // Store the claim_val_id so we can fetch it later
+          metadata.entities.push(claim_val_id)
 
           claim_nodes.push({
             data: {
