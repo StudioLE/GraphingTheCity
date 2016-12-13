@@ -252,7 +252,8 @@ angular.module('app.compute', ['ngRoute'])
         if(err) console.error(err)
         
         // Store all Claims in local storage
-        Claim.set(claims)
+        // @todo Do we really need to store Claims? Why?
+        // Claim.set(claims)
 
         callback(null, places, claims)
       }) // end of places series
