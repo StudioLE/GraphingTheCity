@@ -60,7 +60,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="claim in claims() | orderBy:sortType:sortReverse">
+    <tr ng-repeat="claim in claims() | orderBy:sortType:sortReverse track by $index">
       <td class="num">{{ $index + 1 }}</td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.id }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/Property:{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</a></td>
