@@ -65,7 +65,7 @@
     </div>
   </div> <!-- .row -->
 
-  <hr>
+  <!-- <hr>
 
   <p class="property">Layout</p>
   <select class="form-control"
@@ -79,7 +79,7 @@
     <option>dagre</option>
     <option>grid</option>
     <option>spread</option>
-  </select>
+  </select> -->
 </div> <!-- infobox('default') -->
 
 <div ng-if="infobox().state == 'place'">
@@ -125,7 +125,7 @@
   </a>
 
   <div class="inset">
-    <p class="property"><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.property }}">{{ entities()[infobox().content.property].labels.en.value }}</p>
+    <p class="property"><a ng-href="https://www.wikidata.org/wiki/Property:{{ infobox().content.property }}">{{ entities()[infobox().content.property].labels.en.value }}</p>
     <h2><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.id }}">{{ infobox().content.labels.en.value }}</a></h2>
 
     <hr>
@@ -166,3 +166,16 @@
     <h3><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.target }}">{{ entities()[infobox().content.target].labels.en.value }}</a></h3>
   </div>
 </div> <!-- infobox('connection') -->
+
+<div class="inset" ng-if="navClass('#/raw')">
+
+  <hr>
+
+  <p class="property">Storage Used</p>
+  <h3>{{ storage().percent }}</h3>
+
+  <hr>
+  
+  <p class="property">Storage Used</p>
+  <h3>{{ storage().used }}</h3>
+</div> <!-- infobox('default') -->

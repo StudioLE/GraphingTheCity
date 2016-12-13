@@ -82,4 +82,19 @@ angular.module('app.infobox', [])
     }
   ]
 
+
+  // http://stackoverflow.com/questions/4391575/how-to-find-the-size-of-localstorage#comment34769723_15720835
+  $scope.storage = function() {
+    var t = 0;
+    for(var x in localStorage) {
+      t += (((localStorage[x].length * 2)))
+    }
+    var used = (t / 1024)
+    return {
+      used: used.toFixed(2) + ' KB',
+      // @todo We're making the assumption that 10,000 KB is the localStorage limit. Investigate more accurate solutions.
+      percent: '~' + (used / 10000 * 100).toFixed(2) + '%'
+    }
+  }
+
 })
