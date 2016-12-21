@@ -27,31 +27,48 @@
       </div><!-- .input-group -->
     </div> <!-- .form-group -->
 
-    <hr>
-
-    <div class="form-group">
-      <label for="" class="control-label">Properties</label>
-      <tags-input ng-model="criteria().properties"></tags-input>
-    </div>
-
-    <hr>
-    <div class="form-group">
-      <label class="control-label">Layout</label>
-      <select class="form-control"
-        ng-model="criteria().layout"
-        ng-change="changeLayout()">
-        <option>breadthfirst</option>
-        <option>circle</option>
-        <option>concentric</option>
-        <option>cose</option>
-        <option>cose-bilkent</option>
-        <option>dagre</option>
-        <option>grid</option>
-        <option>spread</option>
-      </select>
-    </div>
-
     <p>Or, load stored data: <a ng-repeat="(key, name) in cities" ng-href="#/load/{{ key }}">{{ name }}<span ng-if=" ! $last">, </span></a></p>
+
+    <a ng-click="criteria().advanced = ! criteria().advanced" class="advanced">
+      Advanced Settings
+      <span ng-show=" ! criteria().advanced" class="fa fa-caret-down"></span>
+       <span ng-show="criteria().advanced" class="fa fa-caret-up"></span>
+    </a>
+
+    <div ng-show="criteria().advanced">
+
+      <div class="form-group">
+        <label for="" class="control-label">Properties</label>
+        <tags-input ng-model="criteria().properties"></tags-input>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Layout</label>
+        <select class="form-control"
+          ng-model="criteria().layout"
+          ng-change="changeLayout()">
+          <option>breadthfirst</option>
+          <option>circle</option>
+          <option>concentric</option>
+          <option>cose</option>
+          <option>cose-bilkent</option>
+          <option>dagre</option>
+          <option>grid</option>
+          <option>spread</option>
+        </select>
+      </div>
+
+      <a class="btn btn-primary pull-right"
+        ng-disabled="form.$invalid"
+        ng-click="saveCriteria(criteria())">
+        <i class="fa fa-search" aria-hidden="true"></i> Submit
+      </a>
+
+      <a ng-click="defaultCriteria()" class="btn btn-link pull-right">
+        <i class="fa fa-refresh"></i> Reset Settings
+      </a>
+
+    </div>
   </form>
 
   <ng-include class="process" src="'img/process.svg'" ng-init="checkProgress = checkProgress"></ng-include>

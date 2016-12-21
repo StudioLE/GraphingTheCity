@@ -186,9 +186,13 @@ select.form-control {
   padding: 0;
   background-color: transparent;
   border: none;
+  border-radius: 0;
   color: #fff;
   font-size: 22px;
   font-weight: 600; // Bold
+  // -webkit-appearance: none;
+  -webkit-box-shadow: inset 0 -1px 0 #fff;
+  box-shadow: inset 0 -1px 0 #fff;
 }
 
 .form-control option {
@@ -202,6 +206,21 @@ select.form-control {
     // border-color: @orange;
   }
 }
+
+.advanced {
+  display: block;
+  text-align: right;
+
+  label {
+    font-size: 22px;
+  }
+}
+
+/*****************************************************************
+*
+* Places Autocomplete
+*
+******************************************************************/
 
 .pac-container {
   border-radius: 0;
@@ -245,10 +264,12 @@ select.form-control {
 *
 ******************************************************************/
 
-tags-input.form-control {
+tags-input {
   padding-bottom: 0;
   padding-top: 0;
   // color: #000;
+  -webkit-box-shadow: inset 0 -1px 0 #fff;
+  box-shadow: inset 0 -1px 0 #fff;
 }
 
 tags-input .tags, tags-input .tags .input {
