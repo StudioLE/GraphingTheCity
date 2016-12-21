@@ -34,6 +34,10 @@ angular.module('app.infobox', [])
     Infobox.unset()
   })
 
+  $scope.chosen_claims = _.map(criteria.properties, function(prop) {
+    return prop.text
+  })
+
   $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage
 
