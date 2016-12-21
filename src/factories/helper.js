@@ -112,6 +112,19 @@ var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   saveCriteria: function(criteria) {
     Criteria.set(criteria)
     $location.path('/compute')
+  },
+
+  /**
+   * Stored Cities
+   */
+  storedCities: {
+    london: 'London',
+    paris: 'Paris',
+    berlin: 'Berlin',
+    tokyo: 'Tokyo',
+    barcelona: 'Barcelona',
+    venice: 'Venice',
+    vienna: 'Vienna'
   }
 
 }

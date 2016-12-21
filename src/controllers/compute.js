@@ -32,6 +32,8 @@ angular.module('app.compute', ['ngRoute'])
 
   $scope.step = 1;
 
+  $scope.cities = Helper.storedCities
+
   /**
    * Check Stage
    *
