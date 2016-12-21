@@ -74,7 +74,7 @@ gulp.task('assets', function() {
   gulp.src('src/img/*')
   .pipe(gulp.dest(build.path('img')))
   // Overpass Font
-  gulp.src('src/bower_components/overpass/Webfonts/*')
+  gulp.src('src/bower_components/overpass/webfonts/overpass-webfont/*')
   .pipe(gulp.dest(build.path('css')))
   // Font Awesome
   gulp.src('src/bower_components/font-awesome/fonts/*')
@@ -103,7 +103,7 @@ gulp.task('css', function() {
 gulp.task('vendor-css', function() {
   gulp.src([
     'src/bower_components/bootstrap/dist/css/bootstrap.min.css',
-    'src/bower_components/overpass/Webfonts/recommended.css',
+    'src/bower_components/overpass/webfonts/overpass-webfont/overpass.css',
     'src/bower_components/font-awesome/css/font-awesome.min.css',
     'src/bower_components/json-formatter/dist/json-formatter.min.css',
     'src/bower_components/angular-google-places-autocomplete/src/autocomplete.css',
@@ -147,7 +147,7 @@ gulp.task('vendor-js', function() {
     'src/bower_components/angular-resource/angular-resource.min.js',
     'src/bower_components/angular-local-storage/dist/angular-local-storage.min.js',
     'src/bower_components/angulartics/dist/angulartics.min.js',
-    'src/bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
+    'src/bower_components/angulartics-google-analytics/dist/angulartics-ga.min.js',
     'src/bower_components/json-formatter/dist/json-formatter.min.js',
     'src/bower_components/angular-google-places-autocomplete/src/autocomplete.js',
     'src/bower_components/ng-tags-input/ng-tags-input.min.js',
