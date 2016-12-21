@@ -52,7 +52,7 @@ angular.module('app.analysis', ['ngRoute'])
     }))
   }
   $scope.claims = function() {
-    var data = _.filter(_.map(nodes, function(node) {
+    return _.filter(_.map(nodes, function(node) {
       if(node.data.type == 'claim') {
         var claim = entities[node.data.id]
         // If we can't find the claim in entities it's probably due to the local storage being full
@@ -66,14 +66,13 @@ angular.module('app.analysis', ['ngRoute'])
         }
         claim.sna = node.data.sna
         claim.property = node.data.property
+        // @todo Claim node could be used for more than one property! How do we deal with this scenario?
         return claim
       }
       else {
         return false
       }
     }))
-    console.log(data)
-    return data
   }
 
   $scope.sortType = 'sna.betweennessCentrality'
