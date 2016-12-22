@@ -18,7 +18,14 @@
   "license": "",
   "devDependencies": {
     "http-server": "^0.9.0",
-    "shelljs": "^0.7.5"
+    "shelljs": "^0.7.5",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.8",
+    "karma-junit-reporter": "^0.4.1",
+    "protractor": "^4.0.9"
   },
   "dependencies": {
     "bower": "^1.8.0",
@@ -35,6 +42,10 @@
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": "http-server src -a localhost -p 1337 -c-1"
+    "start": "http-server src -a localhost -p 1337 -c-1",
+    "test": "karma start karma.conf.js",
+    "test-single-run": "karma start karma.conf.js --single-run",
+    "update-webdriver": "webdriver-manager update",
+    "protractor": "protractor e2e-tests/protractor.conf.js"
   }
 }
