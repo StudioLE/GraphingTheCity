@@ -19,7 +19,7 @@ angular.module('app.analysis', ['ngRoute'])
 * AnalysisCtrl controlller
 *
 ******************************************************************/
-.controller('AnalysisCtrl', function($scope, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
+.controller('AnalysisCtrl', function($scope, $location, Infobox, Criteria, Entity, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
@@ -29,6 +29,11 @@ angular.module('app.analysis', ['ngRoute'])
   var nodes = Node.get()
   var connections = Connection.get()
   var data = Data.get()
+
+  /**
+   * Redirect if no criteria
+   */
+  if( ! criteria) return $location.path('/criteria')
 
   $scope.criteria = function() {
     return criteria

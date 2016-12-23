@@ -19,7 +19,7 @@ angular.module('app.map', ['ngRoute'])
 * MapCtrl controlller
 *
 ******************************************************************/
-.controller('MapCtrl', function($scope, Infobox, Criteria, Entity, Node) {
+.controller('MapCtrl', function($scope, $location, Infobox, Criteria, Entity, Node) {
 
   /**
    * Get data from local storage
@@ -27,6 +27,11 @@ angular.module('app.map', ['ngRoute'])
   var criteria = Criteria.get()
   var entities = Entity.get()
   var nodes = Node.get()
+
+  /**
+   * Redirect if no criteria
+   */
+  if( ! criteria) return $location.path('/criteria')
 
   var map_params = {
     style: 'clean_grey',
