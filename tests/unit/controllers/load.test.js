@@ -9,7 +9,7 @@ describe('app.load module', function() {
 
     beforeEach(inject(function($rootScope, $controller, $injector) {
       scope = $rootScope.$new()
-      ctrl = $controller('LoadCtrl', { $scope: scope })
+      ctrl = $controller('LoadCtrl', { $scope: scope, $route: { current: { params: { city: 'london' } } } })
     }))
 
     it('should be defined', inject(function($controller) {
