@@ -1,12 +1,9 @@
 'use strict';
 
-/* https://github.com/angular/protractor/blob/master/docs/toc.md */
-
 describe('Graphing the City', function() {
 
   it('should automatically redirect to /criteria when location hash/fragment is empty', function() {
     browser.get('');
-    // browser.pause();
     expect(browser.getLocationAbsUrl()).toMatch("/criteria");
   });
 
@@ -66,6 +63,57 @@ describe('Graphing the City', function() {
       expect(element(by.binding('data().count.claims')).getText())
         .toBeGreaterThan(50);
     });
+
+  });
+
+  describe('analysis', function() {
+
+    beforeEach(function() {
+      browser.get('#/analysis');
+    });
+
+    it('should render h1 when user navigates to /criteria', function() {
+      expect(element(by.css('h1')).getText()).toMatch('Social Network Analysis');
+    });
+
+    describe('claims table', function() {
+
+      it('should have more than 50 rows', function() {
+        expect(element.all(by.css('table#claims tr')).count())
+          .toBeGreaterThan(50);
+      });
+
+      it('should have id set', function() {
+        expect(element(by.css('table#claims tr:first-child td:nth-child(2) a')).getText())
+          .toBeTruthy();
+      });
+
+      it('should have property set', function() {
+        expect(element(by.css('table#claims tr:first-child td:nth-child(3) a')).getText())
+          .toBeTruthy();
+      });
+
+      it('should have label set', function() {
+        expect(element(by.css('table#claims tr:first-child td:nth-child(4) a')).getText())
+          .toBeTruthy();
+      });
+
+      it('should have degree centrality set', function() {
+        expect(element(by.css('table#claims tr:first-child td:nth-child(5)')).getText())
+          .toBeGreaterThan(0);
+      });
+
+      it('should have closeness centrality set', function() {
+        expect(element(by.css('table#claims tr:first-child td:nth-child(6)')).getText())
+          .toBeGreaterThan(0);
+      });
+
+      it('should have betweenness centrality set', function() {
+        expect(element(by.css('table#claims tr:first-child td:nth-child(7)')).getText())
+          .toBeGreaterThan(0);
+      });
+
+    })
 
   });
 
