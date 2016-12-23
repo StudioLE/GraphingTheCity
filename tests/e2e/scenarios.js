@@ -1,5 +1,7 @@
 'use strict'
 
+var EC = protractor.ExpectedConditions
+
 describe('Graphing the City', function() {
 
   it('should automatically redirect to /criteria when location hash/fragment is empty', function() {
@@ -7,9 +9,18 @@ describe('Graphing the City', function() {
     expect(browser.getLocationAbsUrl()).toMatch("/criteria")
   })
 
+  describe('graph', function() {
+
+    it('should automatically redirect to /criteria when criteria not set', function() {
+      browser.get('#/graph')
+      expect(browser.getLocationAbsUrl()).toMatch("/criteria")
+    })
+
+  })
+
   describe('criteria', function() {
 
-    beforeEach(function() {
+    beforeAll(function() {
       browser.get('#/criteria')
     })
 
@@ -17,31 +28,23 @@ describe('Graphing the City', function() {
       expect(element(by.css('h1')).getText()).toMatch(/Graphing the City/i)
     })
 
-    it('should select London, UK when user enters \'lond\' to input', function() {
-      element(by.model('criteria().city')).sendKeys('lond')
-        .sendKeys(protractor.Key.ARROW_DOWN)
-        .sendKeys(protractor.Key.ENTER)
-      element(by.model('criteria().city')).getAttribute('value').then(function (value) {
-          expect(value).toMatch('London, UK')
-        })
-    })
-
     it('should go to /graph when user submits input', function() {
-      // element(by.css('form button')).click()
-      element(by.model('criteria().city')).sendKeys('lond')
+      var input = element(by.model('criteria().city'))
+      input.sendKeys('lond')
         .sendKeys(protractor.Key.ARROW_DOWN)
         .sendKeys(protractor.Key.ENTER)
-        .sendKeys(protractor.Key.ENTER)
+      browser.wait(EC.textToBePresentInElementValue(input, 'London, UK'), 2000)
+      input.sendKeys(protractor.Key.ENTER)
       expect(browser.getLocationAbsUrl()).toMatch("/graph")
-      // browser.pause()
     })
 
   })
 
   describe('graph', function() {
 
-    beforeEach(function() {
+    beforeAll(function() {
       browser.get('#/graph')
+      browser.wait(EC.invisibilityOf($('#loading')), 50000, 'timed out waiting for SNA to complete')
     })
 
     it('should have more than 200 nodes', function() {
@@ -68,7 +71,7 @@ describe('Graphing the City', function() {
 
   describe('analysis', function() {
 
-    beforeEach(function() {
+    beforeAll(function() {
       browser.get('#/analysis')
     })
 
