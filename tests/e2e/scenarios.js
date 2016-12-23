@@ -30,21 +30,22 @@ describe('Graphing the City', function() {
 
     it('should go to /graph when user submits input', function() {
       var input = element(by.model('criteria().city'))
-      input.sendKeys('london'
-)        .sendKeys(protractor.Key.ARROW_DOWN)
+      input.sendKeys('lond')
+        .sendKeys(protractor.Key.ARROW_DOWN)
         .sendKeys(protractor.Key.ENTER)
       browser.wait(EC.textToBePresentInElementValue(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete')
       input.sendKeys(protractor.Key.ENTER)
       expect(browser.getLocationAbsUrl()).toMatch("/graph")
     })
 
-    afterAll(function() {
-      browser.wait(EC.invisibilityOf($('#loading')), 50000, 'timed out waiting for SNA to complete')
-    })
-
   })
 
   describe('graph', function() {
+
+    beforeAll(function() {
+      browser.get('#/graph')
+      browser.wait(EC.invisibilityOf($('#loading')), 50000, 'timed out waiting for SNA to complete')
+    })
 
     it('should have more than 200 nodes', function() {
       expect(element(by.binding('data().count.nodes')).getText())
