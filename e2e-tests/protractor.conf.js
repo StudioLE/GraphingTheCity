@@ -1,4 +1,5 @@
-//jshint strict: false
+'use strict'
+
 exports.config = {
 
   allScriptsTimeout: 11000,
@@ -19,4 +20,4 @@ exports.config = {
     defaultTimeoutInterval: 30000
   }
 
-};
+}
