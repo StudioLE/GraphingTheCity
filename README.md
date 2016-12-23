@@ -1,4 +1,4 @@
-# Graphing the City
+# Graphing the City [![Build Status](https://travis-ci.org/StudioLE/GraphingTheCity.svg?branch=master)](https://travis-ci.org/StudioLE/GraphingTheCity)
 
 Extracting the DNA of the city as an identity graph
 
