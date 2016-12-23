@@ -18,7 +18,6 @@
   "license": "",
   "devDependencies": {
     "http-server": "^0.9.0",
-    "shelljs": "^0.7.5",
     "jasmine-core": "^2.4.1",
     "angular-mocks": "^1.6.0",
     "karma": "^0.13.22",
