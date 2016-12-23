@@ -20,6 +20,10 @@
   </div> <!-- .form-group -->
 </form>
 
+<div class="inset form-placeholder" ng-if="navClass('#/criteria')">
+  <p class="property"><a href="https://github.com/StudioLE/GraphingTheCity/releases">v{{ version.current }}</a></p>
+</div> <!-- infobox('criteria') -->
+
 <div class="inset">
   <ul class="nav nav-tabs">
     <li ng-repeat="link in nav" ng-class="navClass(link.url)" ng-if=" ! link.hide">
@@ -171,8 +175,13 @@
 
   <hr>
   
-  <p class="property">Version</p>
+  <p class="property">App Version</p>
   <h3>{{ version.current }}</h3>
+
+  <hr>
+  
+  <p class="property">Data Version</p>
+  <h3>{{ criteria().version }}</h3>
 
   <hr>
   
@@ -188,4 +197,4 @@
   
   <p class="property">Storage Used</p>
   <h3>{{ storage().used }}</h3>
-</div> <!-- infobox('default') -->
+</div> <!-- infobox('raw') -->
