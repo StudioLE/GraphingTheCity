@@ -31,15 +31,16 @@ describe('Graphing the City', function() {
     it('should go to /graph when user submits input', function() {
       var input = element(by.model('criteria().city'))
       input.sendKeys('lond')
-        .sendKeys(protractor.Key.ARROW_DOWN)
-        .sendKeys(protractor.Key.ENTER)
+      browser.wait(EC.presenceOf($('.pac-container'))(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete')
         .then(function() {
-          input.getAttribute('value').then(function(val) {
-            console.log('\n' + val + '\n')
+        input.sendKeys(protractor.Key.ARROW_DOWN)
+          .sendKeys(protractor.Key.ENTER).then(function() {
+            input.getAttribute('value').then(function(val) {
+              console.log('\n' + val + '\n')
+            })
+            input.sendKeys(protractor.Key.ENTER)
+            expect(browser.getLocationAbsUrl()).toMatch("/graph")
           })
-          // browser.wait(EC.textToBePresentInElementValue(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete')
-          input.sendKeys(protractor.Key.ENTER)
-          expect(browser.getLocationAbsUrl()).toMatch("/graph")
         })
     })
 
@@ -49,7 +50,7 @@ describe('Graphing the City', function() {
 
     beforeAll(function() {
       browser.get('#/graph')
-      browser.wait(EC.invisibilityOf($('#loading')), 50000, 'timed out waiting for SNA to complete')
+      browser.wait(EC.stalenessOf($('#loading')), 50000, 'timed out waiting for SNA to complete')
     })
 
     it('should have more than 200 nodes', function() {
