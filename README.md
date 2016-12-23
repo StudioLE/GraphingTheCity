@@ -14,7 +14,7 @@ I'm always on the look out for collaborators so feel free to suggest new feature
 
 ## Install
 
-If you want to host your own private version or run a local version feel free to follow these [installation instructions](https://gitlab.com/StudioLE/GraphingTheCity/blob/master/INSTALL.md).
+If you want to host your own private version or run a local version feel free to follow these [installation instructions](https://github.com/StudioLE/GraphingTheCity/blob/master/INSTALL.md).
 
 ## Usage
 
@@ -23,13 +23,27 @@ Run gulp to produce a build from the app source
 gulp build
 ```
 
-There's also small `cli.js` utility to simplify some of the development commands.
-
 Launch a web server of the `src` directory
 ```
-node cli server
+http-server src -a localhost -p 1337 -c-1
 ```
+
 Launch a web server of the `build` directory
 ```
-node cli server build
+http-server build -a localhost -p 1337 -c-1
+```
+
+Run unit tests and watch for changes
+```
+npm test
+```
+
+Run unit tests only once
+```
+npm run test-single-run
+```
+
+Run end-to-end tests
+```
+npm run protractor
 ```
