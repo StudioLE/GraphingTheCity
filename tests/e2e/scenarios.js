@@ -33,9 +33,14 @@ describe('Graphing the City', function() {
       input.sendKeys('lond')
         .sendKeys(protractor.Key.ARROW_DOWN)
         .sendKeys(protractor.Key.ENTER)
-      browser.wait(EC.textToBePresentInElementValue(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete')
-      input.sendKeys(protractor.Key.ENTER)
-      expect(browser.getLocationAbsUrl()).toMatch("/graph")
+        .then(function() {
+          input.getAttribute('value').then(function(val) {
+            console.log('\n' + val + '\n')
+          })
+          // browser.wait(EC.textToBePresentInElementValue(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete')
+          input.sendKeys(protractor.Key.ENTER)
+          expect(browser.getLocationAbsUrl()).toMatch("/graph")
+        })
     })
 
   })
