@@ -46,6 +46,6 @@
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
     "update-webdriver": "webdriver-manager update",
-    "protractor": "protractor e2e-tests/protractor.conf.js"
+    "protractor": "protractor tests/e2e/protractor.conf.js"
   }
 }
