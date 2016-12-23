@@ -30,18 +30,19 @@ describe('Graphing the City', function() {
 
     it('should go to /graph when user submits input', function() {
       var input = element(by.model('criteria().city'))
-      input.sendKeys('lond')
-      browser.wait(EC.presenceOf($('.pac-container'))(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete')
-        .then(function() {
-        input.sendKeys(protractor.Key.ARROW_DOWN)
-          .sendKeys(protractor.Key.ENTER).then(function() {
-            input.getAttribute('value').then(function(val) {
-              console.log('\n' + val + '\n')
+      input.sendKeys('lond').then(function() {
+        browser.wait(EC.presenceOf($('.pac-container'))(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete').then(function() {
+          input.sendKeys(protractor.Key.ARROW_DOWN).then(function() {
+            input.sendKeys(protractor.Key.ENTER).then(function() {
+              input.getAttribute('value').then(function(val) {
+                console.log('\n' + val + '\n')
+              })
+              input.sendKeys(protractor.Key.ENTER)
+              expect(browser.getLocationAbsUrl()).toMatch("/graph")
             })
-            input.sendKeys(protractor.Key.ENTER)
-            expect(browser.getLocationAbsUrl()).toMatch("/graph")
           })
         })
+      })
     })
 
   })
