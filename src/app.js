@@ -65,6 +65,6 @@ angular.module('app', [
 *
 ******************************************************************/
 .constant('Version', {
-  current: '0.2.0',
+  current: '0.2.1',
   compatibility: '0.2.x'
 })
