@@ -50,7 +50,7 @@ describe('Graphing the City', function() {
 
     beforeAll(function() {
       browser.get('#/graph')
-      browser.wait(EC.stalenessOf($('#loading')), 30000, 'timed out waiting for SNA to complete')
+      browser.wait(EC.stalenessOf($('#loading')), 50000, 'timed out waiting for SNA to complete')
     })
 
     it('should have more than 200 nodes', function() {
