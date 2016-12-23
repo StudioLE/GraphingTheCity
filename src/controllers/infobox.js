@@ -34,6 +34,8 @@ angular.module('app.infobox', [])
     return Data.get()
   }
 
+  $scope.version = Version
+
   // Ensure the infobox is populated on first run and on all route changes
   $rootScope.$on("$routeChangeSuccess", function(event, next, current) {
     criteria = Criteria.get()

@@ -22,7 +22,7 @@
 
 <div class="inset">
   <ul class="nav nav-tabs">
-    <li ng-repeat="link in nav" ng-class="navClass(link.url)">
+    <li ng-repeat="link in nav" ng-class="navClass(link.url)" ng-if=" ! link.hide">
       <a href="{{link.url}}"><i class="fa" ng-class="link.icon"></i>
       <span>{{link.title}}</span></a>
     </li>
@@ -168,6 +168,16 @@
 </div> <!-- infobox('connection') -->
 
 <div class="inset" ng-if="navClass('#/raw')">
+
+  <hr>
+  
+  <p class="property">Version</p>
+  <h3>{{ version.current }}</h3>
+
+  <hr>
+  
+  <p class="property">Compatibility</p>
+  <h3>{{ version.compatibility }}</h3>
 
   <hr>
 
