@@ -6,7 +6,7 @@
   "license": "",
   "dependencies": {
     "angular": "~1.6.0",
-    "angular-google-places-autocomplete": "~0.2.9",
+    "angular-google-places-autocomplete": "~0.2.7",
     "angular-loader": "~1.6.0",
     "angular-local-storage": "~0.5.0",
     "angular-mocks": "~1.6.0",
