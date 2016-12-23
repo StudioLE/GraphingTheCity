@@ -9,7 +9,7 @@ angular.module('app.compute', ['ngRoute'])
 ******************************************************************/
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/compute', {
-    templateUrl: 'views/criteria.html',
+    templateUrl: 'views/process.html',
     controller: 'ComputeCtrl'
   })
 }])
@@ -26,13 +26,16 @@ angular.module('app.compute', ['ngRoute'])
    */
   var criteria = Criteria.get()
 
+  /**
+   * Redirect if no criteria
+   */
+  if( ! criteria) return $location.path('/criteria')
+
   $scope.criteria = function() {
     return criteria
   }
 
-  $scope.step = 1;
-
-  $scope.cities = Helper.storedCities
+  $scope.step = 1
 
   /**
    * Check Stage

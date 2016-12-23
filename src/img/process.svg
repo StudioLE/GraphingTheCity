@@ -74,15 +74,15 @@
 
   <path class="node" ng-class="checkProgress(7)" d="M549.33,156.64a25,25,0,1,0-35.33,0,25,25,0,0,0,35.33,0"/>
   <text class="node-action" transform="translate(553.65 111.48) rotate(-45)">
-    Perform
-    <tspan class="node-label" x="0" y="18">Network Analysis</tspan>
+    Draw
+    <tspan class="node-label" x="0" y="18">Graph</tspan>
   </text>
   <line class="node-edge" x1="469.33" y1="201.31" x2="514" y2="156.64"/>
 
   <path class="node" ng-class="checkProgress(8)" d="M594,236.64a25,25,0,1,0,0-35.33,25,25,0,0,0,0,35.33"/>
   <text class="node-action" transform="translate(639.15 240.96) rotate(45)">
-    Draw
-    <tspan class="node-label" x="0" y="18">Graph</tspan>
+    Network
+    <tspan class="node-label" x="0" y="18">Analysis</tspan>
   </text>
   <line class="node-edge" x1="549.33" y1="156.64" x2="594" y2="201.31"/>
 </svg>

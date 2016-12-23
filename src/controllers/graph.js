@@ -19,7 +19,7 @@ angular.module('app.graph', ['ngRoute'])
 * GraphCtrl controlller
 *
 ******************************************************************/
-.controller('GraphCtrl', function($scope, Infobox, Criteria, Entity, Node, Connection, Data) {
+.controller('GraphCtrl', function($scope, $location, Infobox, Criteria, Entity, Node, Connection, Data) {
 
   /**
    * Get data from local storage
@@ -29,6 +29,32 @@ angular.module('app.graph', ['ngRoute'])
   var nodes = Node.get()
   var connections = Connection.get()
   var data = Data.get()
+
+  /**
+   * Redirect if no criteria
+   */
+  if( ! criteria) return $location.path('/criteria')
+
+  $scope.loading = true
+
+  $scope.step = 7
+
+  /**
+   * Check Stage
+   *
+   * Show progress
+   */
+  $scope.checkProgress = function(num) {
+    if(num == $scope.step) {
+      return 'active'
+    }
+    else if (num < $scope.step) {
+      return 'complete'
+    }
+    else {
+      return ''
+    }
+  }
 
   $scope.infoboxClicked = false
 
@@ -98,7 +124,11 @@ angular.module('app.graph', ['ngRoute'])
 
   var calculateSNA = function() {
     // Don't run if already set...
-    if(data.sna) return false
+    if(data.sna) {
+      $scope.loading = false
+      $scope.$apply()
+      return false
+    }
     console.log('Running SNA')
     var dcn = cy.$().dcn()
     var ccn = cy.$().ccn()
@@ -118,6 +148,10 @@ angular.module('app.graph', ['ngRoute'])
       sna: true
     })
     Node.set(nodes)
+
+    $scope.step ++
+    $scope.loading = false
+    $scope.$apply()
 
     console.log('SNA complete')
   }
@@ -189,6 +223,7 @@ angular.module('app.graph', ['ngRoute'])
   })
 
   cy.ready(function(event) {
+    $scope.step ++
     console.log('cy.ready()')
     calculateSNA()
   })
