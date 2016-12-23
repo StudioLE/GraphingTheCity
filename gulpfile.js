@@ -151,7 +151,8 @@ gulp.task('vendor-js', function() {
     'src/bower_components/json-formatter/dist/json-formatter.min.js',
     'src/bower_components/angular-google-places-autocomplete/src/autocomplete.js',
     'src/bower_components/ng-tags-input/ng-tags-input.min.js',
-    'src/bower_components/js-md5/build/md5.min.js'
+    'src/bower_components/js-md5/build/md5.min.js',
+    'src/bower_components/semver/semver.min.js'
   ])
   .pipe(gp_concat('concat.js'))
   .pipe(gp_rename('vendor.js'))

@@ -7,12 +7,18 @@ angular.module('app.infobox', [])
 * InfoboxCtrl controlller
 *
 ******************************************************************/
-.controller('InfoboxCtrl', function($rootScope, $scope, $location, Infobox, Criteria, Entity, Claim, Node, Connection, Data, Helper) {
+.controller('InfoboxCtrl', function($rootScope, $scope, $location, localStorageService, Version, Infobox, Criteria, Entity, Claim, Node, Connection, Data, Helper) {
 
   /**
    * Get data from local storage
    */
   var criteria = Criteria.get()
+
+  // Check version of stored data
+  if(criteria !== null && ( ! criteria.version || ! semver.satisfies(criteria.version, Version.compatibility))) {
+    console.log('Version ' + criteria.version + ' of local storage does not satisfy ' + Version.compatibility + ' so clearing data from local storage')
+    localStorageService.clearAll()
+  }
 
   // @todo Direct binding doesn't seem right. Investigate..
   $scope.infobox = function() {

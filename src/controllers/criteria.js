@@ -19,9 +19,10 @@ angular.module('app.criteria', ['ngRoute'])
 * CriteriaCtrl controlller
 *
 ******************************************************************/
-.controller('CriteriaCtrl', function($scope, $location, Infobox, Criteria, Helper) {
+.controller('CriteriaCtrl', function($scope, $location, Version, Infobox, Criteria, Helper) {
 
   $scope.defaultCriteria = function() {
+    criteria.version = Version.current
     criteria.layout = 'cose-bilkent'
     criteria.properties = [
       // 'P1435', // heritage status
