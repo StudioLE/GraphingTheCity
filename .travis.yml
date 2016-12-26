@@ -16,6 +16,7 @@ install:
 before_script:
   - npm install
   - npm run update-webdriver
+  - gulp build
 
 script:
   - npm run test-single-run

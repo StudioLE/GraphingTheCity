@@ -46,7 +46,7 @@
     "postupdate-deps": "bower update",
 
     "prestart": "npm install",
-    "start": "http-server src -a localhost -p 1337 -c-1",
+    "start": "http-server build -a localhost -p 1337 -c-1",
 
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
