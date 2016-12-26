@@ -31,11 +31,13 @@ describe('Graphing the City', function() {
     it('should go to /graph when user submits input', function() {
       var input = element(by.model('criteria().city'))
       input.sendKeys('lond').then(function() {
-        // Wait 750ms for autocomplete to update
-        browser.sleep(750)
+        // Wait 500ms for autocomplete to update
+        browser.sleep(500)
         browser.wait(EC.presenceOf($('.pac-container')), 2000, 'timed out waiting for input to autocomplete').then(function() {
           input.sendKeys(protractor.Key.ARROW_DOWN).then(function() {
+            browser.sleep(500)
             input.sendKeys(protractor.Key.ENTER).then(function() {
+              browser.sleep(500)
               input.getAttribute('value').then(function(val) {
                 console.log('\n' + val + '\n')
               })
