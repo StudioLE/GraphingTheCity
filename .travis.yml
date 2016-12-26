@@ -20,3 +20,13 @@ before_script:
 script:
   - npm run test-single-run
   - (npm start > /dev/null &) && (npm run protractor)
+deploy:
+  provider: s3
+  access_key_id: AKIAIVLON4N2APPL4GGQ
+  secret_access_key:
+    secure: M9r+plYRbpb1lmrTVQgyDs7R0MHbQ1lDWpmc8jyH4bKAU0+/gTGKD61vQ9wtoK3kBqMAT7UXtGvFeYo2cVRZ8vPw8A1wtGuwxf2upxTsU4/L693P2SNqiwzC5Q6+Cp/B6oLmsl+tgy7W5b2MvI0QRlHwr5oPVu1MmuXUTsG6rD+tMgOJ3Ha2JVNuIEYlkQrF53gRCNUsc27NEwfHkzv0CYOFGosS+glj1akPHB+9VoAfMp+fzj9G2m/rQO9fwtqloI2ryWIgGA542Ji4EUcEhnWj0uYYeuVV20ONhEXtEkqWUO330kmRRzPkEjyxFaOlTHH7jiJ56/v9UwdpWLttqqx+SF7fbm/rJhh9bpmAQJtJRFCHPLNlsre3b+0tK+U6blJaaJ3swktlZ7D8iIVYojUm5uVKKyZFmtswUOp1sg3MvDV4CKR9M/RgJSiM2tF/gDArnwYEqBLGbwKNpofl+6U2R+9O+gWjvYSmbDH7i9EUxIIQjUkE79vzo/v6l5+fcZ6BaMeX7JJPmrsQ2tvTNlHzSnSuq0447d4f+Id/S1wktrtSuVnyhapYa/6XbR42hvyakdbeBdej2rq/hwXZdLFZDxFXO6Q5rHlZNLLB5eKwc+4+WPCp/4jaUf+TXAW+Olerysf9Y8rpnd1UDg5BRe2Ow5+A30ruPp1x5n3cABs=
+  bucket: citygraph
+  local-dir: build
+  acl: ''
+  on:
+    repo: StudioLE/GraphingTheCity
