@@ -51,10 +51,13 @@ angular.module('app.infobox', [])
   $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage
 
-  $scope.export = function () {
+  var filename = function(append) {
+    return 'graphing-the-city-' + $scope.criteria().city.name.replace(/\s+/g, '-').toLowerCase() + append
+  }
+
+  $scope.exportJSON = function () {
     // http://stackoverflow.com/questions/16514509/how-do-you-serve-a-file-for-download-with-angularjs-or-javascript
-    $scope.toJSON = '';
-    $scope.toJSON = angular.toJson({
+    var json = angular.toJson({
       criteria: Criteria.get(),
       entities: Entity.get(),
       claims: Claim.get(),
@@ -62,11 +65,43 @@ angular.module('app.infobox', [])
       connections: Connection.get(),
       data: Data.get()
     })
-    var blob = new Blob([$scope.toJSON], { type:"application/json;charset=utf-8;" })
-    var downloadLink = angular.element('<a></a>')
-    downloadLink.attr('href', window.URL.createObjectURL(blob))
-    downloadLink.attr('download', 'graphing-the-city-' + $scope.criteria().city.name.replace(/\s+/g, '-').toLowerCase() + '.json')
-    downloadLink[0].click();
+    var blob = new Blob([json], { type:"application/json;charset=utf-8;" })
+    Helper.downloadFile(filename('.json'), blob)
+  }
+
+  $scope.exportCYJS = function() {
+    var json = angular.toJson(window.cy.json())
+    var blob = new Blob([json], { type:"application/json;charset=utf-8;" })
+    Helper.downloadFile(filename('.cyjs'), blob)
+  }
+
+  var setBorder = function(colour) {
+    cy.startBatch()
+    cy.$().style('border-color', colour)
+      .style('line-color', colour)
+    cy.endBatch()
+  }
+
+  $scope.exportPNG = function() {
+    // Temporarily set the borders and edges to black so they're visible on a white page
+    setBorder('#000')
+    var content = window.cy.png({
+      full: true
+    })
+    var blob = Helper.dataURItoBlob(content)
+    Helper.downloadFile(filename('.png'), blob)
+    setBorder('#fff')
+  }
+
+  $scope.exportJPG = function() {
+    // Temporarily set the borders and edges to black so they're visible on a white page
+    setBorder('#000')
+    var content = window.cy.jpg({
+      full: true
+    })
+    var blob = Helper.dataURItoBlob(content)
+    Helper.downloadFile(filename('.jpg'), blob)
+    setBorder('#fff')
   }
 
   $scope.navClass = function(href) {
