@@ -31,7 +31,9 @@ describe('Graphing the City', function() {
     it('should go to /graph when user submits input', function() {
       var input = element(by.model('criteria().city'))
       input.sendKeys('lond').then(function() {
-        browser.wait(EC.presenceOf($('.pac-container'))(input, 'London, UK'), 2000, 'timed out waiting for input to autocomplete').then(function() {
+        // Wait 750ms for autocomplete to update
+        browser.sleep(750)
+        browser.wait(EC.presenceOf($('.pac-container')), 2000, 'timed out waiting for input to autocomplete').then(function() {
           input.sendKeys(protractor.Key.ARROW_DOWN).then(function() {
             input.sendKeys(protractor.Key.ENTER).then(function() {
               input.getAttribute('value').then(function(val) {
