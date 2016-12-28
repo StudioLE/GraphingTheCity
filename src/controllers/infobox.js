@@ -39,14 +39,13 @@ angular.module('app.infobox', [])
   // Ensure the infobox is populated on first run and on all route changes
   $rootScope.$on("$routeChangeSuccess", function(event, next, current) {
     criteria = Criteria.get()
+    if(Criteria.isset()) {
+      $scope.chosen_claims = _.map(criteria.properties, function(prop) {
+        return prop.text
+      })
+    }
     Infobox.unset()
   })
-
-  if(Criteria.isset()) {
-    $scope.chosen_claims = _.map(criteria.properties, function(prop) {
-      return prop.text
-    })
-  }
 
   $scope.saveCriteria = Helper.saveCriteria
   $scope.wikimediaImage = Helper.wikimediaImage
