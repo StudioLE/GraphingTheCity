@@ -255,10 +255,6 @@ angular.module('app.compute', ['ngRoute'])
 
       }, function(err) {
         if(err) console.error(err)
-        
-        // Store all Claims in local storage
-        // @todo Do we really need to store Claims? Why?
-        // Claim.set(claims)
 
         callback(null, places, claims)
       }) // end of places series
@@ -382,10 +378,6 @@ angular.module('app.compute', ['ngRoute'])
 
       }, function(err, results) {
         if(err) return callback(err, results)
-
-        // @todo With unrestricted number of properties it's very easy to run out of localStorage space. Investigate other storage solutions.
-        console.log('Storing entities')
-        console.log(results.length)
 
         // Store Claim Values in local storage
         Entity.add(_.keyBy(results, 'id'))
