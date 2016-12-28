@@ -174,6 +174,17 @@
   </div>
 </div> <!-- infobox('connection') -->
 
+<div class="inset" ng-if="navClass('#/analysis')">
+
+  <div ng-repeat="claim_prop_id in chosen_claims">
+    <hr>
+
+    <p class="property">{{ entities()[claim_prop_id].labels.en.value ? entities()[claim_prop_id].labels.en.value : claim_prop_id }}</p>
+    <h3>{{ data().count.properties[claim_prop_id] }}</a></h3>
+  </div>
+
+</div> <!-- infobox('analysis') -->
+
 <div class="inset" ng-if="navClass('#/raw')">
 
   <hr>

@@ -407,12 +407,38 @@ angular.module('app.compute', ['ngRoute'])
 
       metadata.count.nodes = nodes.length
       metadata.count.connections = connections.length
-      metadata.count.places = _.filter(nodes, function(node) {
+      var place_nodes = _.filter(nodes, function(node) {
         return node.data.type == 'place'
-      }).length
+      })
       metadata.count.claims = _.filter(nodes, function(node) {
         return node.data.type == 'claim'
       }).length
+
+      var chosen_claims = _.map(criteria.properties, function(prop) {
+        return prop.text
+      })
+
+      if( ! _.isEmpty(chosen_claims)) {
+        var entities = Entity.get()
+
+        var count = {}
+
+        _.each(chosen_claims, function(prop_id) {
+          count[prop_id] = 0
+        })
+
+        _.each(place_nodes, function(place) {
+          _.each(chosen_claims, function(prop_id) {
+            if(entities[place.data.id].claims[prop_id]) {
+              count[prop_id] ++
+            }
+          })
+        })
+
+        metadata.count.properties = count
+      }
+
+      metadata.count.places = place_nodes.length
 
       // Store Metadata in local storage
       Data.set(metadata)
