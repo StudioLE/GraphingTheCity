@@ -22,6 +22,7 @@ script:
   - npm run test-single-run
   - (npm start > /dev/null &) && (npm run protractor)
 deploy:
+  skip_cleanup: true
   provider: s3
   access_key_id: AKIAIVLON4N2APPL4GGQ
   secret_access_key:
