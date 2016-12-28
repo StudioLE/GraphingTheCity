@@ -80,7 +80,7 @@ angular.module('app.analysis', ['ngRoute'])
     }))
   }
 
-  $scope.sortType = 'sna.betweennessCentrality'
+  $scope.sortType = 'sna.degreeCentrality'
   $scope.sortReverse = true
 
 })
