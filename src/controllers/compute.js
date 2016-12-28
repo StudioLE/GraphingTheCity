@@ -299,15 +299,30 @@ angular.module('app.compute', ['ngRoute'])
           // Store the claim_val_id so we can fetch it later
           metadata.entities.push(claim_val_id)
 
-          claim_nodes.push({
+          // It may be that a claim node can be used for more than one property
+          // So, check whether the claim node already exists
+          // If it does, add the claim_prop_id
+          var claim_index = _.findIndex(claim_nodes, {
             data: {
-              id: claim_val_id,
-              name: claim_val_id,
-              property: claim_prop_id,
-              type: 'claim'
-            },
-            classes: 'claim'
+              id: claim_val_id
+            }
           })
+          // claim_index will be -1 if not found
+          if(claim_index >= 0) {
+            claim_nodes[claim_index].data.property.push(claim_prop_id)
+          }
+          // Else store it as usual
+          else {
+            claim_nodes.push({
+              data: {
+                id: claim_val_id,
+                name: claim_val_id,
+                property: [claim_prop_id],
+                type: 'claim'
+              },
+              classes: 'claim'
+            })
+          }
 
           // Connect each node to the claim_val
           _.each(claim_val, function(place, place_id) {

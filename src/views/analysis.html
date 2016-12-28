@@ -70,7 +70,7 @@
     <tr ng-repeat="claim in claims() | orderBy:sortType:sortReverse track by $index">
       <td class="num">{{ $index + 1 }}</td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.id }}</a></td>
-      <td><a ng-href="https://www.wikidata.org/wiki/Property:{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</a></td>
+      <td><span ng-repeat="prop_id in claim.property"><span ng-if=" ! $first"> / </span><a ng-href="https://www.wikidata.org/wiki/Property:{{ prop_id }}">{{ entities()[prop_id].labels.en.value }}</a></span></td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></td>
       <td class="num">{{ claim.sna.connections }}</td>
       <td class="num">{{ claim.sna.degreeCentrality.toFixed(4) }}</td>
