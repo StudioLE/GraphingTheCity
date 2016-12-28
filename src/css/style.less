@@ -141,7 +141,7 @@ hr {
   margin: 150px 0;
 }
 
-label {
+label, .checkbox label {
   margin-bottom: 0;
   font-size: 24px;
   font-weight: 200; // Extra Light
@@ -207,13 +207,41 @@ select.form-control {
   }
 }
 
-.advanced {
+.advanced-control {
   display: block;
   text-align: right;
+}
 
+.advanced {
   label {
-    font-size: 22px;
+    font-size: 20px;
   }
+
+  .form-group, .checkbox {
+    margin-bottom: 30px;
+  }
+}
+
+.btn-primary {
+  background-color: @link_hover;
+  border: none;
+  font-weight: 600; // Bold
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:active:hover {
+  background-color: fade(@link_hover, 50%);
+}
+
+.btn-link {
+  color: #fff;
+}
+
+.btn-link:hover {
+  color: @link_hover;
+  text-decoration: none;
 }
 
 /*****************************************************************

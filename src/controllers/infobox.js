@@ -84,24 +84,24 @@ angular.module('app.infobox', [])
 
   $scope.exportPNG = function() {
     // Temporarily set the borders and edges to black so they're visible on a white page
-    setBorder('#000')
+    if(criteria.export_border) setBorder('#000')
     var content = window.cy.png({
       full: true
     })
     var blob = Helper.dataURItoBlob(content)
     Helper.downloadFile(filename('.png'), blob)
-    setBorder('#fff')
+    if(criteria.export_border) setBorder('#fff')
   }
 
   $scope.exportJPG = function() {
     // Temporarily set the borders and edges to black so they're visible on a white page
-    setBorder('#000')
+    if(criteria.export_border) setBorder('#000')
     var content = window.cy.jpg({
       full: true
     })
     var blob = Helper.dataURItoBlob(content)
     Helper.downloadFile(filename('.jpg'), blob)
-    setBorder('#fff')
+    if(criteria.export_border) setBorder('#fff')
   }
 
   $scope.navClass = function(href) {

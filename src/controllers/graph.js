@@ -124,7 +124,7 @@ angular.module('app.graph', ['ngRoute'])
 
   var calculateSNA = function() {
     // Don't run if already set...
-    if(data.sna) {
+    if(data.sna && ! criteria.recalculate_sna) {
       $scope.loading = false
       $scope.$apply()
       return false

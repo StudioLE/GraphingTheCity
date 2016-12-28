@@ -34,6 +34,7 @@ angular.module('app.criteria', ['ngRoute'])
       // 'P571'   // inception
       'P177' // Crosses
     ]
+    criteria.export_border = true
   }
 
   var criteria = {}
