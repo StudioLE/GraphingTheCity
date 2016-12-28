@@ -87,6 +87,14 @@
   <div class="inset">
     <p class="property">Place</p>
     <h2><a ng-href="https://www.wikidata.org/wiki/{{ infobox().content.id }}">{{ infobox().content.labels.en.value }}</a></h2>
+
+    <div ng-repeat="claim_prop_id in chosen_claims"
+      ng-if="infobox().content.claims[claim_prop_id]">
+      <hr>
+
+      <p class="property">{{ entities()[claim_prop_id].labels.en.value ? entities()[claim_prop_id].labels.en.value : claim_prop_id }}</p>
+      <h3 ng-repeat="claim in infobox().content.claims[claim_prop_id]"><a ng-href="https://www.wikidata.org/wiki/{{ claim.mainsnak.datavalue.value.id }}">{{ entities()[claim.mainsnak.datavalue.value.id].labels.en.value ? entities()[claim.mainsnak.datavalue.value.id].labels.en.value : claim.mainsnak.datavalue.value.id }}</a></h3>
+    </div>
     
     <div ng-if="infobox().content.sna">
     <hr>
@@ -109,14 +117,6 @@
     <p class="property">Betweenness Centrality</p>
     <h3>{{ infobox().content.sna.betweennessCentrality.toFixed(2) }}</h3>
 
-    </div>
-
-    <div ng-repeat="claim_prop_id in chosen_claims"
-      ng-if="infobox().content.claims[claim_prop_id]">
-      <hr>
-
-      <p class="property">{{ entities()[claim_prop_id].labels.en.value ? entities()[claim_prop_id].labels.en.value : claim_prop_id }}</p>
-      <h3 ng-repeat="claim in infobox().content.claims[claim_prop_id]"><a ng-href="https://www.wikidata.org/wiki/{{ claim.mainsnak.datavalue.value.id }}">{{ entities()[claim.mainsnak.datavalue.value.id].labels.en.value ? entities()[claim.mainsnak.datavalue.value.id].labels.en.value : claim.mainsnak.datavalue.value.id }}</a></h3>
     </div>
   </div>
 </div> <!-- infobox('place') -->
