@@ -91,6 +91,11 @@
     <div ng-if="infobox().content.sna">
     <hr>
 
+    <p class="property">Direct Connections</p>
+    <h3>{{ infobox().content.sna.connections }}</h3>
+
+    <hr>
+
     <p class="property">Degree Centrality</p>
     <h3>{{ infobox().content.sna.degreeCentrality.toFixed(4) }}</h3>
     
@@ -130,6 +135,11 @@
     <p class="property">Description</p>
     <h3>{{ infobox().content.descriptions.en.value }}</h3>
     
+    <hr>
+
+    <p class="property">Direct Connections</p>
+    <h3>{{ infobox().content.sna.connections }}</h3>
+
     <hr>
 
     <p class="property">Degree Centrality</p>

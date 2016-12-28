@@ -29,11 +29,18 @@
           <span ng-show="sortType == 'property' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th style="width: 30%;">
+      <th style="width: 20%;">
         <a ng-click="sortType = 'labels.en.value'; sortReverse = !sortReverse">
           Label
           <span ng-show="sortType == 'labels.en.value' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'labels.en.value' && sortReverse" class="fa fa-caret-up"></span>
+        </a>
+      </th>
+      <th class="num" style="width: 10%;">
+        <a ng-click="sortType = 'sna.connections'; sortReverse = !sortReverse">
+          Direct Connections
+          <span ng-show="sortType == 'sna.connections' && ! sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'sna.connections' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
       <th class="num" style="width: 10%;">
@@ -65,6 +72,7 @@
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.id }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/Property:{{ claim.property }}">{{ entities()[claim.property].labels.en.value }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ claim.id }}">{{ claim.labels.en.value }}</a></td>
+      <td class="num">{{ claim.sna.connections }}</td>
       <td class="num">{{ claim.sna.degreeCentrality.toFixed(4) }}</td>
       <td class="num">{{ claim.sna.closenessCentrality.toFixed(4) }}</td>
       <td class="num">{{ claim.sna.betweennessCentrality.toFixed(2) }}</td>
@@ -89,11 +97,18 @@
           <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
-      <th style="width: 50%;">
+      <th style="width: 40%;">
         <a ng-click="sortType = 'labels.en.value'; sortReverse = !sortReverse">
           Label
           <span ng-show="sortType == 'labels.en.value' && ! sortReverse" class="fa fa-caret-down"></span>
           <span ng-show="sortType == 'labels.en.value' && sortReverse" class="fa fa-caret-up"></span>
+        </a>
+      </th>
+      <th class="num" style="width: 10%;">
+        <a ng-click="sortType = 'sna.connections'; sortReverse = !sortReverse">
+          Direct Connections
+          <span ng-show="sortType == 'sna.connections' && ! sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'sna.connections' && sortReverse" class="fa fa-caret-up"></span>
         </a>
       </th>
       <th class="num" style="width: 10%;">
@@ -124,6 +139,7 @@
       <td class="num">{{ $index + 1 }}</td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.id }}</a></td>
       <td><a ng-href="https://www.wikidata.org/wiki/{{ place.id }}">{{ place.labels.en.value }}</a></td>
+      <td class="num">{{ place.sna.connections }}</td>
       <td class="num">{{ place.sna.degreeCentrality.toFixed(4) }}</td>
       <td class="num">{{ place.sna.closenessCentrality.toFixed(4) }}</td>
       <td class="num">{{ place.sna.betweennessCentrality.toFixed(2) }}</td>

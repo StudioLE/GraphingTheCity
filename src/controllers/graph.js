@@ -136,6 +136,7 @@ angular.module('app.graph', ['ngRoute'])
 
     _.map(nodes, function(node) {
       node.data.sna  = {
+        connections: cy.$().dc({ root: '#' + node.data.id }).degree,
         degreeCentrality: dcn.degree('#' + node.data.id),
         closenessCentrality: ccn.closeness('#' + node.data.id),
         betweennessCentrality: bc.betweenness('#' + node.data.id)
