@@ -18,12 +18,12 @@
   # CONCEPT
 
   Concept developed at Northumbria University
-  https://www.northumbria.ac.uk/
+  https://www.northumbria.ac.uk
 
   - - - - - - - - - - - - - - - - - - - - - -
 
   # REPOSITORY
-  https://gitlab.com/StudioLE/CityGraph
+  https://github.com/StudioLE/GraphingTheCity
 
   - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,14 +47,17 @@
   Cytoscape.js
   http://js.cytoscape.org
 
-  Google Places API
-  https://developers.google.com/places
+  Google Knowledge Graph Search API
+  https://developers.google.com/knowledge-graph
+
+  Wikidata API
+  https://www.wikidata.org/wiki/Wikidata:Main_Page
 
   Bootstrap
   http://getbootstrap.com
 
   Font Awesome
-  http://fortawesome.github.com/Font-Awesome
+  http://fontawesome.io
 
   Overpass Font
   http://overpassfont.org
@@ -75,3 +78,6 @@
 
   Sublime Text 3
   http://www.sublimetext.com/3
+
+  SmartGit
+  http://www.syntevo.com/smartgit
