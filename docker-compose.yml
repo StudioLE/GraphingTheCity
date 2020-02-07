@@ -1,14 +1,15 @@
 version: '3.3'
 
 services:
-  graphingthecity:
+  app:
+    container_name: ${APPNAME}
     image: nginx:1.17.8-alpine
     volumes:
       - ./build:/usr/share/nginx/html
     labels:
       # HTTP
-      - "traefik.http.routers.graphingthecity.rule=Host(`${HOSTNAME}`)"
-      - "traefik.http.routers.graphingthecity.entrypoints=80"
+      - "traefik.http.routers.${APPNAME}.rule=Host(`${HOSTNAME}`)"
+      - "traefik.http.routers.${APPNAME}.entrypoints=80"
     networks:
       - traefik
 networks:
