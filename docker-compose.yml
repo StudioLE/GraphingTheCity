@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  app:
+  nginx:
     container_name: ${APPNAME}
     image: nginx:1.17.8-alpine
     volumes:
