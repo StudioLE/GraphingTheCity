@@ -41,18 +41,13 @@
   },
   "scripts": {
     "postinstall": "bower install",
-
     "update-deps": "npm update",
     "postupdate-deps": "bower update",
-
     "prestart": "npm install",
     "start": "http-server build -a localhost -p 1337 -c-1",
-
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
-
     "update-webdriver": "webdriver-manager update",
-
     "protractor": "protractor tests/e2e/protractor.conf.js"
   }
 }

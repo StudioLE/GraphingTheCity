@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  graphingthecity:
+    image: nginx:1.17.8-alpine
+    volumes:
+      - ./build:/usr/share/nginx/html
+    labels:
+      # HTTP
+      - "traefik.http.routers.graphingthecity.rule=Host(`${HOSTNAME}`)"
+      - "traefik.http.routers.graphingthecity.entrypoints=80"
+    networks:
+      - traefik
+networks:
+  traefik:
+    external:
+      name: traefik_web
