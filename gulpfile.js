@@ -1,11 +1,9 @@
-'use strict'
-
 // Core modules
 var p = require('path')
 var ver = require('./package.json').version
 
 // Node modules
-var gulp = require('gulp')
+const { src, dest, parallel } = require('gulp')
 var gp_bump = require('gulp-bump')
 var gp_clean = require('gulp-clean')
 var gp_html = require('gulp-html-replace')
@@ -14,7 +12,6 @@ var gp_rename = require('gulp-rename')
 var gp_uglify = require('gulp-uglify')
 var gp_clean_css = require('gulp-clean-css')
 var gp_less = require('gulp-less')
-var p = require('path')
 
 var build = {
   /**
@@ -34,74 +31,92 @@ var build = {
 }
 
 // Bump version
-gulp.task('bump', function(){
-  gulp.src(['./bower.json', './package.json'])
+const bump = function() {
+  return src([
+    './bower.json',
+    './package.json'
+  ])
   .pipe(gp_bump({
     // type:'prerelease'
   }))
-  .pipe(gulp.dest('./'))
-})
+  .pipe(dest('./'))
+}
 
 // Clean build directory
- gulp.task('clean', function () {
-  return gulp.src('build', {
+ const clean = function () {
+  return src('build', {
     // read: false
   })
   .pipe(gp_clean())
-})
+}
 
 // Build index.html
-gulp.task('index', function() {
-  gulp.src('src/index.html')
+const index = function() {
+  return src('src/index.html')
   .pipe(gp_html({
     'css': 'css/app.css' + build.version(),
     'vendor-css': 'css/vendor.css' + build.version(),
     'js': 'js/app.js' + build.version(),
     'vendor-js': 'js/vendor.js' + build.version()
   }))
-  .pipe(gulp.dest(build.path()))
-})
+  .pipe(dest(build.path()))
+}
 
 // Copy static assets
-gulp.task('assets', function() {
+const assets_views = function() {
   // Views
-  gulp.src('src/views/*')
-  .pipe(gulp.dest(build.path('views')))
-  // Data
-  gulp.src('src/data/*')
-  .pipe(gulp.dest(build.path('data')))
-  // Images
-  gulp.src('src/img/*')
-  .pipe(gulp.dest(build.path('img')))
-  // Overpass Font
-  gulp.src('src/bower_components/overpass/webfonts/overpass-webfont/*')
-  .pipe(gulp.dest(build.path('css')))
-  // Font Awesome
-  gulp.src('src/bower_components/font-awesome/fonts/*')
-  .pipe(gulp.dest(build.path('fonts')))
+  return src('src/views/*')
+  .pipe(dest(build.path('views')))
+}
+
+// Data
+const assets_data = function() {
+  return src('src/data/*')
+  .pipe(dest(build.path('data')))
+}
+
+// Images
+const assets_img = function() {
+  return src('src/img/*')
+  .pipe(dest(build.path('img')))
+}
+
+// Overpass Font
+const assets_overpass = function() {
+  return src('src/bower_components/overpass/webfonts/overpass-webfont/*')
+  .pipe(dest(build.path('css')))
+}
+
+// Font Awesome
+const assets_fontawesome = function() {
+  return src('src/bower_components/font-awesome/fonts/*')
+  .pipe(dest(build.path('fonts')))
+}
+
   // Humans.txt
-  gulp.src('src/humans.txt')
-  .pipe(gulp.dest(build.path()))
-  // Favicon
-  gulp.src('src/favicon.ico')
-  .pipe(gulp.dest(build.path()))
-})
+const assets_src = function() {
+  return src([
+    'src/humans.txt',
+    'src/favicon.ico'
+  ])
+  .pipe(dest(build.path()))
+}
 
 // Build app CSS
-gulp.task('css', function() {
-  gulp.src('src/css/style.less')
+const css = function() {
+  return src('src/css/style.less')
   .pipe(gp_less({ paths: [
     'src/bower_components/bootstrap/less/mixins.less',
     'src/bower_components/bootstrap/less/variables.less'
   ]}))
   .pipe(gp_rename('app.css'))
   .pipe(gp_clean_css({keepSpecialComments: 0}))
-  .pipe(gulp.dest(build.path('css')))
-})
+  .pipe(dest(build.path('css')))
+}
 
 // Build vendor CSS
-gulp.task('vendor-css', function() {
-  gulp.src([
+const vendor_css = function() {
+  return src([
     'src/bower_components/bootstrap/dist/css/bootstrap.min.css',
     'src/bower_components/overpass/webfonts/overpass-webfont/overpass.css',
     'src/bower_components/font-awesome/css/font-awesome.min.css',
@@ -113,12 +128,12 @@ gulp.task('vendor-css', function() {
   .pipe(gp_concat('concat.js'))
   .pipe(gp_rename('vendor.css'))
   .pipe(gp_clean_css({keepSpecialComments: 0}))
-  .pipe(gulp.dest(build.path('css')))
-})
+  .pipe(dest(build.path('css')))
+}
 
 // Build app JS
-gulp.task('js', function() {
-  gulp.src([
+const js = function() {
+  return src([
       'src/app.js',
       'src/config.js',
       'src/controllers/*.js',
@@ -127,12 +142,12 @@ gulp.task('js', function() {
   .pipe(gp_concat('concat.js'))
   .pipe(gp_rename('app.js'))
   // .pipe(gp_uglify())
-  .pipe(gulp.dest(build.path('js')))
-})
+  .pipe(dest(build.path('js')))
+}
 
 // Build vendor JS
-gulp.task('vendor-js', function() {
-  gulp.src([
+const vendor_js = function() {
+  return src([
     'src/bower_components/jquery/dist/jquery.min.js',
     'src/bower_components/bootstrap/dist/js/bootstrap.min.js',
     'src/bower_components/lodash/dist/lodash.min.js',
@@ -157,11 +172,10 @@ gulp.task('vendor-js', function() {
   .pipe(gp_concat('concat.js'))
   .pipe(gp_rename('vendor.js'))
   // .pipe(gp_uglify())
-  .pipe(gulp.dest(build.path('js')))
-})
+  .pipe(dest(build.path('js')))
+}
 
-// Build task
-gulp.task('build', ['index', 'assets', 'css', 'vendor-css', 'js', 'vendor-js'])
-
-// Default task
-gulp.task('default', ['build'])
+exports.bump = bump
+exports.clean = clean
+exports.build = parallel(index, assets_views, assets_data, assets_img, assets_overpass, assets_fontawesome, assets_src, css, vendor_css, js, vendor_js)
+exports.default = exports.build
