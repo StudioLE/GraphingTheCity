@@ -68,9 +68,9 @@ describe('Graphing the City', function() {
         .toBeGreaterThan(200)
     })
 
-    it('should have more than 160 places', function() {
+    it('should have more than 150 places', function() {
       expect(element(by.binding('data().count.places')).getText())
-        .toBeGreaterThan(160)
+        .toBeGreaterThan(150)
     })
 
     it('should have more than 50 claims', function() {
