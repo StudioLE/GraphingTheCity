@@ -4,7 +4,6 @@ language: node_js
 node_js:
   - lts/*
 addons:
-  firefox: latest
   chrome: stable
   apt:
     packages:
