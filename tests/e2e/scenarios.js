@@ -28,25 +28,21 @@ describe('Graphing the City', function() {
       expect(element(by.css('h1')).getText()).toMatch(/Graphing the City/i)
     })
 
-    it('should go to /graph when user submits input', function() {
+    it('should go to /graph when user submits input', async function() {
       var input = element(by.model('criteria().city'))
-      input.sendKeys('lond').then(async function() {
-        // Wait 500ms for autocomplete to update
-        await browser.sleep(500)
-        browser.wait(EC.presenceOf($('.pac-container')), 2000, 'timed out waiting for input to autocomplete').then(function() {
-          input.sendKeys(protractor.Key.ARROW_DOWN).then(function() {
-            browser.sleep(500)
-            input.sendKeys(protractor.Key.ENTER).then(function() {
-              browser.sleep(500)
-              input.getAttribute('value').then(function(val) {
-                console.log('\n' + val + '\n')
-              })
-              input.sendKeys(protractor.Key.ENTER)
-              expect(browser.getLocationAbsUrl()).toMatch("/graph")
-            })
-          })
-        })
+      await input.sendKeys('lond')
+      // Wait 5000ms for autocomplete to update
+      await browser.sleep(5000)
+      await browser.wait(EC.presenceOf($('.pac-container')), 2000, 'timed out waiting for input to autocomplete')
+      await input.sendKeys(protractor.Key.ARROW_DOWN)
+      await browser.sleep(500)
+      await input.sendKeys(protractor.Key.ENTER)
+      await browser.sleep(500)
+      input.getAttribute('value').then(function(val) {
+        console.log('\n' + val + '\n')
       })
+      await input.sendKeys(protractor.Key.ENTER)
+      expect(browser.getLocationAbsUrl()).toMatch("/graph")
     })
 
   })
