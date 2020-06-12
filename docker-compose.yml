@@ -10,8 +10,8 @@ services:
       domain: graphingthecity.studiole.uk
     restart: unless-stopped
     networks:
-      - traefik
+      - public
 networks:
-  traefik:
+  public:
     external:
-      name: traefik_web
+      name: public
