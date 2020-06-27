@@ -40,6 +40,7 @@
     "gulp-uglify": "^2.0.0"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "postinstall": "bower install",
     "update-deps": "npm update",
     "postupdate-deps": "bower update",
@@ -49,5 +50,8 @@
     "test-single-run": "karma start karma.conf.js --single-run",
     "update-webdriver": "webdriver-manager update",
     "protractor": "protractor tests/e2e/protractor.conf.js"
+  },
+  "resolutions": {
+    "graceful-fs": "4.2.3"
   }
 }
